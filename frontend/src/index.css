@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/*
+  Grove design tokens — flat, quiet, paper-and-forest palette (handoff §7).
+  Rectangular surfaces, hairline rules, no pills, one primary action per screen.
+*/
+@theme {
+  --color-forest-50: #f2f7f2;
+  --color-forest-100: #e0ecdf;
+  --color-forest-500: #4a7856;
+  --color-forest-600: #3b6145;
+  --color-forest-700: #2f4d38;
+  --color-forest-900: #1c2f22;
+
+  --color-paper-50: #faf9f6;
+  --color-paper-100: #f4f2ec;
+  --color-paper-200: #e9e6dd;
+  --color-paper-300: #d8d4c6;
+
+  --color-clay-500: #b0684c;
+  --color-clay-600: #96553d;
+
+  --color-gold-500: #c9a24b;
+  --color-gold-600: #a9863c;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-paper-50);
+  color: var(--color-forest-900);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+/* Accessible focus states everywhere */
+:focus-visible {
+  outline: 2px solid var(--color-forest-600);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Flashcard 3D flip                                                   */
+/* ------------------------------------------------------------------ */
+
+.flip-scene {
+  perspective: 1600px;
+}
+
+.flip-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.flip-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+}
+
+.flip-face--back {
+  transform: rotateY(180deg);
+}
+
+/* Chromium hit-tests backface-hidden faces in 3D contexts, so the hidden
+   face must also be pointer-inert — otherwise it intercepts clicks meant
+   for the visible face. */
+.flip-card .flip-face--back {
+  pointer-events: none;
+}
+
+.flip-card.is-flipped .flip-face--back {
+  pointer-events: auto;
+}
+
+.flip-card.is-flipped .flip-face:not(.flip-face--back) {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card {
+    transition: none;
+  }
+}

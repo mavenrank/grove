@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Runtime data — never commit user data or live databases
+backend/data/
+*.db
+*.db-wal
+*.db-shm
+
+# Ingestion working artifacts are reproducible; keep packs if you like,
+# but catalog.json is large and derived.
+backend/ingestion-work/catalog.json
+
+# Node / frontend
+node_modules/
+frontend/dist/
+*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local learner state, generated corpus output and tool metadata
+/data/
+/content/media/
+/backend/ingestion-work/
+/.freebuff/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.cache/
