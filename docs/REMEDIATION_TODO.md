@@ -34,7 +34,8 @@ Supporting #36 belongs to this pipeline wave: first audit all existing Learn top
 - [x] Trace the live topic to the active stored release, timestamps, original PPT, source hash and slide count.
 - [x] Run the topic into a fresh, unapproved work directory and compare the resulting candidates with native source text, notes and embedded media.
 - [x] Independently calculate the 15 native questions and record bad/ambiguous source choices without altering originals or learner data.
-- [ ] #7: parse `Answer` and `Option` note-label variants, preserve malformed/ambiguous states and independently verify recovered source answers.
+- [x] #7: parse explicit `Answer`/`Option` variants, Unicode spaces/glyphs and parenthesized labels; preserve raw notes and block conflicting labels/ambiguous choices.
+- [ ] #7: independently verify recovered source answers beyond the five explicit Speed Distance Time labels checked in the pilot; do not equate notes confirmation with correct mathematics.
 - [ ] #6: add source-hash-scoped, reviewable exclusions for provider logos, covers, ceremony and decoration. Resolve conservative wave-2 flags without blanket deletion.
 - [ ] #2: select a working whole-slide render/OCR path, record adapter versions and uncertain output, and test tiny math crops and image-led teaching material. The bundled renderer's failure on this source's notes/package must be resolved or a supported alternative used.
 - [ ] #4: design a versioned lesson contract carrying ordered content and attached example media; verify source → draft → API → rendered lesson completeness.
@@ -543,7 +544,7 @@ Status: scheduled inside the current pipeline wave; supports #1–8 and #10.
 - [x] Re-extract referenced sources in a new draft directory; compare source hashes/counts, classification, retained blocks/media/notes and organization outcomes.
 - [x] Produce a per-topic report and slide-level evidence for missing summaries/examples, malformed choices, missing/ambiguous notes answers, exclusions, truncation and API field loss.
 - [x] Separate definite failures from heuristic review clues and unverified source/visual meaning; never describe notes-confirmed keys as independently solved.
-- [ ] Add regression fixtures for observed failures and record before/after audit counts with the same source hashes.
+- [x] Add regression fixtures for observed failures and record before/after audit counts with the same source hashes. Notes variants/conflicts now covered; visual/math completeness remains open under #2/#3/#7.
 - [x] Document the CLI, output locations and rerun policy; never import or rewrite learner history through the bench.
 
 Acceptance: every existing Learn topic is accounted for; a reviewer can trace each anomaly to a source snapshot and stage, and rerun the audit after a pipeline change.
@@ -552,7 +553,7 @@ Acceptance: every existing Learn topic is accounted for; a reviewer can trace ea
 
 Status: deferred to the tail of the backlog by the user.
 
-- [ ] Inventory unmatched delimiters, dangling fragments, long text and paragraph/list loss with source citations in #36.
+- [x] Inventory unmatched delimiters and long text with source citations in #36 (30 review clues). Deeper paragraph/list and dangling-fragment review remains open.
 - [ ] Distinguish original punctuation from parser/summary truncation before changing it.
 - [ ] Review paragraph, step and formula presentation after the main pipeline and curriculum fixes.
 - [ ] Keep substantial learner-facing changes uncommitted until reviewed.

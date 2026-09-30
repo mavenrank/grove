@@ -216,3 +216,11 @@ Added grove-ingest audit with read-only SQLite/frozen JSON input, fresh-director
 Ran all 27 stored topics / 78 citations: 47 PPTs with 1,214 slides plus 31 unextracted PDF records. Source hashes match; no cited source was missing. Structural validation passes; semantic approval is blocked. Findings are review clues/evidence, not 4,038 independently incorrect facts. See PIPELINE_TEST_BENCH.md for scope, counts and rerun command.
 
 Six new tests passed, covering database/source byte preservation, independent slide/text loss, topic accounting, path boundaries, stable IDs and HTML escaping. Full visual/mathematical checking and substantive lesson reconstruction remain open.
+
+## #7 — explicit notes-label recovery
+
+Added line-scoped, case-insensitive Answer/Option parsing with parentheses, arrows/private glyphs and Unicode horizontal spaces. Each key retains its matched text/span plus raw notes; label removal preserves solution text before/after it. Conflicting/multiple keys, out-of-choice labels and malformed choices remain blocked. Notes confirmation is still distinct from independent answer verification.
+
+The bench exposed a character-class mistake and a nonbreaking-space regression during development; tests caught the former and the before/after source comparison caught the latter. Both were repaired before commitment. Twenty-one targeted regression cases pass. Across identical source hashes, notes-confirmed candidates rise 407 → 499; missing labels fall 273 → 149, with no old key changed/lost. All five explicit Speed Distance Time labels agree with the independently derived pilot answers. Source errors/uncertainties documented in CONTENT_REFRESH_AUDIT.md remain unresolved.
+
+The bench chunk passed the full 100-test suite. The notes chunk adds 21 tests. Source material, current release 0.3.5 and learner history remain unchanged; no UI/curriculum release was published.

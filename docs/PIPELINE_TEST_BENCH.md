@@ -36,3 +36,11 @@ Nine stored topics have no examples and placeholder summaries: Pattern Completio
 All 27 fresh topics retain segments omitted by the public schema. Eight stored topics have recall questions in formula lists. Thirty formatting clues (7 delimiter imbalances / 23 long paragraphs) belong to deferred #37. Visual/vector flags include artwork; their counts do not measure teaching-image loss.
 
 Six regression cases cover topic accounting/stable IDs, independent text/slide loss, read-only release selection, real PPT extraction/source preservation, path boundaries and HTML escaping. Full visual/mathematical review remains open. Independent Speed Distance Time calculations are in CONTENT_REFRESH_AUDIT.md.
+
+## #7 notes-label improvement
+
+Tested after-report: <source-dir> The same frozen release and all 78 source hashes were used. Notes-confirmed candidates increased **407 → 499**, with no previously recognized key changed/lost. Parsed questions missing recognized keys fell **273 → 149**; 32 of the recovered labels still have ambiguous choices and cannot become examples. Total question candidates stay 720; 145 question-parse failures and 94 ambiguous mappings remain.
+
+Speed Distance Time recovers its five explicit keys (slides 3–7), matching the pilot's independent calculations. Eight topics now have more draft example candidates than the stored lesson; summaries, visual interpretation and delivery contracts remain unresolved. Higher overall finding counts can reflect more surfaced draft examples hitting the unchanged public schema, not worsening extraction.
+
+Twenty-one notes regression cases cover real label/glyph/nonbreaking-space variants, conflicting or multiple labels, incidental prose, out-of-choice keys, preservation of surrounding solution text, and choice ambiguity. Intermediate development reports learn-bench-notes and learn-bench-notes-fixed are superseded by learn-bench-notes-reviewed; they are not evidence for the tested outcome.
