@@ -25,7 +25,7 @@ class CreateSessionIn(BaseModel):
 class AnswerIn(BaseModel):
     ticket: str = Field(min_length=8, max_length=128)
     option: str = Field(min_length=1, max_length=1)
-    idempotency_key: str | None = Field(default=None, max_length=128)
+    idempotency_key: str | None = Field(default=None, min_length=1, max_length=128)
 
 
 class MarkIn(BaseModel):

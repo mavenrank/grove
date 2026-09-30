@@ -95,7 +95,12 @@ def submit_events(session_id: str, body: EventsIn, request: Request) -> EventsAc
     for ev in body.events:
         payload_json = _safe_payload(ev.payload)
         rows.append((session_id, ev.position, ev.type, ev.client_time, server_time, payload_json))
-    accepted = db.insert_events(rows)
+    try:
+        accepted = engine.record_events(session_id, _learner(request), rows)
+    except engine.NotFoundError:
+        raise HTTPException(status_code=404, detail="session not found") from None
+    except engine.TestFlowError as exc:
+        raise HTTPException(status_code=410 if exc.code == "expired" else 409, detail=exc.code) from None
     return EventsAcceptedOut(accepted=accepted)
 
 
@@ -106,6 +111,8 @@ def submit_dwell(session_id: str, body: DwellIn, request: Request) -> EventsAcce
         engine.record_dwell(session_id, body.position, _learner(request), body.seconds, body.kind)
     except engine.NotFoundError:
         raise HTTPException(status_code=404, detail="session not found") from None
+    except engine.TestFlowError as exc:
+        raise HTTPException(status_code=410 if exc.code == "expired" else 409, detail=exc.code) from None
     return EventsAcceptedOut(accepted=1)
 
 

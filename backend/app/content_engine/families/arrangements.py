@@ -19,9 +19,9 @@ def arrangement_ordering(rng, difficulty):
                    "Counting from the front, the third person is " + order[2] + ".")
     first, second, last = order[0], order[1], order[4]
     return mcq(rng,
-               f"Five friends — {', '.join(people)} — stand in a line. {first} is ahead of everyone. {second} is immediately behind {first}. {last} is at the very back. Who cannot be second in the line?",
-               last, [p for p in people if p != last],
-               f"The first two places are fixed ({first}, {second}), so {last} — who is at the back — can never be second.")
+               f"Five friends — {', '.join(people)} — stand in a line. {first} is ahead of everyone. {second} is immediately behind {first}. {last} is at the very back. Who is second in the line?",
+               second, [p for p in people if p != second],
+               f"{first} occupies the first position. {second} is immediately behind {first}, so {second} is second.")
 
 
 @family("arrangement.seating", "logic.arr.seating")
@@ -29,9 +29,11 @@ def arrangement_seating(rng, difficulty):
     people = ["P", "Q", "R", "S", "T", "U"]
     around = people[:]
     rng.shuffle(around)
+    start = around.index("P")
+    around = around[start:] + around[:start]
     idx = rng.randrange(6)
-    subject, neighbor = around[idx], around[(idx - 1) % 6]
+    subject, neighbor = around[idx], around[(idx + 1) % 6]
     return mcq(rng,
                f"Six people {', '.join(people)} sit around a circular table facing the centre. Going clockwise from P: {', '.join(around)}. Who sits immediately to the left of {subject}?",
                neighbor, [p for p in people if p != neighbor],
-               f"Facing the centre, a person's left is the previous position clockwise: {neighbor}.")
+               f"Facing the centre, a person's left is the next position clockwise: {neighbor}.")

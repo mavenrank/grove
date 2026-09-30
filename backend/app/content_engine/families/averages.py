@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import math
 import random
+from decimal import Decimal
 from typing import Any
 
 from .registry import family
@@ -74,9 +75,12 @@ def simple_interest(rng, difficulty):
     p = rng.randint(1000, 20000)
     r = rng.choice([4, 5, 6, 7, 8, 10, 12])
     t = rng.randint(2, 6) if difficulty == "direct" else rng.choice([7, 9, 10])
-    return int_q(rng, f"Find the simple interest on ₹{p} at {r}% per annum for {t} years.",
-                 p * r * t // 100 if (p * r * t) % 100 == 0 else round(p * r * t / 100),
-                 f"SI = PRT/100 = {p}×{r}×{t}/100 = {round(p * r * t / 100):g}.")
+    # Preserve exact cents; the prompt does not request whole-rupee rounding (#18).
+    amount = Decimal(p * r * t) / 100
+    answer = format(amount.normalize(), "f")
+    return mcq(rng, f"Find the simple interest on ₹{p} at {r}% per annum for {t} years.",
+               answer, [format((amount + delta).normalize(), "f") for delta in (5, 10, 20)],
+               f"SI = PRT/100 = {p}×{r}×{t}/100 = {answer}.")
 
 
 @family("interest.compound", "quant.avg.compound_interest")

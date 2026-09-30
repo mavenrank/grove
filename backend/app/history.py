@@ -15,6 +15,7 @@ from . import db
 from .content_engine.releases import family_skill_map
 from .content_engine.taxonomy import skill_name, topic_of_skill
 from .evidence import _median
+from .engine.errors import TestFlowError
 
 
 def recent_tests(limit: int = 50) -> list[dict[str, Any]]:
@@ -41,6 +42,9 @@ def test_detail(session_id: str) -> dict[str, Any] | None:
             return None
         score = conn.execute("SELECT * FROM score_summaries WHERE session_id=?", (session_id,)).fetchone()
         finalized = s["state"] in ("submitted", "expired") and score is not None
+        # History must not bulk expose the contents of an active assessment (#28).
+        if not finalized:
+            raise TestFlowError("not_finalized", "test details are only available after finalization")
 
         rows = conn.execute(
             "SELECT * FROM session_questions WHERE session_id=? ORDER BY position",

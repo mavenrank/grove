@@ -61,6 +61,18 @@ CREATE TABLE IF NOT EXISTS client_events (
     payload TEXT NOT NULL
 );
 
+-- Answer retry receipts are committed with the answer, not before it (#27).
+CREATE TABLE IF NOT EXISTS answer_receipts (
+    session_id TEXT NOT NULL REFERENCES test_sessions(id),
+    idempotency_key TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    ticket TEXT NOT NULL,
+    option TEXT NOT NULL,
+    response_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, idempotency_key)
+);
+
 CREATE TABLE IF NOT EXISTS score_summaries (
     session_id TEXT PRIMARY KEY REFERENCES test_sessions(id),
     total_questions INTEGER NOT NULL,

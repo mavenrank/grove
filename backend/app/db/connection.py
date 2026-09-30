@@ -25,6 +25,8 @@ class Database:
     def _connect(self) -> Iterator[sqlite3.Connection]:
         conn = sqlite3.connect(self.path, timeout=30)
         conn.row_factory = sqlite3.Row
+        # Foreign-key enforcement is connection-local, not a schema setting (#30).
+        conn.execute("PRAGMA foreign_keys = ON")
         try:
             with conn:
                 yield conn
@@ -36,6 +38,8 @@ class Database:
         """Serialized transaction: state-machine transitions must be atomic."""
         with self._lock:
             with self._connect() as conn:
+                # Lock before reading state, including across independent processes (#26).
+                conn.execute("BEGIN IMMEDIATE")
                 yield conn
 
     @contextmanager

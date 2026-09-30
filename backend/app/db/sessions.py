@@ -118,38 +118,42 @@ def finalize_session(
     session_id: str,
     score: dict[str, Any],
     final_state: str = "submitted",
+    *,
+    conn: sqlite3.Connection | None = None,
 ) -> dict[str, Any] | None:
     """Atomically finalize a session (submitted or expired) and persist the score.
 
     Returns None if the session was already terminal (duplicate finalization).
     """
     assert final_state in ("submitted", "expired")
-    with db.write() as conn:
-        row = conn.execute("SELECT state FROM test_sessions WHERE id=?", (session_id,)).fetchone()
-        if row is None:
-            return None
-        if row["state"] in ("submitted", "expired"):
-            return None
-        now = utcnow()
-        conn.execute(
-            "UPDATE test_sessions SET state=?, submitted_at=? WHERE id=?",
-            (final_state, iso(now), session_id),
-        )
-        conn.execute(
-            """
-            INSERT INTO score_summaries
-              (session_id, total_questions, correct, incorrect, unanswered, accuracy,
-               duration_seconds, finalized_at, per_question, release_version,
-               blueprint_version, seed)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
-            """,
-            (
-                session_id, score["total_questions"], score["correct"], score["incorrect"],
-                score["unanswered"], score["accuracy"], score["duration_seconds"],
-                iso(now), json.dumps(score["per_question"]),
-                score["release_version"], score["blueprint_version"], score["seed"],
-            ),
-        )
+    if conn is None:
+        with db.write() as transaction:
+            return finalize_session(session_id, score, final_state, conn=transaction)
+    row = conn.execute("SELECT state FROM test_sessions WHERE id=?", (session_id,)).fetchone()
+    if row is None:
+        return None
+    if row["state"] in ("submitted", "expired"):
+        return None
+    now = utcnow()
+    conn.execute(
+        "UPDATE test_sessions SET state=?, submitted_at=? WHERE id=?",
+        (final_state, iso(now), session_id),
+    )
+    conn.execute(
+        """
+        INSERT INTO score_summaries
+          (session_id, total_questions, correct, incorrect, unanswered, accuracy,
+           duration_seconds, finalized_at, per_question, release_version,
+           blueprint_version, seed)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+        """,
+        (
+            session_id, score["total_questions"], score["correct"], score["incorrect"],
+            score["unanswered"], score["accuracy"], score["duration_seconds"],
+            iso(now), json.dumps(score["per_question"]),
+            score["release_version"], score["blueprint_version"], score["seed"],
+        ),
+    )
     return score
 
 

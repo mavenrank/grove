@@ -2,16 +2,21 @@
 from __future__ import annotations
 
 import json
+import sqlite3
+from contextlib import nullcontext
 from typing import Any
 
 from .. import db
 from .errors import NotFoundError, TestFlowError
 
 
-def compute_score(session: Any) -> dict[str, Any]:
-    rows = db.list_questions(session["id"])
-    with db.db.read() as conn:
-        timing_rows = conn.execute(
+def compute_score(session: Any, conn: sqlite3.Connection | None = None) -> dict[str, Any]:
+    with (nullcontext(conn) if conn is not None else db.db.read()) as snapshot:
+        rows = snapshot.execute(
+            "SELECT * FROM session_questions WHERE session_id=? ORDER BY position",
+            (session["id"],),
+        ).fetchall()
+        timing_rows = snapshot.execute(
             "SELECT * FROM question_timing WHERE session_id=?", (session["id"],)
         ).fetchall()
     timing = {t["position"]: t for t in timing_rows}
@@ -66,32 +71,25 @@ def compute_score(session: Any) -> dict[str, Any]:
 
 
 def finish_session(session_id: str, learner: str) -> dict[str, Any]:
-    session = db.get_session(session_id)
-    if session is None or session["learner"] != learner:
-        raise NotFoundError("session not found")
-
-    deadline = db.parse_iso(session["deadline_at"])
-    if session["state"] == "submitted":
-        # duplicate finalization is rejected (handoff §8.5)
-        raise TestFlowError("already_finalized", "this session has already been finalized")
-    if session["state"] == "expired":
-        existing = db.get_score(session_id)
-        if existing is None:
-            raise TestFlowError("invalid_state", "expired session has no stored score")
-        return _result_payload(session_id)
-    if session["state"] != "active":
-        raise TestFlowError("invalid_state", f"cannot finish a session in state {session['state']}")
-
-    if db.utcnow() > deadline:
-        # deadline passed before submission: finalize as expired with partial score
-        score = compute_score(session)
-        if db.finalize_session(session_id, score, final_state="expired") is None:
-            raise TestFlowError("finalize_failed", "could not finalize session")
-        return _result_payload(session_id)
-
-    score = compute_score(session)
-    if db.finalize_session(session_id, score) is None:
-        raise TestFlowError("finalize_failed", "could not finalize session")
+    # Read answers, compute score and transition state under one SQLite lock (#26).
+    with db.db.write() as conn:
+        session = conn.execute("SELECT * FROM test_sessions WHERE id=?", (session_id,)).fetchone()
+        if session is None or session["learner"] != learner:
+            raise NotFoundError("session not found")
+        if session["state"] == "submitted":
+            raise TestFlowError("already_finalized", "this session has already been finalized")
+        if session["state"] == "expired":
+            existing = conn.execute("SELECT 1 FROM score_summaries WHERE session_id=?",
+                                    (session_id,)).fetchone()
+            if existing is None:
+                raise TestFlowError("invalid_state", "expired session has no stored score")
+        elif session["state"] == "active":
+            final_state = "expired" if db.utcnow() >= db.parse_iso(session["deadline_at"]) else "submitted"
+            score = compute_score(session, conn)
+            if db.finalize_session(session_id, score, final_state, conn=conn) is None:
+                raise TestFlowError("finalize_failed", "could not finalize session")
+        else:
+            raise TestFlowError("invalid_state", f"cannot finish a session in state {session['state']}")
     return _result_payload(session_id)
 
 

@@ -5,16 +5,19 @@ import random
 from typing import Any
 
 from .registry import family
-from .helpers import int_q, mcq
+from .helpers import int_q, mcq, nearby_1dp
 
 
 @family("percent.of", "quant.frp.percentages")
 def percent_of(rng, difficulty):
     pct = rng.choice([5, 12, 15, 20, 25, 35, 45, 60, 75]) if difficulty == "direct" else rng.choice([12, 18, 35, 45, 65, 85])
-    val = rng.choice([120, 160, 200, 240, 300, 360, 420, 480])  # keeps results integral for common pcts
-    answer = pct * val // 100 if (pct * val) % 100 == 0 else round(pct * val / 100)
-    return int_q(rng, f"What is {pct}% of {val}?", answer,
-                 f"{pct}% of {val} = {pct}/100 × {val} = {answer}.")
+    val = rng.choice([120, 160, 200, 240, 300, 360, 420, 480])
+    answer = pct * val / 100
+    prompt = f"What is {pct}% of {val}?"
+    explanation = f"{pct}% of {val} = {pct}/100 × {val} = {answer:g}."
+    if answer.is_integer():
+        return int_q(rng, prompt, int(answer), explanation)
+    return mcq(rng, prompt, f"{answer:g}", nearby_1dp(rng, answer), explanation)
 
 
 @family("percent.change", "quant.frp.percent_change")

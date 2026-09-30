@@ -6,6 +6,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 
 from .. import evidence, history
+from ..engine.errors import TestFlowError
 from ..content_engine.releases import load_release
 from ..schemas import (
     HistoryFlashcardOut, HistoryLearningOut, HistoryOut, HistoryTestOut,
@@ -40,7 +41,10 @@ def get_history() -> HistoryOut:
 
 @router.get("/history/tests/{session_id}", response_model=TestDetailOut)
 def history_test_detail(session_id: str) -> TestDetailOut:
-    detail = history.test_detail(session_id)
+    try:
+        detail = history.test_detail(session_id)
+    except TestFlowError as exc:
+        raise HTTPException(status_code=409, detail=exc.code) from exc
     if detail is None:
         raise HTTPException(status_code=404, detail="test not found")
     return TestDetailOut(**detail)

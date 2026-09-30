@@ -18,6 +18,7 @@ from .runtime import (
     get_question_at,
     mark_question,
     record_dwell,
+    record_events,
     submit_answer,
 )
 from .scoring import compute_score, finish_session, get_result
@@ -25,5 +26,5 @@ from .scoring import compute_score, finish_session, get_result
 __all__ = [
     "NotFoundError", "TestFlowError", "plan_session", "create_session",
     "get_current_question", "get_question_at", "mark_question", "record_dwell",
-    "submit_answer", "compute_score", "finish_session", "get_result",
+    "submit_answer", "record_events", "compute_score", "finish_session", "get_result",
 ]
