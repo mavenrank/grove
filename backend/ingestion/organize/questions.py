@@ -22,10 +22,14 @@ def parse_question_slide(slide: dict[str, Any]) -> dict[str, Any] | None:
     prompt_lines: list[str] = []
     option_values: list[str] = []
     letters_seen = False
+    labels: list[str] = []
+    inline_flags: list[bool] = []
     for ln in lines:
         m = QUESTION_PROMPT_SPLIT.match(ln)
         if m:
             letters_seen = True
+            labels.append(m.group(1).lower())
+            inline_flags.append(bool(m.group(2).strip()))
             if m.group(2).strip():
                 option_values.append(m.group(2).strip())
             continue
@@ -53,12 +57,29 @@ def parse_question_slide(slide: dict[str, Any]) -> dict[str, Any] | None:
         answer = m.group(1).lower()
         explanation = clean_explanation(m.group(2))
 
+    review_issues = []
+    if (labels != list(OPTION_LETTERS[:len(labels)]) or len(option_values) != len(labels)
+            or (any(inline_flags) and not all(inline_flags))):
+        review_issues.append({"code": "option_mapping_ambiguous", "severity": "review",
+                              "message": "Option labels/values are missing, duplicated, reordered or mixed"})
+    if answer and answer not in options:
+        review_issues.append({"code": "answer_outside_options", "severity": "review",
+                              "message": f"Notes answer {answer!r} is absent from the parsed options"})
+        answer = None
+    elif not answer:
+        review_issues.append({"code": "answer_missing", "severity": "review",
+                              "message": "No matching answer label in this slide's notes"})
+    if review_issues:
+        answer = None
+
     return {
         "prompt": prompt,
         "options": options,
         "answer": answer,          # None → unverified, review only
         "explanation": explanation,
         "notes_raw": notes,
+        "answer_status": "notes_confirmed" if answer else "needs_review",
+        "issues": review_issues,
         "source": {"deck_id": slide["deck_id"], "slide_number": slide["slide_number"],
                    "source_file": slide["source_file"]},
     }
