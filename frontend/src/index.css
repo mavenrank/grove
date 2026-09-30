@@ -114,3 +114,8 @@ body {
     transition: none;
   }
 }
+
+@keyframes sidebar-appear { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sidebar-enter { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.sidebar-overlay[data-state="open"] { animation: sidebar-appear 160ms ease-out; }
+.sidebar-sheet[data-state="open"] { animation: sidebar-enter 180ms ease-out; }
