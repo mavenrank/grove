@@ -188,3 +188,17 @@ Also review the conservative ingestion policy: source evidence is retained, but 
 The user acknowledged the sidebar and both remediation waves, then explicitly requested committing those changes. This supersedes the earlier uncommitted-review checkpoint. Commit the approved runtime/generator, ingestion and frontend/documentation changes locally. No remote, push or content-release replacement is authorized by this approval.
 
 The user also reported the empty Speed Distance Time lesson and requested a trace from the displayed release to the actual PPT, a draft-only rerun where needed, and a source-versus-pipeline-versus-UI review before refreshed publication. Those findings belong to the next checkpoint rather than being inferred from the screenshot alone.
+
+## Committed work and stale-content investigation — 30 September 2026
+
+Approved local commits: `91467d8` (runtime/generators), `b580d9f` (ingestion), `54430ae` (startup/sidebar/docs). Staged whitespace checks passed after trimming two extra audit-document end lines. The source snapshot still has no remote. The approved code is unchanged from the 94-passing-test and successful frontend-build checkpoint; no redundant application test rerun was needed for these documentation-only additions.
+
+The reported Speed Distance Time topic is the stored `grove-ingested` 0.3.5 release, generated/imported on 20 September. Its live API matches its saved payload: placeholder summary, zero examples/media/segments, and authored flashcard fronts incorrectly reused as formula text. The cited 18-slide source exists and its hash matches the release. Code updates have not refreshed this immutable data.
+
+A read-only database trace and isolated, unapproved PPT extraction recovered 15 native question candidates across all 18 slides. Five explicit `Option` note labels are missed by the `Answer`-only parser; another native solution has no label. Direct image inspection showed provider logos dominate this deck's picture count. Independent arithmetic found a notes substitution error on slide 3, distance-question choices in minutes on slide 12, an unstated rounding convention on slide 16 and a native slowdown-fraction formatting ambiguity on slide 17.
+
+The current Concept public schemas/rendering do not carry the new learning segments or example media/blocks. A rerun plus immediate import therefore would not repair this page. Whole-slide rendering also remains unverified: the bundled importer failed on notes-image relationships and then rejected a notes-free inspection copy. Original slide/media bytes and source files were preserved; native text, notes, positions and individual images were checked directly.
+
+Detailed evidence, independently derived values and rerun checkpoints are in `CONTENT_REFRESH_AUDIT.md`. Next wave: #2, #4, #6, #7, #8, #10, with this topic as the pilot and a full-corpus draft run after representative pilots pass. No new lesson, UI change, replacement release or learner-data modification was published in this investigation.
+
+Persisted the user's exact slide-review delegation policy in `AGENTS.md` and `SOURCE_REVIEW_PROTOCOL.md`. The available runner cannot select standard service and advertises priority, so no subagent was launched against the user's restriction. Direct inspection was necessary for this source discrepancy. #35 remains deferred.

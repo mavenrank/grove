@@ -22,6 +22,26 @@ This is the implementation backlog for the original 34 issues and the later tent
 
 Checkpoint 2 (30 September 2026): partial fixes for #1, #4, #6, #7, #8 plus the requested sidebar work in #33. The user acknowledged the changes and explicitly authorized local commits on 30 September. OCR/diagram interpretation, strict import schemas and curriculum work remain open; #35 stays deferred to the end. See `FIX_LOG.md` for tests, sample evidence and review prompts.
 
+Approved code checkpoints are now committed locally: runtime/generators `91467d8`, ingestion `b580d9f`, and sidebar/docs `54430ae`. The empty Speed Distance Time page was traced to stored release 0.3.5 from 20 September. A fresh targeted draft recovered 15 question candidates but exposed notes-format, source-answer, formula and public-contract gaps. See `CONTENT_REFRESH_AUDIT.md`.
+
+## Next wave: source-to-lesson reliability
+
+Six issue groups: #2, #4, #6, #7, #8, #10. Use Speed Distance Time as the first failing-topic pilot. The following checks are required before any replacement release:
+
+- [x] Trace the live topic to the active stored release, timestamps, original PPT, source hash and slide count.
+- [x] Run the topic into a fresh, unapproved work directory and compare the resulting candidates with native source text, notes and embedded media.
+- [x] Independently calculate the 15 native questions and record bad/ambiguous source choices without altering originals or learner data.
+- [ ] #7: parse `Answer` and `Option` note-label variants, preserve malformed/ambiguous states and independently verify recovered source answers.
+- [ ] #6: add source-hash-scoped, reviewable exclusions for provider logos, covers, ceremony and decoration. Resolve conservative wave-2 flags without blanket deletion.
+- [ ] #2: select a working whole-slide render/OCR path, record adapter versions and uncertain output, and test tiny math crops and image-led teaching material. The bundled renderer's failure on this source's notes/package must be resolved or a supported alternative used.
+- [ ] #4: design a versioned lesson contract carrying ordered content and attached example media; verify source → draft → API → rendered lesson completeness.
+- [ ] #10: write a Speed Distance Time baseline-method pilot with actual relations, units, given/target identification and worked reasoning. Replace formula question fronts with reviewed formula content.
+- [ ] #7/#8: enforce import schema/review/media checks, immutable candidate versions and rollback/activation checks before refreshed publication.
+- [ ] Re-extract the complete corpus into a separate draft directory after the pilots pass, and account for every source/slide/loss.
+- [ ] Compare a runnable pilot against reviewed source evidence and stop uncommitted for the user's curriculum/UI review before release activation.
+
+Slide review may use the user-approved GPT-6-Luna/max/standard-only configuration when the runner can honor it. Priority is explicitly excluded. See `AGENTS.md` and `SOURCE_REVIEW_PROTOCOL.md`; direct inspection is the fallback when necessary. No replacement content release has been imported.
+
 ## 1. Preserve native-text structure
 
 Status: native structure/evidence implemented in wave 2; logical reading order and source review remain open. Main files: `backend/ingestion/extract.py`, `extractors.py`, `organize/concepts.py`. Depends on #8 provenance.
