@@ -222,6 +222,18 @@ One correction to the fixed-pool impression: tests currently use seeded generato
 
 **Work needed, after the main reviewed fixes:** Compare cold startup with repeated navigation. Profile only if the delay is reproducible and meaningful. Consider a lightweight concept index, deferred lesson/media loading and cache recovery only when measurements justify the change. Keep this optional; no performance implementation was applied after the user's deferral.
 
+## 36. Source-to-lesson regression test bench
+
+**Request:** Audit every existing Learn element against its original presentation, distinguish source defects from extraction/organization/delivery losses, and use those cases to improve the pipeline. Track this work within #1–8 and #10 rather than starting a separate ingestion architecture.
+
+**Work needed:** A repeatable, read-only release audit with fresh draft extraction; per-topic/source/slide findings; source hash and slide-count checks; retained/excluded/failed evidence; public-contract loss detection; representative regression fixtures and before/after comparisons. Explicitly report unreviewed visual meaning and answer correctness. Neither a successful extraction nor a notes label is proof of a correct lesson. Do not import a replacement release during the audit.
+
+## 37. Explanation formatting and reading quality
+
+**Request:** Track unmatched parentheses, dangling fragments, long text blobs and lost paragraph/list formatting in existing Learn explanations. Defer implementation to the tail of the backlog, after pipeline reliability and substantive curriculum work.
+
+**Work needed:** Inventory suspicious text with slide citations, distinguish source punctuation from introduced truncation, and review readable paragraph/step/math presentation. Formatting heuristics are review clues, not automatic corrections to mathematical notation or source text. Coordinate with #1, #4, #10 and #33; leave UI changes uncommitted for review.
+
 ## Evidence and scope
 
 The earlier [architecture audit](<source-dir>) contains code references and isolated reproductions for the implementation defects. Its evidence scripts and outputs remain under [grove-audit](<source-dir>).

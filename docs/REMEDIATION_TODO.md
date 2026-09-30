@@ -1,12 +1,13 @@
 # Grove remediation checklist
 
-This is the implementation backlog for the original 34 issues and the later tentative observation #35 identified in the architecture audit and the user's ingestion, curriculum, coverage and question-generation observations. Issue numbers stay stable; they are identifiers, not a priority ranking. Read `ISSUE_INVENTORY.md` for the evidence and `ARCHITECTURE_AUDIT.md` for the architecture comparison.
+This is the implementation backlog for the original 34 issues, tentative observation #35, source-to-lesson test bench #36 and deferred explanation formatting #37 identified in the architecture audit and the user's ingestion, curriculum, coverage and question-generation observations. Issue numbers stay stable; they are identifiers, not a priority ranking. Read `ISSUE_INVENTORY.md` for the evidence and `ARCHITECTURE_AUDIT.md` for the architecture comparison.
 
 ## Working agreement
 
 - Work locally in `.`; no remote or publishing.
 - Preserve the existing application in baseline commit `1bc58c8`.
 - Record each change, its verification and remaining scope in `FIX_LOG.md`.
+- Commit small tested chunks as they are completed, with issue references. Backend/tooling/documentation work can be committed as it progresses; substantial UI/curriculum changes retain the review checkpoint.
 - Stop after a batch touching five or six issue groups for review. A partial fix does not close a whole issue group.
 - UI, curriculum presentation and other substantial learner-facing changes stay uncommitted until the user reviews them. Stop with a runnable preview, specific review prompts and an explanation of what changed.
 - Use disposable databases and synthetic source files for verification. Never rewrite the learner's existing results or silently reimport the corpus.
@@ -27,6 +28,8 @@ Approved code checkpoints are now committed locally: runtime/generators `91467d8
 ## Next wave: source-to-lesson reliability
 
 Six issue groups: #2, #4, #6, #7, #8, #10. Use Speed Distance Time as the first failing-topic pilot. The following checks are required before any replacement release:
+
+Supporting #36 belongs to this pipeline wave: first audit all existing Learn topics and source refs, then use the observed failures for bounded pipeline fixes. Add formatting clues to #37 without bringing UI polish ahead of ingestion correctness.
 
 - [x] Trace the live topic to the active stored release, timestamps, original PPT, source hash and slide count.
 - [x] Run the topic into a fresh, unapproved work directory and compare the resulting candidates with native source text, notes and embedded media.
@@ -531,3 +534,27 @@ Status: tentative and deferred to the end of the main reviewed remediation work,
 - [ ] If the delay does not recur or is only an acceptable development cold start, close this observation without application changes.
 
 Acceptance: either a reproducible bottleneck is measured and improved, or the tentative observation is documented as unconfirmed and closed without speculative changes.
+
+## 36. Build the source-to-lesson test bench
+
+Status: scheduled inside the current pipeline wave; supports #1–8 and #10.
+
+- [ ] Read the active release without modifying its database; inventory every existing Learn topic and source reference.
+- [ ] Re-extract referenced sources in a new draft directory; compare source hashes/counts, classification, retained blocks/media/notes and organization outcomes.
+- [ ] Produce a per-topic report and slide-level evidence for missing summaries/examples, malformed choices, missing/ambiguous notes answers, exclusions, truncation and API field loss.
+- [ ] Separate definite failures from heuristic review clues and unverified source/visual meaning; never describe notes-confirmed keys as independently solved.
+- [ ] Add regression fixtures for observed failures and record before/after audit counts with the same source hashes.
+- [ ] Document the CLI, output locations and rerun policy; never import or rewrite learner history through the bench.
+
+Acceptance: every existing Learn topic is accounted for; a reviewer can trace each anomaly to a source snapshot and stage, and rerun the audit after a pipeline change.
+
+## 37. Improve explanation formatting later
+
+Status: deferred to the tail of the backlog by the user.
+
+- [ ] Inventory unmatched delimiters, dangling fragments, long text and paragraph/list loss with source citations in #36.
+- [ ] Distinguish original punctuation from parser/summary truncation before changing it.
+- [ ] Review paragraph, step and formula presentation after the main pipeline and curriculum fixes.
+- [ ] Keep substantial learner-facing changes uncommitted until reviewed.
+
+Acceptance: reviewed explanations are readable without dropping conditions, units or mathematical notation. Detection alone does not close this issue.

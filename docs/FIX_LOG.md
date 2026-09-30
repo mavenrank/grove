@@ -202,3 +202,9 @@ The current Concept public schemas/rendering do not carry the new learning segme
 Detailed evidence, independently derived values and rerun checkpoints are in `CONTENT_REFRESH_AUDIT.md`. Next wave: #2, #4, #6, #7, #8, #10, with this topic as the pilot and a full-corpus draft run after representative pilots pass. No new lesson, UI change, replacement release or learner-data modification was published in this investigation.
 
 Persisted the user's exact slide-review delegation policy in `AGENTS.md` and `SOURCE_REVIEW_PROTOCOL.md`. The available runner cannot select standard service and advertises priority, so no subagent was launched against the user's restriction. Direct inspection was necessary for this source discrepancy. #35 remains deferred.
+
+## Pipeline tracking and small commits — 30 September 2026
+
+Added #36 for a repeatable audit of every existing Learn topic against fresh source evidence, within the existing pipeline wave (#2/#4/#6/#7/#8/#10). Added #37 for explanation punctuation/paragraph quality at the tail of the backlog. Findings will distinguish source defects, pipeline losses, public-contract losses and uncertain review clues; the bench cannot approve/import releases.
+
+The user explicitly requested frequent small commits. Persisted that instruction in `AGENTS.md` and the working agreement. Backend/tooling/documentation chunks can be committed after verification; substantial UI/curriculum changes still require concrete user review. This chunk changes tracking only; whitespace/diff review is sufficient verification. No application code or stored content changed.

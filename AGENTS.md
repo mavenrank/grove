@@ -1,6 +1,7 @@
 # Grove working instructions
 
 - Keep Git local. Do not add a remote or push without the user's request.
+- Commit small, tested, issue-linked chunks as work progresses. Do not accumulate a large implementation before committing. This authorization covers backend/tooling/documentation work; the existing UI/curriculum review requirement still applies.
 - Work in reviewable waves of five or six issue groups. Record evidence, tests and remaining scope in `docs/FIX_LOG.md` and `docs/REMEDIATION_TODO.md`.
 - Substantial UI or curriculum presentation changes must remain uncommitted until the user reviews the concrete result. Approval for the September 30 runtime/ingestion/sidebar waves has already been given and those changes were committed.
 - Use fresh draft work directories and disposable test databases. Do not overwrite the learner's existing results or silently import a replacement content release.
