@@ -208,3 +208,11 @@ Persisted the user's exact slide-review delegation policy in `AGENTS.md` and `SO
 Added #36 for a repeatable audit of every existing Learn topic against fresh source evidence, within the existing pipeline wave (#2/#4/#6/#7/#8/#10). Added #37 for explanation punctuation/paragraph quality at the tail of the backlog. Findings will distinguish source defects, pipeline losses, public-contract losses and uncertain review clues; the bench cannot approve/import releases.
 
 The user explicitly requested frequent small commits. Persisted that instruction in `AGENTS.md` and the working agreement. Backend/tooling/documentation chunks can be committed after verification; substantial UI/curriculum changes still require concrete user review. This chunk changes tracking only; whitespace/diff review is sufficient verification. No application code or stored content changed.
+
+## #36 — repeatable all-Learn source audit
+
+Added grove-ingest audit with read-only SQLite/frozen JSON input, fresh-directory protection, source containment, independent PPTX slide/native-run checks, public-schema comparison and escaped reports. Every topic/source/slide/outcome is traceable. Unsupported PDFs, missing answers, failed parsing, dropped fields, placeholder summaries and formatting clues are visible. No approval/import path exists.
+
+Ran all 27 stored topics / 78 citations: 47 PPTs with 1,214 slides plus 31 unextracted PDF records. Source hashes match; no cited source was missing. Structural validation passes; semantic approval is blocked. Findings are review clues/evidence, not 4,038 independently incorrect facts. See PIPELINE_TEST_BENCH.md for scope, counts and rerun command.
+
+Six new tests passed, covering database/source byte preservation, independent slide/text loss, topic accounting, path boundaries, stable IDs and HTML escaping. Full visual/mathematical checking and substantive lesson reconstruction remain open.

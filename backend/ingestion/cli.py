@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -28,6 +29,13 @@ def build_parser() -> argparse.ArgumentParser:
                          help="discover, extract, classify, normalize, validate, organize")
     run.add_argument("-v", "--verbose", action="store_true")
 
+    audit = sub.add_parser("audit", parents=[src, work],
+                           help="read-only audit of all stored Learn topics against fresh source drafts")
+    snapshot = audit.add_mutually_exclusive_group(required=True)
+    snapshot.add_argument("--database", type=Path, help="existing SQLite store (opened read-only)")
+    snapshot.add_argument("--release", type=Path, help="release JSON snapshot")
+    audit.add_argument("--media", type=Path, help="published media directory to check (no writes)")
+
     pack = sub.add_parser("pack", parents=[src, work],
                           help="pack the validated catalog into a content pack")
     pack.add_argument("--version", required=True)
@@ -42,6 +50,23 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "audit":
+        from .bench import read_release, run_bench
+        try:
+            if args.database:
+                payload, metadata = read_release(args.database)
+                # The snapshot preserves stored payload; row timestamps are printed separately.
+                print(f"stored release: {metadata['release_id']} v{metadata['version']} imported {metadata['imported_at']}")
+            else:
+                payload = json.loads(args.release.read_text(encoding="utf-8"))
+            report = run_bench(payload, args.source, args.work, args.media)
+        except (ValueError, OSError, sqlite3.Error) as exc:
+            print(f"audit failed: {exc}", file=sys.stderr)
+            return 2
+        print(f"bench -> {args.work / 'bench-report.html'}")
+        print(json.dumps(report["counts"], ensure_ascii=True))
+        print("draft inspection only; no release approved/imported; answers and visual meaning remain unverified")
+        return 0 if report["validation"]["ok"] and not report["skipped_sources"] else 1
     if args.command == "run":
         return Pipeline(args.source, args.work, verbose=args.verbose).run_all()
     if args.command == "pack":

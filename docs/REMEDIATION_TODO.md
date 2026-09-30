@@ -539,12 +539,12 @@ Acceptance: either a reproducible bottleneck is measured and improved, or the te
 
 Status: scheduled inside the current pipeline wave; supports #1–8 and #10.
 
-- [ ] Read the active release without modifying its database; inventory every existing Learn topic and source reference.
-- [ ] Re-extract referenced sources in a new draft directory; compare source hashes/counts, classification, retained blocks/media/notes and organization outcomes.
-- [ ] Produce a per-topic report and slide-level evidence for missing summaries/examples, malformed choices, missing/ambiguous notes answers, exclusions, truncation and API field loss.
-- [ ] Separate definite failures from heuristic review clues and unverified source/visual meaning; never describe notes-confirmed keys as independently solved.
+- [x] Read the active release without modifying its database; inventory every existing Learn topic and source reference.
+- [x] Re-extract referenced sources in a new draft directory; compare source hashes/counts, classification, retained blocks/media/notes and organization outcomes.
+- [x] Produce a per-topic report and slide-level evidence for missing summaries/examples, malformed choices, missing/ambiguous notes answers, exclusions, truncation and API field loss.
+- [x] Separate definite failures from heuristic review clues and unverified source/visual meaning; never describe notes-confirmed keys as independently solved.
 - [ ] Add regression fixtures for observed failures and record before/after audit counts with the same source hashes.
-- [ ] Document the CLI, output locations and rerun policy; never import or rewrite learner history through the bench.
+- [x] Document the CLI, output locations and rerun policy; never import or rewrite learner history through the bench.
 
 Acceptance: every existing Learn topic is accounted for; a reviewer can trace each anomaly to a source snapshot and stage, and rerun the audit after a pipeline change.
 
