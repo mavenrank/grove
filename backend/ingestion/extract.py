@@ -11,7 +11,8 @@ import re
 import warnings
 from typing import Any
 
-from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER
+from lxml import etree
 
 QUESTION_MARKER = re.compile(
     r"question\s*\d+|\bques\.?\s*\d+|\banswer\s*:|^\s*[a-d]\)\s+\S", re.I | re.M,
@@ -96,7 +97,7 @@ def _paragraphs(frame) -> list[dict[str, Any]]:
     ]} for p in frame.paragraphs]
 
 
-def extract_slide_content(slide, first_of_many: bool = False) -> dict[str, Any]:
+def extract_slide_content(slide, first_of_many: bool = False, *, surface: str = "slide") -> dict[str, Any]:
     texts: list[str] = []
     images: list[dict[str, Any]] = []
     blocks: list[dict[str, Any]] = []
@@ -106,11 +107,18 @@ def extract_slide_content(slide, first_of_many: bool = False) -> dict[str, Any]:
         sx, sy, tx, ty = transform
         for sh in shapes:
             sid = sh.shape_id
-            base = {"shape_id": sid, "name": sh.name, "group_path": list(ancestors),
-                    "bounds_emu": {"left": round(sh.left * sx + tx), "top": round(sh.top * sy + ty),
-                                   "width": round(sh.width * sx), "height": round(sh.height * sy)},
+            base = {"shape_id": sid, "name": sh.name, "group_path": list(ancestors), "surface": surface,
+                    "bounds_emu": {"left": round((sh.left or 0) * sx + tx), "top": round((sh.top or 0) * sy + ty),
+                                   "width": round((sh.width or 0) * sx), "height": round((sh.height or 0) * sy)},
+                    "bounds_missing": any(getattr(sh, field) is None for field in ("left", "top", "width", "height")),
                     "rotation": sh.rotation, "source_order": len(blocks)}
             try:
+                if (surface == "notes" and sh.is_placeholder and sh.placeholder_format.type in {
+                        PP_PLACEHOLDER.SLIDE_IMAGE, PP_PLACEHOLDER.SLIDE_NUMBER, PP_PLACEHOLDER.HEADER,
+                        PP_PLACEHOLDER.FOOTER, PP_PLACEHOLDER.DATE}):
+                    blocks.append({**base, "type": "notes_furniture", "placeholder": str(sh.placeholder_format.type),
+                                   "reason": "explicit_notes_page_placeholder"})
+                    continue
                 if sh.shape_type == MSO_SHAPE_TYPE.GROUP:
                     blocks.append({**base, "type": "group"})
                     xfrm = sh._element.grpSpPr.xfrm
@@ -139,6 +147,24 @@ def extract_slide_content(slide, first_of_many: bool = False) -> dict[str, Any]:
                                    "crop": {"left": sh.crop_left, "right": sh.crop_right,
                                             "top": sh.crop_top, "bottom": sh.crop_bottom}})
                     images.append({"blob": blob, "shape_id": sid})
+                elif sh.shape_type == MSO_SHAPE_TYPE.EMBEDDED_OLE_OBJECT:
+                    # Read the static picture preview only. Never read/execute
+                    # the embedded Word/Excel object or any external target.
+                    blips = sh._element.xpath(".//p:pic/p:blipFill/a:blip")
+                    if len(blips) == 1 and blips[0].rEmbed:
+                        blob = slide.part.related_part(blips[0].rEmbed).blob
+                        rect = blips[0].getparent().find(DRAWING_NS + "srcRect")
+                        crop = {key: int(rect.get(attr, "0")) / 100000 if rect is not None else 0.0
+                                for key, attr in (("left", "l"), ("right", "r"), ("top", "t"), ("bottom", "b"))}
+                        blocks.append({**base, "type": "image", "role": "embedded_object_preview",
+                                       "source_hash": hashlib.sha256(blob).hexdigest(),
+                                       "crop": crop})
+                        images.append({"blob": blob, "shape_id": sid})
+                        issues.append(issue("embedded_object_unresolved", "Static object preview retained; embedded object content is not interpreted",
+                                            shape_id=sid))
+                    else:
+                        blocks.append({**base, "type": "unsupported", "shape_type": str(sh.shape_type)})
+                        issues.append(issue("unsupported_shape", "Embedded object has no unique local picture preview", shape_id=sid))
                 elif sh.has_text_frame:
                     raw = sh.text_frame.text
                     placeholder = str(sh.placeholder_format.type) if sh.is_placeholder else None
@@ -158,6 +184,17 @@ def extract_slide_content(slide, first_of_many: bool = False) -> dict[str, Any]:
                 issues.append(issue("shape_extract_failed", f"Shape extraction failed: {type(exc).__name__}", shape_id=sid))
 
     walk(slide.shapes)
+    # python-pptx does not enumerate mc:AlternateContent children. Retain the
+    # complete branch evidence rather than losing native text/equations or
+    # guessing which fallback is visually authoritative.
+    for index, element in enumerate(slide._element.iter()):
+        if element.tag == "{http://schemas.openxmlformats.org/markup-compatibility/2006}AlternateContent":
+            blocks.append({"shape_id": f"alternate-{index}", "type": "alternate_content", "surface": surface,
+                           "source_order": len(blocks), "bounds_emu": {"left": 0, "top": 0, "width": 0, "height": 0},
+                           "bounds_missing": True, "xml": etree.tostring(element, encoding="unicode"),
+                           "native_runs": [el.text for el in element.iter() if el.tag == DRAWING_NS + "t" and el.text]})
+            issues.append(issue("alternate_content_unresolved", "Alternate Office drawing/equation branches retained but not interpreted",
+                                shape_id=f"alternate-{index}"))
     blocks.sort(key=lambda b: (b["bounds_emu"]["top"], b["bounds_emu"]["left"], b["source_order"]))
     for order, block in enumerate(blocks):
         block["reading_order"] = order

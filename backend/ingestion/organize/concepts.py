@@ -27,7 +27,7 @@ def organize_deck(deck: dict[str, Any], media_ids_by_slide: dict[Any, list[str]]
     deck_label = short_deck_label(deck["source_file"])
 
     def media_for(slide_no: int, slide: dict[str, Any]) -> list[str]:
-        mids = (media_ids_by_slide.get(slide_no)
+        mids = slide["slide_media_ids"] if "slide_media_ids" in slide else (media_ids_by_slide.get(slide_no)
                 or media_ids_by_slide.get(str(slide_no))
                 or slide.get("media_ids", []))
         return [m for m in mids if m not in template_media]
@@ -42,13 +42,15 @@ def organize_deck(deck: dict[str, Any], media_ids_by_slide: dict[Any, list[str]]
         slide_issues = [{**item, "source": src} for item in slide.get("issues", [])]
         review_issues.extend(slide_issues)
         mids = media_for(slide_no, slide)
-        removed_media = set(slide.get("media_ids", [])) - set(mids)
+        notes_mids = [m for m in slide.get("notes_media_ids", []) if m not in template_media]
+        notes_context = {"notes_media_ids": notes_mids, "notes_blocks": slide.get("notes_blocks", [])}
+        removed_media = set(slide.get("media_ids", [])) - set(mids) - set(notes_mids)
         if removed_media:
             review_issues.append({"code": "media_excluded", "severity": "review",
                                   "message": "Media excluded by explicit template list", "source": src,
                                   "media_ids": sorted(removed_media)})
         decision = {"source": src, "kind": kind, "content_mode": slide.get("content_mode"),
-                    "media_ids": mids, "reason": slide.get("kind_reason", "legacy_classification"),
+                    "media_ids": mids, "notes_media_ids": notes_mids, "reason": slide.get("kind_reason", "legacy_classification"),
                     "outcome": "excluded"}
         if kind == "question":
             q = parse_question_slide({**slide, "deck_id": deck["deck_id"],
@@ -57,6 +59,7 @@ def organize_deck(deck: dict[str, Any], media_ids_by_slide: dict[Any, list[str]]
                 q["source"] = src
                 q["media_ids"] = mids
                 q["blocks"] = slide.get("blocks", [])
+                q.update(notes_context)
                 q["issues"] = slide_issues + [{**item, "source": src} for item in q.get("issues", [])]
                 review_issues.extend(item for item in q["issues"] if item not in slide_issues)
                 questions.append(q)
@@ -66,16 +69,17 @@ def organize_deck(deck: dict[str, Any], media_ids_by_slide: dict[Any, list[str]]
                 review_issues.append({"code": "question_parse_failed", "severity": "review",
                                       "message": "Question marker found but prompt/options could not be parsed",
                                       "source": src, "texts": slide.get("texts", []),
-                                      "blocks": slide.get("blocks", []), "media_ids": mids})
+                                      "blocks": slide.get("blocks", []), "media_ids": mids, **notes_context})
         elif kind == "explanation":
             texts = clean_lines(slide["texts"])
-            if texts or mids or slide.get("notes") or slide.get("blocks"):
+            if texts or mids or notes_mids or slide.get("notes") or slide.get("blocks") or slide.get("notes_blocks"):
                 learning.append({
                     "texts": texts,
                     "raw_texts": slide["texts"],
                     "notes": slide.get("notes", ""),
                     "media_ids": mids,
                     "blocks": slide.get("blocks", []),
+                    **notes_context,
                     "issues": slide_issues,
                     "content_mode": slide.get("content_mode"),
                     "source": src,
@@ -177,7 +181,11 @@ def assemble_concepts(skill_id: str, decks: list[dict[str, Any]],
             if mid not in seen_media:
                 seen_media.add(mid)
                 media.append({"image_id": mid,
-                              "source": seg["source"]})
+                              "source": {**seg["source"], "surface": "slide"}})
+        for mid in seg.get("notes_media_ids", []):
+            if mid not in seen_media:
+                seen_media.add(mid)
+                media.append({"image_id": mid, "source": {**seg["source"], "surface": "notes"}})
 
     all_examples = [
         {
@@ -190,6 +198,9 @@ def assemble_concepts(skill_id: str, decks: list[dict[str, Any]],
             "source": q["source"],
             "media_ids": q.get("media_ids", []),
             "blocks": q.get("blocks", []),
+            "notes_media_ids": q.get("notes_media_ids", []),
+            "notes_blocks": q.get("notes_blocks", []),
+            "answer_evidence": q.get("answer_evidence", []),
             "answer_status": q.get("answer_status", "notes_confirmed"),
         }
         for q in verified

@@ -50,13 +50,14 @@ def test_all_topics_have_stage_specific_loss_evidence_and_stable_ids():
 
 def test_native_probe_detects_missing_text_and_slide_count_with_citations():
     payload, catalog, drafts, validation = fixture_data()
-    original = {"speed.pptx": [{"slide_number": 1, "native_runs": ["Distance = speed × time"]},
+    original = {"speed.pptx": [{"slide_number": 1, "native_runs": ["Distance = speed × time"], "notes_picture_shapes": 1},
                               {"slide_number": 2, "native_runs": ["A missing slide"]}]}
     report = analyze(payload, catalog, drafts, validation, original)
     assert report["counts"]["codes"]["source_slide_loss"] == 1
     losses = [f for f in report["findings"] if f["code"] == "native_text_loss"]
     assert {f["source"]["slide_number"] for f in losses} == {1, 2}
     assert all(f["source"]["source_hash"] == "abc" for f in losses)
+    assert report["counts"]["codes"]["notes_picture_unresolved"] == 1
 
 
 def test_read_release_selects_app_latest_without_changing_database(tmp_path):

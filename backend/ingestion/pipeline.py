@@ -28,6 +28,7 @@ from .extractors import ExtractionContext, get_extractor
 from .organize import organize_all
 
 MAX_FILE_BYTES = 200 * 1024 * 1024  # 200 MB per source file
+EXTRACTION_VERSION = 3  # speaker-note assets and AlternateContent branch evidence
 
 WS = re.compile(r"\s+")
 
@@ -127,6 +128,8 @@ class Pipeline:
                 slide["slide_id"] = slide_id
                 for block in slide.get("blocks", []):
                     block["block_id"] = f"{slide_id}:shape-{block['shape_id']}"
+                for block in slide.get("notes_blocks", []):
+                    block["block_id"] = f"{slide_id}:notes:shape-{block['shape_id']}"
             if media_map:
                 media_index[deck_id] = media_map
 
@@ -156,7 +159,7 @@ class Pipeline:
                 "slides": slides,
             })
         return {
-            "extraction_version": 2,
+            "extraction_version": EXTRACTION_VERSION,
             "limits": {"source_bytes": MAX_FILE_BYTES, "image_bytes": 8 * 1024 * 1024,
                        "image_pixels": 25_000_000, "preview_dimension": 1400, "preview_bytes": 500 * 1024},
             "run_at": now_iso(),
@@ -186,7 +189,7 @@ class Pipeline:
         for skipped in catalog.get("skipped", []):
             if skipped.get("severity", "review") == "review":
                 review_items.append({"code": "source_skipped", **skipped})
-        if catalog.get("extraction_version") != 2 and any(d["status"] == "active" for d in catalog["decks"]):
+        if catalog.get("extraction_version") != EXTRACTION_VERSION and any(d["status"] == "active" for d in catalog["decks"]):
             review_items.append({"code": "catalog_reextract_required", "severity": "review",
                                  "message": "Legacy catalog lacks source-shape/loss evidence; re-extract before approval"})
 
@@ -210,7 +213,7 @@ class Pipeline:
                 problems.append(f"{did}: active status but non-active bucket skill {deck['skill_id']}")
             if deck["status"] == "active":
                 for slide in deck["slides"]:
-                    if catalog.get("extraction_version") == 2:
+                    if catalog.get("extraction_version") == EXTRACTION_VERSION:
                         slide_no = slide["slide_number"]
                         index = catalog.get("media_index", {}).get(did, {})
                         indexed = index.get(slide_no, index.get(str(slide_no), []))
@@ -232,12 +235,12 @@ class Pipeline:
                             problems.append(f"{did} slide {slide.get('slide_number')}: missing/invalid media {mid}")
 
         unique = [d for d in catalog["decks"] if "duplicate_of" not in d]
-        if catalog.get("extraction_version") == 2:
-            seen_reviews = {(i["code"], i.get("deck_id"), i.get("slide_number"), i.get("shape_id"))
+        if catalog.get("extraction_version") == EXTRACTION_VERSION:
+            seen_reviews = {(i["code"], i.get("deck_id"), i.get("slide_number"), i.get("shape_id"), i.get("surface", "slide"))
                             for i in review_items}
             for item in self.organize(catalog)["review_issues"]:
                 source = item.get("source", {})
-                key = (item["code"], source.get("deck_id"), source.get("slide_number"), item.get("shape_id"))
+                key = (item["code"], source.get("deck_id"), source.get("slide_number"), item.get("shape_id"), item.get("surface", "slide"))
                 if item["severity"] == "review" and (key not in seen_reviews or item.get("skill_id")):
                     review_items.append(item)
                     seen_reviews.add(key)

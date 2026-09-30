@@ -49,9 +49,19 @@ def pptx_probe(path: Path) -> list[dict]:
             target = targets[element.attrib[f"{{{NS['r']}}}id"]]
             part = target.lstrip("/") if target.startswith("/") else posixpath.normpath("ppt/" + target)
             root = ET.fromstring(package.read(part))
+            notes_pictures = 0
+            slide_rels = posixpath.join(posixpath.dirname(part), "_rels", posixpath.basename(part) + ".rels")
+            if slide_rels in package.namelist():
+                for rel in ET.fromstring(package.read(slide_rels)):
+                    if rel.attrib.get("Type", "").endswith("/notesSlide"):
+                        target = rel.attrib["Target"]
+                        note_part = target.lstrip("/") if target.startswith("/") else posixpath.normpath(posixpath.dirname(part) + "/" + target)
+                        notes_root = ET.fromstring(package.read(note_part))
+                        notes_pictures += len(notes_root.findall(".//p:pic", NS))
             slides.append({"slide_number": position,
                            "native_runs": [e.text for e in root.findall(".//a:t", NS) if e.text and e.text.strip()],
-                           "picture_shapes": len(root.findall(".//p:pic", NS))})
+                           "picture_shapes": len(root.findall(".//p:pic", NS)),
+                           "notes_picture_shapes": notes_pictures})
         return slides
 
 
@@ -129,7 +139,7 @@ def analyze(payload: dict, catalog: dict, drafts: dict, validation: dict,
                 add(stored, "public_field_dropped", "public_contract", "Public schema omits retained learning segments",
                     evidence={"field": "learning_segments", "count": len(draft["learning_segments"])})
             for index, example in enumerate(draft.get("examples", [])):
-                for field in ("blocks", "media_ids", "answer_status"):
+                for field in ("blocks", "media_ids", "answer_status", "notes_blocks", "notes_media_ids"):
                     if example.get(field) and field not in public["examples"][index]:
                         add(stored, "public_example_field_dropped", "public_contract", "Public schema omits example context/status",
                             source=example.get("source"), evidence={"field": field, "example_index": index})
@@ -158,12 +168,19 @@ def analyze(payload: dict, catalog: dict, drafts: dict, validation: dict,
                 slides = {s["slide_number"]: s for s in deck["slides"]}
                 for original in probe:
                     slide = slides.get(original["slide_number"], {})
-                    joined = compact(" ".join(slide.get("texts", [])))
+                    retained = slide.get("texts", []) + [t for b in slide.get("blocks", []) for t in b.get("native_runs", [])]
+                    joined = compact(" ".join(retained))
                     missing = [t for t in original["native_runs"] if compact(t) not in joined]
                     if missing:
                         add(stored, "native_text_loss", "extract", "Native runs absent from retained text; review run/layout boundaries",
                             source={**source, "slide_number": original["slide_number"]},
                             evidence=missing, confidence="heuristic")
+                    if "notes_picture_shapes" in original:
+                        retained_notes_pictures = sum(b["type"] == "image" for b in slide.get("notes_blocks", []))
+                        if original["notes_picture_shapes"] != retained_notes_pictures:
+                            add(stored, "notes_picture_unresolved", "extract", "Notes picture count differs from independently inspected XML; review hidden branches/relationships",
+                                source={**source, "slide_number": original["slide_number"], "surface": "notes"},
+                                evidence={"package_pictures": original["notes_picture_shapes"], "extracted_pictures": retained_notes_pictures})
             for slide in deck["slides"]:
                 src = {**source, "slide_number": slide["slide_number"], "slide_id": slide.get("slide_id")}
                 for item in slide.get("issues", []):
@@ -171,7 +188,7 @@ def analyze(payload: dict, catalog: dict, drafts: dict, validation: dict,
                         add(stored, item["code"], "extract", item["message"], source=src, evidence=item)
         for question in topic_questions:
             for item in question.get("issues", []):
-                if item.get("code") in {"visual_semantics_unresolved", "vector_semantics_unresolved"}:
+                if item.get("severity") != "review" or item.get("code") in {"visual_semantics_unresolved", "vector_semantics_unresolved"}:
                     continue
                 add(stored, item["code"], "organize", item["message"], source=question["source"],
                     evidence={"prompt": question["prompt"], "options": question["options"],
@@ -205,7 +222,8 @@ def analyze(payload: dict, catalog: dict, drafts: dict, validation: dict,
     evidence_slides = [{"source": {k: d[k] for k in ("deck_id", "source_path", "source_hash")},
                        "slide_number": s["slide_number"], "slide_id": s.get("slide_id"),
                        "kind": s["kind"], "mode": s.get("content_mode"), "texts": s["texts"],
-                       "notes": s.get("notes", ""), "media_ids": s.get("media_ids", []),
+                       "notes": s.get("notes", ""), "media_ids": s.get("slide_media_ids", s.get("media_ids", [])),
+                       "notes_media_ids": s.get("notes_media_ids", []), "notes_texts": s.get("notes_texts", []),
                        "issues": s.get("issues", [])} for d in catalog["decks"] for s in d["slides"]]
     return {"bench_version": 1, "generated_at": now_iso(),
             "release": {"release_id": payload.get("release_id"), "version": payload.get("version"), "generated_at": payload.get("generated_at")},
@@ -259,6 +277,10 @@ def run_bench(payload: dict, source: Path, work: Path, media_dir: Path | None = 
                 catalog["skipped"].append({"file": key, "reason": "independent_probe_failed: " + str(exc), "severity": "review"})
     report = analyze(payload, catalog, drafts, validation, probes, media_dir)
     report["source_root"] = str(source)
+    report["extraction_version"] = catalog["extraction_version"]
+    report["counts"]["notes_picture_occurrences"] = sum(
+        b["type"] == "image" for d in catalog["decks"] for s in d["slides"] for b in s.get("notes_blocks", []))
+    report["counts"]["notes_picture_occurrences_expected"] = sum(s.get("notes_picture_shapes", 0) for slides in probes.values() for s in slides)
     report["source_snapshot"] = [{"source_path": d["source_path"], "source_hash": d["source_hash"],
                                   "slide_count": d["slide_count"]} for d in catalog["decks"]]
     for filename, data in (("release-snapshot.json", payload), ("catalog.json", catalog),

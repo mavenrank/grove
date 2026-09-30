@@ -64,10 +64,14 @@ summary{cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size
         src = slide["source"]
         parts.append(f"<details><summary>{esc(src['source_path'])} · slide {slide['slide_number']} · {esc(slide['kind'])}"
                      f" · {esc(slide['mode'])}</summary><pre>{esc(json.dumps(slide, indent=2, ensure_ascii=False))}</pre>")
-        for mid in slide["media_ids"]:
-            if re.fullmatch(r"[0-9a-f]{16}", mid):
-                parts.append(f"<a href='media/{mid}.jpg'><img src='media/{mid}.jpg' loading='lazy' "
-                             f"alt='Embedded source asset {mid}' style='max-width:100%;max-height:260px'></a>")
+        for field, label in (("media_ids", "Slide"), ("notes_media_ids", "Speaker notes")):
+            ids = slide.get(field, [])
+            if ids:
+                parts.append(f"<p>{label} embedded assets:</p>")
+            for mid in ids:
+                if re.fullmatch(r"[0-9a-f]{16}", mid):
+                    parts.append(f"<a href='media/{mid}.jpg'><img src='media/{mid}.jpg' loading='lazy' "
+                                 f"alt='{label} source asset {mid}' style='max-width:100%;max-height:260px'></a>")
         parts.append("</details>")
     parts.append("</html>")
     return "".join(parts)

@@ -39,6 +39,7 @@ Supporting #36 belongs to this pipeline wave: first audit all existing Learn top
 - [ ] #6: add source-hash-scoped, reviewable exclusions for provider logos, covers, ceremony and decoration. Resolve conservative wave-2 flags without blanket deletion.
 - [ ] #2: select a working whole-slide render/OCR path, record adapter versions and uncertain output, and test tiny math crops and image-led teaching material. The bundled renderer's failure on this source's notes/package must be resolved or a supported alternative used.
 - [ ] #4: design a versioned lesson contract carrying ordered content and attached example media; verify source → draft → API → rendered lesson completeness.
+- [x] #2/#4/#6/#8: preserve speaker-note picture/text/branch evidence separately from question-slide assets, identify notes-page furniture, and independently compare source/retained picture counts. Interpretation and delivery remain open.
 - [ ] #10: write a Speed Distance Time baseline-method pilot with actual relations, units, given/target identification and worked reasoning. Replace formula question fronts with reviewed formula content.
 - [ ] #7/#8: enforce import schema/review/media checks, immutable candidate versions and rollback/activation checks before refreshed publication.
 - [ ] Re-extract the complete corpus into a separate draft directory after the pilots pass, and account for every source/slide/loss.
@@ -95,6 +96,7 @@ Status: same-slide evidence linked in wave 2; semantic interpretation and contin
 - [ ] Link a question to its diagram, table, given values and notes answer.
 - [ ] Deduplicate native/OCR text while retaining source attribution and disagreements.
 - [ ] Group adjacent slides when a worked problem continues across them; retain original boundaries.
+- [ ] Pilot Syllogisms prompts on one slide with options/notes answers on the next. Match explicit question identifiers and block ambiguous continuations; do not infer absent options or conflate two questions.
 - [ ] Flag orphan diagrams and unattached numeric values for review.
 - [ ] Compare hybrid lesson output with whole-slide renders, including multi-column layouts.
 
@@ -106,6 +108,7 @@ Status: open. Main file: `backend/ingestion/config.py`.
 
 - [ ] Report filename classification separately from content-derived suggestions.
 - [ ] Add explicit mappings for clocks, calendars, fractions and currently missed skills.
+- [ ] Correct content-dependent cube/root arithmetic versus painted-cube/dice reasoning mappings; the current “cubes” filename rule mixes both under Pattern Completion.
 - [ ] Allow multiple topic tags and a reviewed primary topic for multi-topic decks.
 - [ ] Record confidence, unmatched files and conflicting evidence.
 - [ ] Persist review overrides using stable source IDs (#8), independent of filenames.

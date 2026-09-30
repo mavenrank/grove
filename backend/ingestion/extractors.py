@@ -102,20 +102,31 @@ def extract_pptx(path: Path, ctx: ExtractionContext) -> tuple[list[dict[str, Any
         first_of_many = idx == 1 and total > 1
         content = extract_slide_content(slide, first_of_many=first_of_many)
         notes = ""
+        notes_content = {"blocks": [], "texts": [], "image_blobs": [], "issues": [], "content_mode": "empty"}
         if slide.has_notes_slide and slide.notes_slide.notes_text_frame is not None:
             notes = slide.notes_slide.notes_text_frame.text.strip()
-        media_ids: list[str] = []
-        for img in content["image_blobs"]:
-            processed, losses = inspect_image_blob(img["blob"])
-            mid = ctx.save_media(processed)
-            original = ctx.save_original(img["blob"])
-            block = next(b for b in content["blocks"] if b["shape_id"] == img["shape_id"] and b["type"] == "image")
-            block.update({"image_id": mid, "original_file": original,
-                          "original_size": processed["original_size"] if processed else None,
-                          "preview_size": processed["preview_size"] if processed else None})
-            content["issues"].extend({**loss, "shape_id": img["shape_id"]} for loss in losses)
-            if mid and mid not in media_ids:
-                media_ids.append(mid)
+        if slide.has_notes_slide:
+            notes_content = extract_slide_content(slide.notes_slide, surface="notes")
+
+        def persist_images(evidence: dict, surface: str) -> list[str]:
+            ids = []
+            for img in evidence["image_blobs"]:
+                processed, losses = inspect_image_blob(img["blob"])
+                mid = ctx.save_media(processed)
+                original = ctx.save_original(img["blob"])
+                block = next(b for b in evidence["blocks"] if b["shape_id"] == img["shape_id"] and b["type"] == "image")
+                block.update({"image_id": mid, "original_file": original,
+                              "original_size": processed["original_size"] if processed else None,
+                              "preview_size": processed["preview_size"] if processed else None})
+                evidence["issues"].extend({**loss, "shape_id": img["shape_id"], "surface": surface} for loss in losses)
+                if mid and mid not in ids:
+                    ids.append(mid)
+            return ids
+
+        slide_media_ids = persist_images(content, "slide")
+        notes_media_ids = persist_images(notes_content, "notes")
+        media_ids = list(dict.fromkeys([*slide_media_ids, *notes_media_ids]))
+        content["issues"].extend({**item, "surface": "notes"} for item in notes_content["issues"])
         if media_ids:
             media_by_slide[idx] = media_ids
         title = ""
@@ -124,12 +135,16 @@ def extract_pptx(path: Path, ctx: ExtractionContext) -> tuple[list[dict[str, Any
                 title = _clean(slide.shapes.title.text)
         except Exception:
             pass
-        if notes and content["kind_reason"] == "empty":
-            content.update(kind="explanation", kind_reason="notes_only", content_mode="text_only")
+        if ((notes or notes_media_ids or notes_content["issues"])
+                and content["kind_reason"] in {"empty", "short_title_placeholders", "whole_slide_ceremony"}):
+            content.update(kind="explanation", kind_reason="notes_only")
         slides.append({
             "slide_number": idx, "title": title, "texts": content["texts"], "notes": notes,
             "kind": content["kind"], "kind_reason": content["kind_reason"], "content_mode": content["content_mode"],
             "media_ids": media_ids, "blocks": content["blocks"], "issues": content["issues"],
+            "slide_media_ids": slide_media_ids, "notes_media_ids": notes_media_ids,
+            "notes_blocks": notes_content["blocks"], "notes_texts": notes_content["texts"],
+            "notes_content_mode": notes_content["content_mode"],
             "reading_order_method": content["reading_order_method"],
             "slide_size_emu": {"width": prs.slide_width, "height": prs.slide_height},
         })

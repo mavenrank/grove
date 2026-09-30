@@ -224,3 +224,13 @@ Added line-scoped, case-insensitive Answer/Option parsing with parentheses, arro
 The bench exposed a character-class mistake and a nonbreaking-space regression during development; tests caught the former and the before/after source comparison caught the latter. Both were repaired before commitment. Twenty-one targeted regression cases pass. Across identical source hashes, notes-confirmed candidates rise 407 → 499; missing labels fall 273 → 149, with no old key changed/lost. All five explicit Speed Distance Time labels agree with the independently derived pilot answers. Source errors/uncertainties documented in CONTENT_REFRESH_AUDIT.md remain unresolved.
 
 The bench chunk passed the full 100-test suite. The notes chunk adds 21 tests. Source material, current release 0.3.5 and learner history remain unchanged; no UI/curriculum release was published.
+
+## #2/#4/#6/#7/#8 — retain notes assets and Office branch evidence
+
+Independent source inspection found 141 picture occurrences on notes pages across 24 PPTs. Added revision-3 extraction of notes blocks/text/pictures with private originals, distinct source/slide/notes/shape IDs, slide-versus-solution media roles, and explicit notes-page furniture records. Legacy revision-2 catalogs now require re-extraction before approval. Questions/examples/learning segments retain their own notes context; unknown diagram/object meaning remains blocked.
+
+AlternateContent raw XML/native runs are preserved because python-pptx's shape iterator omits those branches. This captures Clock slide 6's “minutes” run without choosing a rendered equation branch. The final missing notes image is Data Interpretation 2 slide 3's static embedded-Word-object preview; only its image relationship is read, without accessing/executing the object payload. The bench checks its expected count independently and labels notes assets separately in the report.
+
+Directly viewed the source-derived cube diagram on Cubes slide 8's notes page and representative provider assets. Source text also established that Syllogisms has teaching prose and split prompt/options slides, and that a cube/root arithmetic deck is misclassified as Pattern Completion. Added those cases to #4/#5. Corrected an earlier report narrative that conflated the nine no-example topics with the different nine placeholder-summary topics; machine reports already kept the separate per-topic facts.
+
+Five new fixture tests plus the full backend suite pass: 126 tests, two existing dependency warnings. Application UI, active release and learner history are unchanged. No whole-slide visual/OCR or complete source-answer correctness claim is made.
