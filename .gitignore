@@ -39,3 +39,6 @@ Thumbs.db
 !.env.example
 *.tsbuildinfo
 .cache/
+
+# Local audit evidence, draft previews, staging archives and disposable state
+/.local/
