@@ -3,8 +3,6 @@ import hashlib
 import io
 from pathlib import Path
 
-from PIL import Image
-
 from .lessons import LessonAsset
 
 
@@ -13,6 +11,7 @@ def asset_filename(asset: LessonAsset) -> str:
 
 
 def verified_image(path: Path, asset: LessonAsset, root: Path) -> bytes:
+    from PIL import Image
     root = root.resolve()
     if path.is_symlink() or not path.resolve().is_relative_to(root) or not path.is_file():
         raise ValueError("lesson image missing or outside its media root")

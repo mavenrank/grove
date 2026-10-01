@@ -84,3 +84,7 @@ The native all-Learn report above stays the baseline for all 27 topics/78 source
 Observed failures include native omission of cube-diagram labels, OCR omission of Vertex, loss of Clock's mixed-fraction numerator and source-level bad units/approximation/ambiguous “45th.” SDT's notes also contain a wrong multiplication line despite a correct answer. One Syllogisms key is independently solved and a provider-logo occurrence is scoped to one source shape. These records do not automatically alter lessons or remove conservative blockers.
 
 Twenty-three review, fifteen renderer and twelve OCR regression cases pass; the full backend suite passes 230 tests. Full-corpus visual/OCR coverage, semantic enrichment and ordered public lesson delivery remain future work. Original source/native evidence and active release 0.3.5 remain unchanged.
+
+## Ordered lesson/source-figure companion — 1 October 2026
+
+`LESSON_PREVIEW.md` documents the private draft compiler, isolated read-only API and two runnable review pilots. The original Cubes PNG preserves Face/Edge/Vertex through browser display; SDT adds an independently checked baseline-method candidate. The all-Learn native baseline remains unchanged. Final evidence is `<source-dir>`: 78 unchanged sources, 43 unchanged fresh native slides, 11 current annotations, two API-preserved drafts and unchanged frozen live release 0.3.5. Full backend tests pass 274; frontend build and desktop/390px/missing-image checks pass. UI/curriculum await user review, and full-corpus semantic review/normal PNG lesson publication remain open.

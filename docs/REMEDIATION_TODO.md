@@ -38,9 +38,9 @@ Supporting #36 belongs to this pipeline wave: first audit all existing Learn top
 - [ ] #7: independently verify recovered source answers beyond the five explicit Speed Distance Time labels checked in the pilot; do not equate notes confirmation with correct mathematics.
 - [ ] #6: add source-hash-scoped, reviewable exclusions for provider logos, covers, ceremony and decoration. Resolve conservative wave-2 flags without blanket deletion.
 - [x] #2: select a working whole-slide render/OCR path, record adapter versions and uncertain output, and inspect tiny math/image-led pilot failures. The supported local PowerPoint/Windows OCR alternative handles 106 pilot positions; fraction/label misses remain explicit review items and full-corpus/platform coverage stays open.
-- [ ] #4: design a versioned lesson contract carrying ordered content and attached example media; verify source → draft → API → rendered lesson completeness.
+- [x] #4: define schema-1 ordered lesson/figure data and verify two private source → draft → API → rendered pilots. Reviewed organizer/publication integration and full-topic completeness remain open.
 - [x] #2/#4/#6/#8: preserve speaker-note picture/text/branch evidence separately from question-slide assets, identify notes-page furniture, and independently compare source/retained picture counts. Interpretation and delivery remain open.
-- [ ] #10: write a Speed Distance Time baseline-method pilot with actual relations, units, given/target identification and worked reasoning. Replace formula question fronts with reviewed formula content.
+- [x] #10: prepare the private Speed Distance Time baseline-method pilot with actual relations, units, given/target identification and independently checked worked reasoning. Curriculum review and replacement of the live formula-question fronts remain open.
 - [ ] #7/#8: enforce import schema/review/media checks, immutable candidate versions and rollback/activation checks before refreshed publication.
 - [ ] Re-extract the complete corpus into a separate draft directory after the pilots pass, and account for every source/slide/loss.
 - [ ] Compare a runnable pilot against reviewed source evidence and stop uncommitted for the user's curriculum/UI review before release activation.
@@ -77,9 +77,9 @@ Six groups: #4/#6/#7/#8/#10/#38, supported by #36. Backend/tooling can be commit
 - [x] #4/#7/#8/#38: define schema-1 ordered lesson sections, text/formula/steps/examples and source-scoped figures, shared typed assets, captions/alt text and legacy API compatibility. Reject invalid associations and draft lessons in approved packs.
 - [x] #6/#7/#8/#38: compile a fresh draft-only lesson/media bundle from exact catalog/source/shape evidence, validate media bytes/dimensions/references and record occurrence-scoped decoration candidates without changing raw extraction or publication blockers. Original JPEG/PNG and normalized JPEG are supported; cropped/rotated/grouped region rendering remains open.
 - [x] #4/#8/#38: add a disabled-by-default read-only preview API that preserves lesson/figure associations and serves validated static source images; do not import or activate a learner release. Missing/changed bundles/assets return explicit failures; live PNG release installation remains separate publication work.
-- [ ] #10/#38: prepare source-compared Cubes and SDT baseline-method candidates with independent worked reasoning; keep curriculum drafts pending learner review.
-- [ ] #4/#38: provide the runnable ordered-lesson/inline-figure preview, readable image enlargement and explicit failed-image states. Leave substantial learner-facing changes uncommitted.
-- [ ] Run source → fresh extraction → draft bundle → API → browser checks, full backend tests/frontend build, update evidence and stop at the review checkpoint.
+- [x] #10/#38: prepare source-compared Cubes and SDT baseline-method candidates with independently checked worked reasoning. These are partial-topic drafts awaiting learner review.
+- [x] #4/#38: provide the runnable ordered-lesson/inline-figure preview, readable image enlargement and explicit failed-image states. Desktop/390px layout, zoom/Escape/focus and missing-image recovery display pass. UI/curriculum remain uncommitted for review.
+- [x] Run source → fresh extraction → draft bundle → API → browser checks, 274 backend tests and the TypeScript/Vite build. All 78 sources, 43 fresh native slides, 11 annotations, original PNG/API bytes and the frozen live 0.3.5 payload check out. Stop at the concrete review checkpoint documented in `LESSON_PREVIEW.md`.
 
 ## 1. Preserve native-text structure
 
@@ -599,16 +599,16 @@ Acceptance: reviewed explanations are readable without dropping conditions, unit
 
 ## 38. Reuse and manage source teaching images
 
-Status: planned for the next lesson/media wave with #4/#8; prioritize before curriculum expansion, independently of complete OCR/diagram interpretation under #2/#3. Existing private originals/JPEGs, source occurrence metadata and verified import are foundations, not a completed figure workflow.
+Status: typed assets/occurrences, verified private compiler/API and the original Cubes figure preview are implemented; UI/curriculum await user review. Whole issue remains partial: source-region rendering, individual-step placement, historical usage and live PNG/lesson publication are open. See `LESSON_PREVIEW.md`.
 
-- [ ] Define typed figure blocks and explicit attachments to lesson segments, example prompts and solution steps. Keep the figure beside the content it supports, in reviewed reading order, instead of only in a concept-wide gallery.
-- [ ] Prefer the original embedded image when it contains the complete teaching diagram. If captions, labels or arrows are separate PPT objects, preserve them with an appropriate rendered source region/figure; retain whole-frame evidence and do not silently crop away meaning.
-- [ ] Define a reusable asset manifest with content hash, format/dimensions and delivery variants. Retain the private original; avoid unnecessary re-encoding and verify label/math readability and transparency where needed. Coordinate format support with the current JPEG-only pack/import/API contract.
-- [ ] Store each use's source hash, slide/notes surface, shape/region, figure role, caption, accessible description and lesson placement. Share identical asset bytes across topics while retaining all usage/source associations; provider decoration decisions remain occurrence-scoped.
-- [ ] Keep image relevance/legibility review distinct from OCR/relationship/answer verification. A reviewed source figure can teach directly without invented OCR text or solved geometry; unresolved derived claims still block their own publication.
-- [ ] Version changed images/derivatives and references without overwriting assets used by old releases. Make review records and asset usage discoverable in the existing tooling; evaluate a dedicated management UI after the first real authoring workflow.
-- [ ] Carry figure references through organizer draft → pack/media installation → API → Learn. Validate missing/wrong references and display a useful failure state instead of silently hiding a failed image.
-- [ ] Add responsive, aspect-preserving display, lazy image loading, useful captions/alt text and an enlarge/zoom interaction for small labels. Stop with the runnable learner-facing preview uncommitted for user review.
-- [ ] Extend #36 with the Cubes slide 3 pilot (Face/Edge/Vertex all visible), a hybrid figure with separate labels, reused assets with distinct contexts, missing media and changed-source/historical-reference cases. Check the actual displayed image against original source evidence before release.
+- [x] Define schema-1 ordered figure blocks and prompt/solution-example attachments with required captions/alt text. Store each use's source/hash/surface/shape/block/role and placement independently of shared asset bytes.
+- [x] Preserve complete original JPEG/PNG teaching images unchanged and support an explicit normalized JPEG alternative. Verify full hash, actual format/dimensions and source occurrence. Cubes slide 3 retains Face/Edge/Vertex and transparency.
+- [x] Require current exact-shape review evidence for decoration exclusions in private drafts; keep OCR, inferred relationships and answer verification separate. Raw extraction and native publication blockers remain unchanged.
+- [x] Carry ordered lesson/media associations through private compilation → preview API → browser, with explicit missing/changed-image failures. Content-addressed shared assets retain distinct source contexts; synthetic reuse and source-change cases pass.
+- [x] Provide responsive/aspect-preserving display, lazy loading, captions/alt text and enlarge/zoom. Desktop/390px, keyboard dialog dismissal/focus return and missing-image display pass. The UI remains uncommitted for user review.
+- [ ] Add reviewed region/figure rendering for separate labels/arrows and cropped/rotated/grouped images; preserve whole-frame evidence. Add the hybrid-source pilot before claiming these cases supported.
+- [ ] Attach figures within individual solution steps where needed; current example attachments render before/after the worked steps.
+- [ ] Integrate reviewed lesson authoring/reconstruction and PNG installation into normal immutable packs/import; verify release activation/rollback and old image references before replacing live content.
+- [ ] Make versioned derivatives/review records/historical asset usage discoverable. Evaluate a dedicated management UI after the real authoring workflow; retain assets referenced by old releases.
 
 Acceptance: an image-led lesson shows the complete readable source figure in the right teaching context, with a traceable managed asset and stable release reference. Adding another topic can reuse the same delivery/review path. OCR may remain incomplete without erasing the figure; inferred facts and answer keys require their own verification. The concrete UI/curriculum preview is reviewed before committing or activating a new lesson release.
