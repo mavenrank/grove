@@ -76,7 +76,7 @@ Six groups: #4/#6/#7/#8/#10/#38, supported by #36. Backend/tooling can be commit
 
 - [x] #4/#7/#8/#38: define schema-1 ordered lesson sections, text/formula/steps/examples and source-scoped figures, shared typed assets, captions/alt text and legacy API compatibility. Reject invalid associations and draft lessons in approved packs.
 - [x] #6/#7/#8/#38: compile a fresh draft-only lesson/media bundle from exact catalog/source/shape evidence, validate media bytes/dimensions/references and record occurrence-scoped decoration candidates without changing raw extraction or publication blockers. Original JPEG/PNG and normalized JPEG are supported; cropped/rotated/grouped region rendering remains open.
-- [ ] #4/#8/#38: add a disabled-by-default read-only preview API that preserves lesson/figure associations and serves validated static source images; do not import or activate a learner release.
+- [x] #4/#8/#38: add a disabled-by-default read-only preview API that preserves lesson/figure associations and serves validated static source images; do not import or activate a learner release. Missing/changed bundles/assets return explicit failures; live PNG release installation remains separate publication work.
 - [ ] #10/#38: prepare source-compared Cubes and SDT baseline-method candidates with independent worked reasoning; keep curriculum drafts pending learner review.
 - [ ] #4/#38: provide the runnable ordered-lesson/inline-figure preview, readable image enlargement and explicit failed-image states. Leave substantial learner-facing changes uncommitted.
 - [ ] Run source → fresh extraction → draft bundle → API → browser checks, full backend tests/frontend build, update evidence and stop at the review checkpoint.

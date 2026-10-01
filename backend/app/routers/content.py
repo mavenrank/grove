@@ -18,8 +18,10 @@ from ..schemas import (
     MediaOut, TaxonomyOut,
 )
 from .requests import ConceptViewIn, FlashcardReviewIn, FlashcardViewIn, SourceOpenIn
+from .lesson_previews import router as preview_router
 
 router = APIRouter(prefix="/api")
+router.include_router(preview_router)
 
 
 def _taxonomy_payload() -> list[dict[str, Any]]:

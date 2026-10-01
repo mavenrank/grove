@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     db_filename: str = "grove.db"
     # Slide images extracted by the ingestion pipeline (served read-only).
     media_dir: Path = REPO_ROOT / "content" / "media"
+    # Explicit local review only; never merged into the active learner release.
+    lesson_preview_dir: Path | None = None
 
     # CORS: local Vite dev origins (standard ports).
     cors_origins: list[str] = [
