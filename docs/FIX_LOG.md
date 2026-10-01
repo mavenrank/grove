@@ -250,3 +250,9 @@ The checked organizer snapshot is `<source-dir>`; earlier `learn-bench-choices*`
 Native text in the Cubes and Cube Roots deck describes cubing two-digit numbers, while the separate Cubes deck contains painted-face/dice problems and solution diagrams. Added the specific cube/square-root title rule before generic spatial cubes. Bare/painted Cubes and Dice stay in reasoning; algorithm/deferred scope retains precedence. This is a bounded title correction, not a content-derived classification system or approval of every mixed deck.
 
 Ten new classification cases and the existing ingestion cases pass. The affected real source will be traced in the final all-Learn report; current stored topics remain unchanged. General classification confidence, review overrides and multi-topic tagging stay open.
+
+## #31 — immutable database release imports — 1 October 2026
+
+The store previously returned “already present” for any payload reusing a release/version, silently hiding changed content. Imports now compare canonical manifest and payload inside the write transaction: an identical retry is idempotent; changed content raises an explicit conflict and requires a new version. Three regression cases verify key-order-independent retries, payload/manifest conflicts, rollback and preservation of the old release after importing a new version into a disposable database.
+
+Candidate-file immutability follows in the pack boundary chunk. Pinning session generator/taxonomy/blueprint dependencies, runtime authored merges and historical reproduction remain open; this does not close #31.
