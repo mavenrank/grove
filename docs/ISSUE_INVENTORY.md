@@ -246,7 +246,7 @@ One correction to the fixed-pool impression: tests currently use seeded generato
 
 ## Evidence and scope
 
-The earlier [architecture audit](<source-dir>) contains code references and isolated reproductions for the implementation defects. Its evidence scripts and outputs remain under [grove-audit](<source-dir>).
+The earlier [architecture audit](../.local/history/aptitude-import-2026-10-01/GROVE_ARCHITECTURE_AUDIT.md) contains code references and isolated reproductions for the implementation defects. Its evidence scripts and outputs remain under [grove-audit](../.local/audit).
 
 Additional inspection for this inventory covered `ingestion/extract.py`, `extractors.py`, `pipeline.py`, the organizer and mining gates, authored cards, and the public content schemas. No OCR/vision stage, table/layout preservation, or method-stage/coverage entities were found in those paths. The existing active-deck catalog contains 43 retained image-only slides, all classified as title slides. Whether these are genuinely covers requires visual review; the count does not include images already discarded by extraction filters and is not a measure of image-ingestion success.
 

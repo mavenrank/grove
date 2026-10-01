@@ -12,8 +12,8 @@ The move into one application directory is a reasonable simplification. The impo
 
 I read both pages of the referenced [Research aptitude app architecture chat](thread://01a0aab6-2190-7242-8a3a-9f789ddf5222?hostId=local), including the original request, the scope tightening, later UI corrections, and the handoff request. I compared those decisions with:
 
-- [The original consolidated handoff](<source-dir>).
-- [The current handoff and implementation addendum](../GROVE_HANDOFF.md#L1721).
+- [The original consolidated handoff](../.local/history/aptitude-import-2026-10-01/GROVE_HANDOFF.md).
+- [The historical monorepo handoff addendum](../GROVE_HANDOFF.md#L1721).
 - The original frontend/backend code, repository history, local roadmaps and ADRs.
 - The current backend routes, schemas, test engine, persistence, evidence model, scheduler, generator families, ingestion pipeline, frontend pages, cache and telemetry.
 - Aggregate metadata from the existing database through SQLite read-only connections, and the existing content catalog/packs.
@@ -309,11 +309,11 @@ The exit condition should be concrete: a learner can complete a test with correc
 
 Artifacts:
 
-- [Backend reproduction script](<source-dir>).
-- [Frontend reproduction script](<source-dir>).
-- [Read-only content survey](<source-dir>).
-- [Backend observations](<source-dir>).
-- [Frontend observations](<source-dir>).
-- [Content observations](<source-dir>).
+- [Backend reproduction script](../.local/audit/audit_probe.py).
+- [Frontend reproduction script](../.local/audit/frontend_probe.cjs).
+- [Read-only content survey](../.local/audit/content_survey.py).
+- [Backend observations](../.local/audit/backend-observations.jsonl).
+- [Frontend observations](../.local/audit/frontend-observations.jsonl).
+- [Content observations](../.local/audit/content-observations.jsonl).
 
 The existing test suite is a useful baseline, but it does not cover these failure paths. Passing builds establish that the application compiles and its tested paths run; they do not establish that its diagnoses are trustworthy.

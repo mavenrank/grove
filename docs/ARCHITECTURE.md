@@ -175,12 +175,12 @@ cd backend && uv run grove-serve     # FastAPI on :8001
 cd frontend && bun run dev           # Vite on :5173, proxies /api → :8001
 ```
 
-Rebuild content after pipeline changes:
+Future reviewed publication (fresh work directory, source review and new version required; import activates content):
 
 ```bash
 cd backend
 uv run grove-ingest pack --source "$GROVE_SOURCE_DIR" \
-    --workdir ingestion-work --version 0.x.y --approve
-uv run grove-ingest import <pack-file>
+    --work ../.local/audit/reviewed-work --version 0.x.y --approve
+uv run grove-ingest import --work ../.local/audit/reviewed-work --pack ../.local/audit/reviewed-work/packs/grove-ingested-0.x.y.json
 # then restart grove-serve
 ```

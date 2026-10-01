@@ -19,7 +19,7 @@ The cited Time Speed And Distance source PPT exists. Its SHA-256 remains `d1b52d
 
 Re-extracted that source with the current pipeline into a separate directory, without `--approve` or import:
 
-`<source-dir>`
+`.local/audit/speed-distance-time-review/`
 
 All **18** slide positions survive. There are **15** native-text question candidates, three other candidate slides, 20 picture occurrences and five distinct preview images. The slide content modes are one image-only cover and 17 hybrid slides; these counts include branding, not just meaningful teaching diagrams. The newly retained picture evidence includes provider logos and a tiny `2/3` crop. Its coordinates place it partly above the top edge of slide 3, separate from the native question prompt, so it must not automatically replace the prompt's `5/3` value.
 

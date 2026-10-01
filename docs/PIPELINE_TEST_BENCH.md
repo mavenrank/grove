@@ -5,7 +5,7 @@ The bench compares every stored Learn topic with fresh extraction of its cited s
 From Grove's backend directory, in PowerShell:
 
 ~~~powershell
-.\.venv\Scripts\python.exe -B -X utf8 -m ingestion.cli audit --database ..\data\grove.db --source "$env:GROVE_SOURCE_DIR" --work <source-dir> --media ..\content\media
+.\.venv\Scripts\python.exe -B -X utf8 -m ingestion.cli audit --database ..\data\grove.db --source "$env:GROVE_SOURCE_DIR" --work ../.local/audit/learn-bench-new --media ..\content\media
 ~~~
 
 Use a **new or empty** work directory outside the corpus per snapshot. To replay frozen input, replace --database with --release followed by the release-snapshot.json path. For relocated sources supply --source; hashes identify source revisions. Optional --media checks whether stored lesson media exists.
@@ -27,7 +27,7 @@ Exit 0 means structural validation completed without skips, **not** that review 
 
 ## First complete stored-topic audit — 30 September 2026
 
-Baseline: grove-ingested 0.3.5 from 20 September. Report: <source-dir>
+Baseline: grove-ingested 0.3.5 from 20 September. Report: .local/audit/learn-bench-before/bench-report.html.
 
 All **27 topics / 78 cited files** were accounted for: **47 PPTs / 1,214 slide positions**, plus **31 PDF placeholder records** (not extracted pages). No missing/changed-hash citation. Four old slide counts differ. Structural validation passed; approval remains blocked.
 
@@ -39,7 +39,7 @@ Six regression cases cover topic accounting/stable IDs, independent text/slide l
 
 ## #7 notes-label improvement
 
-Tested after-report: <source-dir> The same frozen release and all 78 source hashes were used. Notes-confirmed candidates increased **407 → 499**, with no previously recognized key changed/lost. Parsed questions missing recognized keys fell **273 → 149**; 32 of the recovered labels still have ambiguous choices and cannot become examples. Total question candidates stay 720; 145 question-parse failures and 94 ambiguous mappings remain.
+Tested after-report: .local/audit/learn-bench-notes-reviewed/bench-report.html. The same frozen release and all 78 source hashes were used. Notes-confirmed candidates increased **407 → 499**, with no previously recognized key changed/lost. Parsed questions missing recognized keys fell **273 → 149**; 32 of the recovered labels still have ambiguous choices and cannot become examples. Total question candidates stay 720; 145 question-parse failures and 94 ambiguous mappings remain.
 
 Speed Distance Time recovers its five explicit keys (slides 3–7), matching the pilot's independent calculations. Eight topics now have more draft example candidates than the stored lesson; summaries, visual interpretation and delivery contracts remain unresolved. Higher overall finding counts can reflect more surfaced draft examples hitting the unchanged public schema, not worsening extraction.
 
@@ -53,13 +53,13 @@ One notes picture is the static preview of an embedded Word object in Data Inter
 
 Direct asset inspection confirmed a useful painted-cube diagram on Cubes slide 8's notes page; two sampled Clock/Syllogism assets were provider artwork, illustrating why image count alone is not content coverage. Native Clock slide 6's missing “minutes” run resides in AlternateContent and is now retained as branch evidence rather than silently omitted. This does not reconstruct its equation or establish the rendered branch.
 
-Latest report: <source-dir> Five additional fixture tests cover role separation, notes-only teaching images, furniture decisions, hidden branch evidence, legacy approval and static object previews. Full visual/answer verification, reviewed template exclusions, cross-slide question linking, OCR/PDF extraction, actual formula text and public lesson delivery remain open.
+Latest report: .local/audit/learn-bench-final/bench-report.html. Five additional fixture tests cover role separation, notes-only teaching images, furniture decisions, hidden branch evidence, legacy approval and static object previews. Full visual/answer verification, reviewed template exclusions, cross-slide question linking, OCR/PDF extraction, actual formula text and public lesson delivery remain open.
 
 Final source comparison: **141 expected / 141 retained notes pictures**, unchanged source hashes, no missing native-run finding, and 47 explicit unresolved Office-branch findings. Question candidates remain 720 / 499 notes-confirmed; all 27 topics and 78 citations are accounted for. Meaning, layout, copied source-answer errors and the 145 failed question parses are not solved by retaining evidence.
 
 ## Adjacent questions, explicit choices and classification — 1 October 2026
 
-Latest tested report: `<source-dir>`. The same 27 topics / 78 source snapshots / 1,245 records remain accounted for; source hashes/counts and 141 notes picture occurrences are unchanged. One classification change separates numeric Cubes and Cube Roots from spatial painted cubes.
+Latest tested report: `.local/audit/learn-bench-wave3-final/bench-report.html`. The same 27 topics / 78 source snapshots / 1,245 records remain accounted for; source hashes/counts and 141 notes picture occurrences are unchanged. One classification change separates numeric Cubes and Cube Roots from spatial painted cubes.
 
 | Organizer result | Previous committed bench | This wave |
 |---|---:|---:|
@@ -77,9 +77,9 @@ Development reports `learn-bench-choices` and `learn-bench-choices-reviewed` are
 
 The native all-Learn report above stays the baseline for all 27 topics/78 sources. Optional companion stages in `VISUAL_SOURCE_REVIEW.md` add complete original slide frames, separate offline OCR text/word boxes and snapshot-scoped review annotations, without rewriting that catalog or learner content.
 
-- `<source-dir>`: 106/106 rendered original positions across four text/image/hybrid pilots; source hashes preserved.
-- `<source-dir>`: 106 OCR candidates, 103 heuristic token disagreements, 11 missing-option-label clues. No inferred OCR accuracy score or fabricated confidence.
-- `<source-dir>`: 11 traceable annotations, exact whole-frame links, native issues, observations versus proposed corrections, calculation/OCR evidence and links back to the native bench. Acceptance checks integrity, not semantic truth or publication readiness.
+- `.local/audit/wave4-whole-slides/visual-report.json`: 106/106 rendered original positions across four text/image/hybrid pilots; source hashes preserved.
+- `.local/audit/wave4-ocr-pilots/ocr-report.html`: 106 OCR candidates, 103 heuristic token disagreements, 11 missing-option-label clues. No inferred OCR accuracy score or fabricated confidence.
+- `.local/audit/wave4-source-review/source-review-report.html`: 11 traceable annotations, exact whole-frame links, native issues, observations versus proposed corrections, calculation/OCR evidence and links back to the native bench. Acceptance checks integrity, not semantic truth or publication readiness.
 
 Observed failures include native omission of cube-diagram labels, OCR omission of Vertex, loss of Clock's mixed-fraction numerator and source-level bad units/approximation/ambiguous “45th.” SDT's notes also contain a wrong multiplication line despite a correct answer. One Syllogisms key is independently solved and a provider-logo occurrence is scoped to one source shape. These records do not automatically alter lessons or remove conservative blockers.
 
@@ -87,4 +87,4 @@ Twenty-three review, fifteen renderer and twelve OCR regression cases pass; the 
 
 ## Ordered lesson/source-figure companion — 1 October 2026
 
-`LESSON_PREVIEW.md` documents the private draft compiler, isolated read-only API and two runnable review pilots. The original Cubes PNG preserves Face/Edge/Vertex through browser display; SDT adds an independently checked baseline-method candidate. The all-Learn native baseline remains unchanged. Final evidence is `<source-dir>`: 78 unchanged sources, 43 unchanged fresh native slides, 11 current annotations, two API-preserved drafts and unchanged frozen live release 0.3.5. Full backend tests pass 274; frontend build and desktop/390px/missing-image checks pass. UI/curriculum await user review, and full-corpus semantic review/normal PNG lesson publication remain open.
+`LESSON_PREVIEW.md` documents the private draft compiler, isolated read-only API and two runnable review pilots. The original Cubes PNG preserves Face/Edge/Vertex through browser display; SDT adds an independently checked baseline-method candidate. The all-Learn native baseline remains unchanged. Final evidence is `.local/audit/wave5-integrity-check.json`: 78 unchanged sources, 43 unchanged fresh native slides, 11 current annotations, two API-preserved drafts and unchanged frozen live release 0.3.5. Full backend tests pass 274; frontend build and desktop/390px/missing-image checks pass. UI/curriculum await user review, and full-corpus semantic review/normal PNG lesson publication remain open.

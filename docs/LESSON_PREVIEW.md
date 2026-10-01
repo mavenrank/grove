@@ -12,7 +12,7 @@ Exact-shape decoration exclusions require freshly validated source-review annota
 
 ## Compile a new draft
 
-Run from `backend` with the existing Python environment (`python-pptx`/Pillow installed). Use a current catalog, its original source root, the extractor's media directory and a reviewed authoring plan. Plan JSON has exactly `lesson_plan_version: 1`, `lessons: [...]` and `exclude_review_ids: [...]`; lessons remain `review_status: "draft"`. The current private pilot plan is `<source-dir>`.
+Run from `backend` with the existing Python environment (`python-pptx`/Pillow installed). Use a current catalog, its original source root, the extractor's media directory and a reviewed authoring plan. Plan JSON has exactly `lesson_plan_version: 1`, `lessons: [...]` and `exclude_review_ids: [...]`; lessons remain `review_status: "draft"`. The current private pilot plan is `.local/audit/wave5-lesson-plan.json`.
 
 ```powershell
 grove-ingest lesson-drafts `
@@ -50,7 +50,7 @@ Open `/learn-preview/<lesson-id>`. The Vite proxy forwards requests to the isola
 
 ## Current review checkpoint
 
-Private evidence: `<source-dir>`. Review server state: `wave5-preview-state/` beside it. The frontend source is intentionally uncommitted until the user reviews:
+Private evidence: `.local/audit/wave5-lesson-preview/`. Review server state: `wave5-preview-state/` beside it. The frontend source is intentionally uncommitted until the user reviews:
 
 - [Cubes source figure](http://127.0.0.1:5175/learn-preview/cubes-source-figure): original transparent 300×176 PNG, Face/Edge/Vertex visible on white, source caption, inline placement and keyboard-accessible enlarge/zoom. This is a figure pilot, not the complete painted-cubes curriculum.
 - [Speed–Distance–Time baseline](http://127.0.0.1:5175/learn-preview/speed-distance-time-baseline): basic relation, three unknown configurations, compatible-unit conditions, five method steps, given/target separation and worked 720 km/h reasoning. The source's erroneous multiplication line is not taught; correct reciprocal reasoning is independently checked. Pattern recognition, specialized shortcuts and the rest of the topic remain pending.
