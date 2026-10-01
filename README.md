@@ -83,7 +83,8 @@ extraction, whole-slide inspection and optional OCR are available. Image/diagram
 interpretation and PDF extraction remain incomplete. Structural validation does
 not establish semantic correctness.
 
-From backend, select a fresh work directory for each extraction:
+Set GROVE_SOURCE_DIR to the chosen input directory. From backend, select a fresh
+work directory for each extraction:
 
 ~~~powershell
 uv run grove-ingest run --source "$env:GROVE_SOURCE_DIR" --work ../.local/audit/new-content-review

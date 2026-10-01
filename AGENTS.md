@@ -8,3 +8,5 @@
 - For incomplete/wrong lessons, read `docs/SOURCE_REVIEW_PROTOCOL.md` and compare the stored release, original PPT, extraction draft and API/UI before declaring a fix.
 - The user authorizes source-slide reviewers using **gpt-6-luna**, **max reasoning**, **standard service only**, explicitly **not priority**. Use subagents when useful and only when the runner can honor those settings. Do not substitute priority or a different model/effort. If standard service cannot be selected or verified, inspect the necessary evidence directly and report the limitation.
 - Keep tentative Learn cold-start observation #35 deferred until after the main reviewed fixes unless a new reproducible failure changes the evidence.
+
+- Public documentation and examples must use repository-relative links and generic operator-supplied source-directory variables. Never publish personal filesystem paths or descriptions of where the operator stores private materials. Keep per-machine configuration in ignored files.
