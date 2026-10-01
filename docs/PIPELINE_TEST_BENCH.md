@@ -72,3 +72,15 @@ Latest tested report: `<source-dir>`. The same 27 topics / 78 source snapshots /
 All previously recognized keys survive unchanged. Split records preserve prompt and solution-slide snapshots, raw blocks and notes assets. Row matching requires unique positioned unrotated boxes; no guessing fallback for incomplete native layouts. A–E labels keep their actual keys rather than being renumbered. Missing notes labels (150), out-of-choice labels (2), residual mappings and source-answer/visual meaning remain review work.
 
 Development reports `learn-bench-choices` and `learn-bench-choices-reviewed` are superseded by `learn-bench-wave3-final`; the checked organizer snapshot recorded the final parser before the classification change. Public field loss still affects all 27 concepts. No refreshed release has been imported. The strict local pack/import boundary is documented in `CONTENT_IMPORT.md`; visual/source review and public lesson delivery remain prerequisites.
+
+## Visual/source-review companion — 1 October 2026
+
+The native all-Learn report above stays the baseline for all 27 topics/78 sources. Optional companion stages in `VISUAL_SOURCE_REVIEW.md` add complete original slide frames, separate offline OCR text/word boxes and snapshot-scoped review annotations, without rewriting that catalog or learner content.
+
+- `<source-dir>`: 106/106 rendered original positions across four text/image/hybrid pilots; source hashes preserved.
+- `<source-dir>`: 106 OCR candidates, 103 heuristic token disagreements, 11 missing-option-label clues. No inferred OCR accuracy score or fabricated confidence.
+- `<source-dir>`: 11 traceable annotations, exact whole-frame links, native issues, observations versus proposed corrections, calculation/OCR evidence and links back to the native bench. Acceptance checks integrity, not semantic truth or publication readiness.
+
+Observed failures include native omission of cube-diagram labels, OCR omission of Vertex, loss of Clock's mixed-fraction numerator and source-level bad units/approximation/ambiguous “45th.” SDT's notes also contain a wrong multiplication line despite a correct answer. One Syllogisms key is independently solved and a provider-logo occurrence is scoped to one source shape. These records do not automatically alter lessons or remove conservative blockers.
+
+Twenty-three review, fifteen renderer and twelve OCR regression cases pass; the full backend suite passes 230 tests. Full-corpus visual/OCR coverage, semantic enrichment and ordered public lesson delivery remain future work. Original source/native evidence and active release 0.3.5 remain unchanged.

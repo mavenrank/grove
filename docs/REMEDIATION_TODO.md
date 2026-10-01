@@ -37,7 +37,7 @@ Supporting #36 belongs to this pipeline wave: first audit all existing Learn top
 - [x] #7: parse explicit `Answer`/`Option` variants, Unicode spaces/glyphs and parenthesized labels; preserve raw notes and block conflicting labels/ambiguous choices.
 - [ ] #7: independently verify recovered source answers beyond the five explicit Speed Distance Time labels checked in the pilot; do not equate notes confirmation with correct mathematics.
 - [ ] #6: add source-hash-scoped, reviewable exclusions for provider logos, covers, ceremony and decoration. Resolve conservative wave-2 flags without blanket deletion.
-- [ ] #2: select a working whole-slide render/OCR path, record adapter versions and uncertain output, and test tiny math crops and image-led teaching material. The bundled renderer's failure on this source's notes/package must be resolved or a supported alternative used.
+- [x] #2: select a working whole-slide render/OCR path, record adapter versions and uncertain output, and inspect tiny math/image-led pilot failures. The supported local PowerPoint/Windows OCR alternative handles 106 pilot positions; fraction/label misses remain explicit review items and full-corpus/platform coverage stays open.
 - [ ] #4: design a versioned lesson contract carrying ordered content and attached example media; verify source → draft → API → rendered lesson completeness.
 - [x] #2/#4/#6/#8: preserve speaker-note picture/text/branch evidence separately from question-slide assets, identify notes-page furniture, and independently compare source/retained picture counts. Interpretation and delivery remain open.
 - [ ] #10: write a Speed Distance Time baseline-method pilot with actual relations, units, given/target identification and worked reasoning. Replace formula question fronts with reviewed formula content.
@@ -58,15 +58,17 @@ Six issue groups: #4, #5, #6, #7, #8, #31, informed by #36. Keep the remaining p
 - [x] #31: reject changed content under an existing release/version, including the candidate pack on disk; keep identical retries idempotent. Historical generator/session pinning remains open.
 - [x] Run the final all-Learn bench and backend suite, record counts/limitations, and commit each tested chunk locally. No learner release activation or substantial UI/curriculum changes in this wave.
 
-## Current wave: visual extraction and source review — 1 October 2026
+## Completed wave: visual extraction and source review — 1 October 2026
 
 Six issue groups: #2, #3, #4, #6, #7, #8, supported by #36. Preserve native extraction and current learner content while adding independently inspectable visual evidence.
 
 - [x] #2/#3/#4/#8: add an opt-in local whole-slide renderer, preserve original positions/source hashes and record adapter versions/failures. Render the four text/image/hybrid pilots into a separate directory.
 - [x] #2/#4/#7: add offline OCR candidates with word boxes, runtime/language provenance and explicit unknown confidence; keep native text and OCR disagreements separately reviewable. Candidates do not override native evidence or clear approval blockers.
-- [ ] #6/#7/#8: record source-hash/slide/shape-scoped review decisions with reason and evidence. Reject stale/ambiguous decisions; do not let review annotations bypass publication gates.
-- [ ] #3/#7: directly compare selected rendered diagrams/math with their native/notes evidence and record source defects separately from extraction defects.
-- [ ] Extend the bench with visual evidence/review findings, verify source/candidate integrity and commit each bounded tested chunk. Whole-corpus OCR/diagram interpretation and public lesson delivery remain open.
+- [x] #6/#7/#8: record source-hash/slide/shape-scoped review decisions with reason and evidence. Reject stale/ambiguous decisions; do not let review annotations bypass publication gates. Eleven pilot annotations pass; applying reviewed exclusions/corrections remains open.
+- [x] #3/#7: directly compare selected rendered diagrams/math with their native/notes evidence and record source defects separately from extraction defects. Cube labels, Clock fractions, SDT choices/notes/ambiguities and one independently solved Syllogisms pair are recorded; diagram relationship semantics remain open.
+- [x] Extend the bench with visual evidence/review findings, verify source/candidate integrity and commit each bounded tested chunk. Companion visual/OCR/source-review reports cover 106 pilot positions; full backend suite passes 230. Whole-corpus OCR/diagram interpretation and public lesson delivery remain open.
+
+Next bounded wave candidates: apply reviewed decoration/correction decisions through an explicit draft-only organizer contract; carry ordered teaching/formulas/example media into a versioned lesson contract; build one reviewed Speed Distance Time baseline-method pilot. Substantial curriculum/API/UI delivery must stop for learner review before commitment/activation. Resolve remaining semantic blockers rather than globally clearing visual flags. These are pending scope, not an approved replacement release.
 
 ## 1. Preserve native-text structure
 
@@ -83,13 +85,13 @@ Acceptance: fixture assertions and a manually compared source sample demonstrate
 
 ## 2. Extract knowledge from image-led slides
 
-Status: local whole-slide inspection renderer implemented; image knowledge/OCR integration and semantic review remain open. Depends on #1, #7, #8.
+Status: local whole-slide inspection, separate offline OCR candidates and review annotations implemented; image knowledge integration and semantic review remain open. Depends on #1, #7, #8.
 
 - [ ] Identify slides with useful images but insufficient native text; record image-only versus mixed content.
 - [x] Render the complete slide using an opt-in local PowerPoint adapter; keep original extraction crops/positions and source/slide/frame hashes. Four pilots (106 positions) pass; notes-page rendering, other platforms/active packages and full-corpus coverage remain open.
 - [x] Add an optional offline Windows OCR adapter, with installed-language/runtime requirements and OS/adapter versions; no API charge/network service. Cross-platform adapters and math/diagram semantic enrichment remain open.
 - [ ] Extract image text with confidence and bounding boxes, then recover formulas and worked steps with slide context.
-- [ ] Store uncertain output as a review draft; never silently promote OCR guesses to facts.
+- [x] Store uncertain output as separate OCR/review drafts with unknown confidence, native disagreements and word boxes; never silently promote OCR guesses to facts. Reviewed lesson enrichment remains open.
 - [ ] Add fixtures for tiny text, mathematical notation, scans, rotated text and screenshots.
 - [ ] Measure missed teaching content on actual image-led topics; review the extracted lesson before release.
 
@@ -97,7 +99,7 @@ Acceptance: image-only teaching slides yield traceable lesson content or an expl
 
 ## 3. Interpret diagrams and visual relationships
 
-Status: open. Depends on #2 and #16.
+Status: source-level observations are traceable in the visual/review bench; structured diagram interpretation remains open. Depends on #2 and #16.
 
 - [ ] Define structured representations for clock hands, train movement, seating/ordering diagrams and labelled geometry.
 - [ ] Preserve arrows, orientation, labels, axes, relative positions and units.
@@ -139,7 +141,7 @@ Acceptance: useful decks do not disappear into a deferred bucket solely because 
 
 ## 6. Make filtering and truncation observable
 
-Status: slide/media decisions and major truncations observable in wave 2; complete formula/card rejection accounting remains open. Main files: `organize/gates.py`, `concepts.py`, `pipeline.py`.
+Status: slide/media decisions and major truncations observable in wave 2; exact-shape decoration candidates are now reviewable, but applying them and complete formula/card rejection accounting remain open. Main files: `organize/gates.py`, `concepts.py`, `pipeline.py`, `source_review.py`.
 
 - [ ] Record a reason for every omitted slide, image, formula, example and code block.
 - [x] Replace unconditional first-slide-as-cover logic with short title-placeholder evidence; content/image-led first slides survive. Explicit reviewed overrides remain open.

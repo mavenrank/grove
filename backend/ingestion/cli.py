@@ -48,6 +48,13 @@ def build_parser() -> argparse.ArgumentParser:
     ocr.add_argument("--output", type=Path, required=True)
     ocr.add_argument("--language", default="en-US")
 
+    review = sub.add_parser("review-sources", parents=[src], help="validate source-scoped annotations without approving content")
+    review.add_argument("--catalog", type=Path, required=True)
+    review.add_argument("--visual-report", type=Path, required=True)
+    review.add_argument("--manifest", type=Path, required=True)
+    review.add_argument("--evidence-root", type=Path, required=True)
+    review.add_argument("--output", type=Path, required=True)
+
     pack = sub.add_parser("pack", parents=[src, work],
                           help="pack the validated catalog into a content pack")
     pack.add_argument("--version", required=True)
@@ -62,6 +69,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "review-sources":
+        from .source_review import run_source_reviews
+        try:
+            catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
+            manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+            report = run_source_reviews(catalog, args.source, args.visual_report, manifest, args.evidence_root, args.output)
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            print(f"source review failed: {exc}", file=sys.stderr)
+            return 2
+        print(f"source review -> {args.output / 'source-review-report.html'} ({report['counts']})")
+        print("annotations only; native issues, approval gates and learner release unchanged")
+        return 1 if report["counts"]["rejected"] else 0
     if args.command == "ocr":
         from .ocr import run_ocr
         try:
