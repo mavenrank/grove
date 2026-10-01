@@ -26,6 +26,8 @@ from typing import Any
 from .config import ACTIVE_BUCKETS, classify_title
 from .extractors import ExtractionContext, get_extractor
 from .organize import organize_all
+from .pack_contract import (PACK_SCHEMA_VERSION, ORGANIZATION_VERSION, content_digest,
+                            digest, validate_pack, validate_version)
 
 MAX_FILE_BYTES = 200 * 1024 * 1024  # 200 MB per source file
 EXTRACTION_VERSION = 3  # speaker-note assets and AlternateContent branch evidence
@@ -305,6 +307,7 @@ class Pipeline:
     # ------------------------------------------------------------------
     def pack(self, catalog: dict[str, Any], report: dict[str, Any],
              organized: dict[str, Any], version: str, approved: bool) -> dict[str, Any]:
+        validate_version(version)
         # Approval cannot override failed validation or trust a stale report (#7).
         if approved:
             current_report = self.validate(catalog)
@@ -325,11 +328,19 @@ class Pipeline:
         flashcards = organized["flashcards"] if approved else []
         question_pool = organized["question_pool"] if approved else []
         media_ids = sorted({m["image_id"] for c in concepts for m in c.get("media", [])})
-        return {
+        generated_at = now_iso()
+        payload = {
+            "schema_version": PACK_SCHEMA_VERSION,
+            "extraction_version": catalog.get("extraction_version"),
+            "organization_version": ORGANIZATION_VERSION,
             "release_id": "grove-ingested",
             "version": version,
-            "generated_at": now_iso(),
+            "generated_at": generated_at,
             "approved": approved,
+            "approval": {"method": "operator-approve-after-pipeline-validation", "reviewed_at": generated_at,
+                         "catalog_sha256": digest({k: v for k, v in catalog.items() if k != "run_at"}),
+                         "draft_sha256": digest({k: v for k, v in organized.items() if k != "organized_at"}),
+                         "unresolved_review_items": 0} if approved else None,
             "source": f"ingested from {self.source_dir.name}",
             # absolute root so the app can offer 'open source deck' locally
             "source_root": str(self.source_dir.resolve()),
@@ -353,6 +364,10 @@ class Pipeline:
             ],
             "stats": {**report["counts"], **organized["stats"]},
         }
+        payload["content_sha256"] = content_digest(payload)
+        if approved:
+            validate_pack(payload)
+        return payload
 
     # ------------------------------------------------------------------
     # Runs
@@ -419,7 +434,12 @@ class Pipeline:
         packs_dir = self.work_dir / "packs"
         packs_dir.mkdir(exist_ok=True)
         pack_path = packs_dir / f"grove-ingested-{version}.json"
-        pack_path.write_text(json.dumps(pack, indent=2, ensure_ascii=False), encoding="utf-8")
+        from .importing import write_candidate
+        try:
+            write_candidate(pack_path, pack)
+        except (ValueError, OSError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 2
         print(f"pack -> {pack_path}")
         print(f"  approved: {approve}")
         print(f"  concepts included: {len(pack['concepts'])}")

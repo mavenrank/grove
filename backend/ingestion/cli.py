@@ -43,7 +43,7 @@ def build_parser() -> argparse.ArgumentParser:
                       help="mark as human-approved (required for concepts to be included)")
 
     imp = sub.add_parser("import", parents=[work],
-                         help="import an approved pack into the backend content store")
+                         help="revalidate an approved pack against reviewed work, install media and import")
     imp.add_argument("--pack", type=Path, required=True)
     return p
 
@@ -72,17 +72,20 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "pack":
         return Pipeline(args.source, args.work).run_pack(args.version, args.approve)
     if args.command == "import":
-        payload = json.loads(Path(args.pack).read_text(encoding="utf-8"))
-        release_id = payload.get("release_id", "grove-ingested")
-        version = payload.get("version", "0.0.0")
-        if not payload.get("approved"):
-            print("refusing to import a pack that is not approved", file=sys.stderr)
+        from .importing import install_media, prepare_import
+        try:
+            payload = json.loads(Path(args.pack).read_text(encoding="utf-8"))
+            media_source = prepare_import(payload, args.work)
+            from app.config import settings
+            install_media(payload["media_ids"], media_source, settings.media_dir)
+            from app.db import import_release
+            created = import_release(payload["release_id"], payload["version"],
+                                     {"generated_at": payload["generated_at"], "content_sha256": payload["content_sha256"],
+                                      "schema_version": payload["schema_version"]}, payload)
+        except (ValueError, OSError, sqlite3.Error) as exc:
+            print(f"import refused: {exc}", file=sys.stderr)
             return 2
-
-        from app.db import import_release  # backend store
-
-        created = import_release(release_id, version, {"generated_at": payload.get("generated_at")}, payload)
-        print(f"imported {release_id} v{version}: {'created' if created else 'already present (immutable)'}")
+        print(f"imported {payload['release_id']} v{payload['version']}: {'created' if created else 'already present (immutable)'}")
         return 0
     return 1
 

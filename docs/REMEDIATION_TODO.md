@@ -54,9 +54,9 @@ Six issue groups: #4, #5, #6, #7, #8, #31, informed by #36. Keep the remaining p
 - [x] #4/#6/#7/#8: parse explicit A–E choices without renumbering them; match separate boxes only on unique unrotated rows. Incomplete, duplicate and unattached values remain review items.
 - [x] #4/#8: join adjacent question prompts and choices only with one matching explicit question number; retain both source snapshots, blocks, notes assets, solution citations and original slide decisions.
 - [x] #5: separate explicitly named cube/root arithmetic from painted-cube/dice reasoning and verify the affected source drafts. Ambiguous/multi-topic titles and content-derived mapping still require review.
-- [ ] #7/#8: add a versioned pack/import contract with review provenance, typed records and verified media delivery; reject malformed approved JSON before database writes.
-- [ ] #31: reject changed content under an existing release/version, including the candidate pack on disk; keep identical retries idempotent.
-- [ ] Run the final all-Learn bench and backend suite, record counts/limitations, and commit each tested chunk locally. No learner release activation or substantial UI/curriculum changes in this wave.
+- [x] #7/#8: add a versioned pack/import contract with review provenance, typed records and verified media delivery; reject malformed approved JSON before database writes. Semantic review, public lesson delivery and activation/rollback remain open.
+- [x] #31: reject changed content under an existing release/version, including the candidate pack on disk; keep identical retries idempotent. Historical generator/session pinning remains open.
+- [x] Run the final all-Learn bench and backend suite, record counts/limitations, and commit each tested chunk locally. No learner release activation or substantial UI/curriculum changes in this wave.
 
 ## 1. Preserve native-text structure
 
@@ -100,7 +100,7 @@ Acceptance: the extracted relationship graph reproduces the verified example's r
 
 ## 4. Combine text and images on hybrid slides
 
-Status: same-slide evidence linked in wave 2; semantic interpretation and continuation grouping remain open. Depends on #1–3.
+Status: same-slide evidence and bounded adjacent Question-number joins implemented; semantic interpretation/general continuations remain open. Depends on #1–3.
 
 - [x] Model each slide as ordered, positioned text/table/image blocks with crop metadata and unresolved drawing references.
 - [x] Keep those blocks, image IDs, notes answers and revision provenance together in question/worked-example drafts. This is a same-slide association, not proof of each diagram's meaning.
@@ -115,7 +115,7 @@ Acceptance: a hybrid problem retains enough connected information to solve it; i
 
 ## 5. Improve topic classification
 
-Status: open. Main file: `backend/ingestion/config.py`.
+Status: numeric root title correction implemented; general content-derived classification remains open. Main file: `backend/ingestion/config.py`.
 
 - [ ] Report filename classification separately from content-derived suggestions.
 - [ ] Add explicit mappings for clocks, calendars, fractions and currently missed skills.
@@ -144,32 +144,32 @@ Acceptance: a reviewer can account for every source slide and every truncation b
 
 ## 7. Enforce content quality and approval gates
 
-Status: validation and unresolved-draft approval guards implemented in waves 1–2; strict import boundary and human review workflow remain open. Main files: `pipeline.py`, `cli.py`, release validation.
+Status: validation/approval guards and schema-1 reviewed-work import boundary implemented; semantic verification and human review workflow remain open. Main files: `pipeline.py`, `cli.py`, `pack_contract.py`, `importing.py`. See `CONTENT_IMPORT.md`.
 
 - [x] Prevent approval if validation fails; return a clear CLI error without creating a publishable pack.
 - [x] Revalidate the supplied catalog at approval time rather than trusting a saved success flag.
 - [x] Reorganize the current catalog at approval, rather than trusting edited/stale content drafts.
 - [x] Block unresolved extraction, malformed option/notes-answer mappings, unparsed questions, placeholder summaries, missing/corrupt media and legacy catalogs without evidence. Draft extraction can still succeed while `ready_for_approval` is false.
 - [x] Label matching notes answers as `notes_confirmed`, not independently solved. Math verification remains open; the old `questions_verified` statistic is kept as a compatibility alias.
-- [ ] Define versioned schemas for packs, concepts, cards and questions; validate them again on import.
+- [x] Define versioned ingestion schemas for packs, concepts, cards and questions; validate them again on import against the reviewed catalog/current organizer. Public lesson/API contract remains open under #4/#10.
 - [ ] Track review decisions and unresolved extraction/answer/provenance problems per record.
 - [ ] Prevent empty, draft-only or incomplete lessons from being labelled ready without an explicit waiver.
 - [ ] Add topic quality summaries: source coverage, unresolved media, verified examples and card applicability.
-- [ ] Test that malformed approved JSON cannot bypass the import gate.
+- [x] Test that malformed approved JSON cannot bypass the import gate, including truthy approval, missing provenance, inconsistent citations, placeholders, choices, identities and media.
 
 Acceptance: approval expresses an auditable review decision and cannot override hard validation failures. Batch 1 only addresses the pack validation bypass.
 
 ## 8. Repair source identity, provenance and media delivery
 
-Status: path identity, revision/shape evidence and pack-stage media integrity implemented in wave 2; import and relocated-source handling remain open. Main files: `pipeline.py`, extraction context, source-open routes and import CLI.
+Status: path/revision evidence and verified import media/source checks implemented; relocated-source handling and activation/recovery remain open. Main files: `pipeline.py`, extraction context, source-open routes and import CLI.
 
 - [x] Replace stem-only deck IDs with a normalized relative-path hash; attach content hashes to slide/block revision IDs. Editing a source keeps its path identity; moving/renaming creates a new identity.
 - [x] Preserve deck/path/hash/slide/shape/crop evidence on extracted and organized drafts, including mined-card source citations. Authored cards retain authored provenance.
 - [ ] Preserve deck/slide/shape/crop provenance on every derived lesson, card and question.
 - [x] Detect ID collisions, recompute duplicate annotations deterministically and preserve media associations for same-named files in separate folders.
 - [x] Reject a normalized source resolving outside the corpus root; validate pack-stage media existence, content hash and agreement with slide evidence.
-- [ ] Validate source paths against the catalog allowlist, including symlinks and path traversal.
-- [ ] Install and verify referenced media as part of content import; report missing files.
+- [x] Validate source paths against the catalog allowlist on import, require normalized relative paths, and recheck resolved source containment/hashes (including paths resolving through symlinks).
+- [x] Install and verify referenced delivery JPEGs as part of content import; preflight missing/corrupt/colliding files, retain existing assets and leave private originals in the work directory. Recovery from partial filesystem failure/activation remains open.
 - [ ] Define behaviour after source folders move and distinguish source citations from local open actions.
 - [ ] Test same filenames in different directories, renamed files, missing images and relocated sources.
 
@@ -479,12 +479,12 @@ Acceptance: writes respect relationships and recovery is verified. Batch 1 addre
 
 ## 31. Pin immutable assessment dependencies
 
-Status: open. Depends on #8, #9, #17, #30.
+Status: immutable candidate/database releases implemented; session/generator dependency pinning remains open. Depends on #8, #9, #17, #30.
 
 - [ ] Pin generator implementation, taxonomy, blueprint, content and question-pool versions per session.
 - [ ] Persist resolved metadata/method relations needed for future review.
 - [ ] Prevent runtime merging of current generator allowlists from changing historical release meaning.
-- [ ] Reject same-version replacement packs with different content hashes.
+- [x] Reject same-version replacement packs with different content hashes, both candidate files and canonical database payloads/manifests; identical retries preserve the original.
 - [ ] Reproduce a historical session after installing a new generator/catalog version.
 - [ ] Establish a compatibility policy for archived generators and retired content.
 
@@ -552,7 +552,7 @@ Acceptance: either a reproducible bottleneck is measured and improved, or the te
 
 ## 36. Build the source-to-lesson test bench
 
-Status: scheduled inside the current pipeline wave; supports #1–8 and #10.
+Status: repeatable all-Learn bench implemented and rerun per pipeline wave; semantic completeness remains in #1–8 and #10.
 
 - [x] Read the active release without modifying its database; inventory every existing Learn topic and source reference.
 - [x] Re-extract referenced sources in a new draft directory; compare source hashes/counts, classification, retained blocks/media/notes and organization outcomes.

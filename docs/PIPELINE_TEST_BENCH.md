@@ -56,3 +56,19 @@ Direct asset inspection confirmed a useful painted-cube diagram on Cubes slide 8
 Latest report: <source-dir> Five additional fixture tests cover role separation, notes-only teaching images, furniture decisions, hidden branch evidence, legacy approval and static object previews. Full visual/answer verification, reviewed template exclusions, cross-slide question linking, OCR/PDF extraction, actual formula text and public lesson delivery remain open.
 
 Final source comparison: **141 expected / 141 retained notes pictures**, unchanged source hashes, no missing native-run finding, and 47 explicit unresolved Office-branch findings. Question candidates remain 720 / 499 notes-confirmed; all 27 topics and 78 citations are accounted for. Meaning, layout, copied source-answer errors and the 145 failed question parses are not solved by retaining evidence.
+
+## Adjacent questions, explicit choices and classification — 1 October 2026
+
+Latest tested report: `<source-dir>`. The same 27 topics / 78 source snapshots / 1,245 records remain accounted for; source hashes/counts and 141 notes picture occurrences are unchanged. One classification change separates numeric Cubes and Cube Roots from spatial painted cubes.
+
+| Organizer result | Previous committed bench | This wave |
+|---|---:|---:|
+| Question candidates | 720 | 751 |
+| Notes-confirmed keys | 499 | 598 |
+| Unparsed question slides | 145 | 92 |
+| Ambiguous choice mappings | 94 | 17 |
+| Explicit adjacent prompt/choice pairs | 0 | 22 |
+
+All previously recognized keys survive unchanged. Split records preserve prompt and solution-slide snapshots, raw blocks and notes assets. Row matching requires unique positioned unrotated boxes; no guessing fallback for incomplete native layouts. A–E labels keep their actual keys rather than being renumbered. Missing notes labels (150), out-of-choice labels (2), residual mappings and source-answer/visual meaning remain review work.
+
+Development reports `learn-bench-choices` and `learn-bench-choices-reviewed` are superseded by `learn-bench-wave3-final`; the checked organizer snapshot recorded the final parser before the classification change. Public field loss still affects all 27 concepts. No refreshed release has been imported. The strict local pack/import boundary is documented in `CONTENT_IMPORT.md`; visual/source review and public lesson delivery remain prerequisites.
