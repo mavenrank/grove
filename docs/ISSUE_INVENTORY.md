@@ -1,10 +1,10 @@
-> Historical audit snapshot before baseline 1bc58c8 and batch 1. Current task status and fixes are recorded in [REMEDIATION_TODO.md](REMEDIATION_TODO.md) and [FIX_LOG.md](FIX_LOG.md).
+> Entries #1–34 preserve the historical audit before baseline 1bc58c8 and batch 1; #35–38 are subsequent user requirements. Current implementation status and fixes are recorded in [REMEDIATION_TODO.md](REMEDIATION_TODO.md) and [FIX_LOG.md](FIX_LOG.md).
 
 # Grove issue inventory
 
-Updated: 30 September 2026.
+Updated: 1 October 2026.
 
-35 tracked issue groups, including tentative observation #35, numbered without a priority ranking. This inventory combines the user's ingestion, learning-method, retention, coverage and generation requirements with the earlier architecture audit. It records analysis only; no application changes are included.
+38 tracked issue groups, including tentative observation #35, the source bench #36, deferred formatting #37 and source-image reuse #38, numbered without a priority ranking. This inventory combines the user's ingestion, learning-method, retention, coverage and generation requirements with the earlier architecture audit. It records analysis and requirements; implementation changes are tracked in the remediation checklist and fix log.
 
 The current app has useful foundations: native-text extraction, source provenance, authored approach/formula cards, deterministic generators, a scheduling mechanism, and server-side scoring. None of those alone establishes reliable curriculum coverage or learner mastery.
 
@@ -233,6 +233,16 @@ One correction to the fixed-pool impression: tests currently use seeded generato
 **Request:** Track unmatched parentheses, dangling fragments, long text blobs and lost paragraph/list formatting in existing Learn explanations. Defer implementation to the tail of the backlog, after pipeline reliability and substantive curriculum work.
 
 **Work needed:** Inventory suspicious text with slide citations, distinguish source punctuation from introduced truncation, and review readable paragraph/step/math presentation. Formatting heuristics are review clues, not automatic corrections to mathematical notation or source text. Coordinate with #1, #4, #10 and #33; leave UI changes uncommitted for review.
+
+## 38. Reuse and manage source images as lesson content
+
+**Request:** Preserve useful source images such as the labelled cube diagram and place them directly in the relevant lesson. Provide a repeatable way to manage and reuse these assets as more topics are added, rather than waiting for OCR/diagram interpretation to recover every detail.
+
+**Current implementation and gap (1 October):** Extraction keeps private originals, normalized JPEG assets and source/slide/shape/crop evidence; verified pack import installs delivery media. The organizer retains segment/example media associations, but the public lesson contract drops ordered segments and example-level image links. Learn offers a separate concept image gallery, without figure roles, per-use captions/alt text or zoom; failed image reads currently disappear. This is incomplete image delivery/context, separate from the semantic extraction gaps in #2/#3.
+
+**Work needed:** Add ordered figure blocks and example/step attachments to the lesson contract, reuse the embedded image when it contains the complete diagram, and use a source-region render when labels/arrows are separate source objects. Retain readable delivery variants, content-hash asset IDs and exact source/region provenance. Store captions, accessible descriptions, figure purpose and lesson placement per use; reuse shared asset bytes without collapsing their distinct source occurrences. Source revisions create new asset references while historical releases retain theirs. Validate every association through draft/pack/API/UI and expose missing media. Human-reviewed relevance/legibility permits direct image teaching; OCR-derived facts, mathematical keys and relationship graphs keep their own review requirements.
+
+**Timing:** Start alongside #4/#8 in the next ordered-lesson/media wave, before expanding or publishing refreshed lessons. Use Cubes slide 3 as the first figure pilot and Speed Distance Time as the surrounding lesson-contract pilot. Automatic diagram interpretation (#3) can continue separately. A standalone asset-management screen is not required for the first implementation; manage the manifest/review records first, then assess that UI once there are real authoring needs. Substantial learner-facing changes retain the user's uncommitted review checkpoint.
 
 ## Evidence and scope
 

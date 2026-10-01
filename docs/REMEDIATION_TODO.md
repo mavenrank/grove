@@ -1,6 +1,6 @@
 # Grove remediation checklist
 
-This is the implementation backlog for the original 34 issues, tentative observation #35, source-to-lesson test bench #36 and deferred explanation formatting #37 identified in the architecture audit and the user's ingestion, curriculum, coverage and question-generation observations. Issue numbers stay stable; they are identifiers, not a priority ranking. Read `ISSUE_INVENTORY.md` for the evidence and `ARCHITECTURE_AUDIT.md` for the architecture comparison.
+This is the implementation backlog for the original 34 issues, tentative observation #35, source-to-lesson test bench #36, deferred explanation formatting #37 and source-image reuse/management #38 identified in the architecture audit and the user's ingestion, curriculum, coverage and question-generation observations. Issue numbers stay stable; they are identifiers, not a priority ranking. Read `ISSUE_INVENTORY.md` for the evidence and `ARCHITECTURE_AUDIT.md` for the architecture comparison.
 
 ## Working agreement
 
@@ -68,7 +68,7 @@ Six issue groups: #2, #3, #4, #6, #7, #8, supported by #36. Preserve native extr
 - [x] #3/#7: directly compare selected rendered diagrams/math with their native/notes evidence and record source defects separately from extraction defects. Cube labels, Clock fractions, SDT choices/notes/ambiguities and one independently solved Syllogisms pair are recorded; diagram relationship semantics remain open.
 - [x] Extend the bench with visual evidence/review findings, verify source/candidate integrity and commit each bounded tested chunk. Companion visual/OCR/source-review reports cover 106 pilot positions; full backend suite passes 230. Whole-corpus OCR/diagram interpretation and public lesson delivery remain open.
 
-Next bounded wave candidates: apply reviewed decoration/correction decisions through an explicit draft-only organizer contract; carry ordered teaching/formulas/example media into a versioned lesson contract; build one reviewed Speed Distance Time baseline-method pilot. Substantial curriculum/API/UI delivery must stop for learner review before commitment/activation. Resolve remaining semantic blockers rather than globally clearing visual flags. These are pending scope, not an approved replacement release.
+Next bounded wave: start #38 source-image reuse with #4/#8 ordered lesson/media delivery, including the Cubes slide 3 figure pilot. Apply reviewed decoration/correction decisions through an explicit draft-only organizer contract; carry ordered teaching/formulas/example media into a versioned lesson contract; build one reviewed Speed Distance Time baseline-method pilot. Direct teaching-image delivery does not depend on complete automatic diagram interpretation, but relevance/legibility and the surrounding lesson still require review. Substantial curriculum/API/UI delivery must stop for learner review before commitment/activation. Resolve remaining semantic blockers rather than globally clearing visual flags. No replacement release is approved by this plan.
 
 ## 1. Preserve native-text structure
 
@@ -585,3 +585,19 @@ Status: deferred to the tail of the backlog by the user.
 - [ ] Keep substantial learner-facing changes uncommitted until reviewed.
 
 Acceptance: reviewed explanations are readable without dropping conditions, units or mathematical notation. Detection alone does not close this issue.
+
+## 38. Reuse and manage source teaching images
+
+Status: planned for the next lesson/media wave with #4/#8; prioritize before curriculum expansion, independently of complete OCR/diagram interpretation under #2/#3. Existing private originals/JPEGs, source occurrence metadata and verified import are foundations, not a completed figure workflow.
+
+- [ ] Define typed figure blocks and explicit attachments to lesson segments, example prompts and solution steps. Keep the figure beside the content it supports, in reviewed reading order, instead of only in a concept-wide gallery.
+- [ ] Prefer the original embedded image when it contains the complete teaching diagram. If captions, labels or arrows are separate PPT objects, preserve them with an appropriate rendered source region/figure; retain whole-frame evidence and do not silently crop away meaning.
+- [ ] Define a reusable asset manifest with content hash, format/dimensions and delivery variants. Retain the private original; avoid unnecessary re-encoding and verify label/math readability and transparency where needed. Coordinate format support with the current JPEG-only pack/import/API contract.
+- [ ] Store each use's source hash, slide/notes surface, shape/region, figure role, caption, accessible description and lesson placement. Share identical asset bytes across topics while retaining all usage/source associations; provider decoration decisions remain occurrence-scoped.
+- [ ] Keep image relevance/legibility review distinct from OCR/relationship/answer verification. A reviewed source figure can teach directly without invented OCR text or solved geometry; unresolved derived claims still block their own publication.
+- [ ] Version changed images/derivatives and references without overwriting assets used by old releases. Make review records and asset usage discoverable in the existing tooling; evaluate a dedicated management UI after the first real authoring workflow.
+- [ ] Carry figure references through organizer draft → pack/media installation → API → Learn. Validate missing/wrong references and display a useful failure state instead of silently hiding a failed image.
+- [ ] Add responsive, aspect-preserving display, lazy image loading, useful captions/alt text and an enlarge/zoom interaction for small labels. Stop with the runnable learner-facing preview uncommitted for user review.
+- [ ] Extend #36 with the Cubes slide 3 pilot (Face/Edge/Vertex all visible), a hybrid figure with separate labels, reused assets with distinct contexts, missing media and changed-source/historical-reference cases. Check the actual displayed image against original source evidence before release.
+
+Acceptance: an image-led lesson shows the complete readable source figure in the right teaching context, with a traceable managed asset and stable release reference. Adding another topic can reuse the same delivery/review path. OCR may remain incomplete without erasing the figure; inferred facts and answer keys require their own verification. The concrete UI/curriculum preview is reviewed before committing or activating a new lesson release.
