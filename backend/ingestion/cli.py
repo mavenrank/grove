@@ -36,6 +36,13 @@ def build_parser() -> argparse.ArgumentParser:
     snapshot.add_argument("--release", type=Path, help="release JSON snapshot")
     audit.add_argument("--media", type=Path, help="published media directory to check (no writes)")
 
+    visuals = sub.add_parser("visuals", parents=[src], help="read-only whole-slide rendering into a fresh inspection directory")
+    visuals.add_argument("--catalog", type=Path, required=True)
+    visuals.add_argument("--output", type=Path, required=True)
+    visuals.add_argument("--deck", action="append", required=True, help="catalog deck ID; repeat for another deck")
+    visuals.add_argument("--slide", type=int, action="append", help="original slide position; default all selected slides")
+    visuals.add_argument("--width", type=int, default=1600)
+
     pack = sub.add_parser("pack", parents=[src, work],
                           help="pack the validated catalog into a content pack")
     pack.add_argument("--version", required=True)
@@ -50,6 +57,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "visuals":
+        from .visuals import run_visuals
+        try:
+            catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
+            report = run_visuals(catalog, args.source, args.output, args.deck, args.slide, args.width)
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            print(f"visual inspection failed: {exc}", file=sys.stderr)
+            return 2
+        rendered = sum(d["status"] == "rendered" for d in report["decks"])
+        print(f"visual report -> {args.output / 'visual-report.json'} ({rendered}/{len(report['decks'])} decks rendered)")
+        print("inspection evidence only; no catalog edited or content approved/imported")
+        return 0 if rendered == len(report["decks"]) else 1
     if args.command == "audit":
         from .bench import read_release, run_bench
         try:
