@@ -26,6 +26,9 @@ CLASSIFICATION_RULES: list[tuple[str, str, list[re.Pattern]]] = [
     ("quant.numbers.factors_multiples", "active", [re.compile(r"factors?\s*(and|&)?\s*multiples", re.I)]),
     ("quant.numbers.hcf_lcm", "active", [re.compile(r"hcf|lcm|greatest\s*common", re.I)]),
     ("quant.numbers.arithmetic", "active", [
+        # Numeric roots precede the generic painted-cube/dice rule (#5).
+        # Bare "Cubes" remains reasoning; multi-topic content review is separate.
+        re.compile(r"\b(?:cube|square)[\s-]+roots?\b", re.I),
         re.compile(r"numbers?\s*\d", re.I),
         re.compile(r"\bnumbers\b", re.I),
         re.compile(r"remainder\s*theorem", re.I),

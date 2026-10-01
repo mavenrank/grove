@@ -244,3 +244,9 @@ Joined records retain both original source snapshots and blocks, choices/solutio
 Nineteen new regression cases and 44 existing ingestion/notes cases pass (63 total). Comparing the same 78-source catalog with the final organizer gives 751 question candidates / 598 notes-confirmed, up from 720 / 499. No old confirmed key changed or disappeared. Twenty-two adjacent pairs are linked, including 15 Syllogisms questions. Parse failures fall 145 → 92; ambiguous choices 94 → 17. An overly strict row-height assumption was caught by the source comparison and corrected using bounded centres and additional regression checks before commitment.
 
 The checked organizer snapshot is `<source-dir>`; earlier `learn-bench-choices*` reports are development snapshots. A complete report will follow the remaining wave changes. The 1,245 source records remain accounted for, with all raw slide boundaries retained. Active release 0.3.5, learner history and application presentation are unchanged.
+
+## #5 — numeric cube/root classification — 1 October 2026
+
+Native text in the Cubes and Cube Roots deck describes cubing two-digit numbers, while the separate Cubes deck contains painted-face/dice problems and solution diagrams. Added the specific cube/square-root title rule before generic spatial cubes. Bare/painted Cubes and Dice stay in reasoning; algorithm/deferred scope retains precedence. This is a bounded title correction, not a content-derived classification system or approval of every mixed deck.
+
+Ten new classification cases and the existing ingestion cases pass. The affected real source will be traced in the final all-Learn report; current stored topics remain unchanged. General classification confidence, review overrides and multi-topic tagging stay open.

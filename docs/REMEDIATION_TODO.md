@@ -53,7 +53,7 @@ Six issue groups: #4, #5, #6, #7, #8, #31, informed by #36. Keep the remaining p
 
 - [x] #4/#6/#7/#8: parse explicit A–E choices without renumbering them; match separate boxes only on unique unrotated rows. Incomplete, duplicate and unattached values remain review items.
 - [x] #4/#8: join adjacent question prompts and choices only with one matching explicit question number; retain both source snapshots, blocks, notes assets, solution citations and original slide decisions.
-- [ ] #5: separate explicitly named cube/root arithmetic from painted-cube/dice reasoning and verify the affected source drafts.
+- [x] #5: separate explicitly named cube/root arithmetic from painted-cube/dice reasoning and verify the affected source drafts. Ambiguous/multi-topic titles and content-derived mapping still require review.
 - [ ] #7/#8: add a versioned pack/import contract with review provenance, typed records and verified media delivery; reject malformed approved JSON before database writes.
 - [ ] #31: reject changed content under an existing release/version, including the candidate pack on disk; keep identical retries idempotent.
 - [ ] Run the final all-Learn bench and backend suite, record counts/limitations, and commit each tested chunk locally. No learner release activation or substantial UI/curriculum changes in this wave.
@@ -119,7 +119,7 @@ Status: open. Main file: `backend/ingestion/config.py`.
 
 - [ ] Report filename classification separately from content-derived suggestions.
 - [ ] Add explicit mappings for clocks, calendars, fractions and currently missed skills.
-- [ ] Correct content-dependent cube/root arithmetic versus painted-cube/dice reasoning mappings; the current “cubes” filename rule mixes both under Pattern Completion.
+- [x] Correct the explicit cube/root arithmetic title mapping before the generic painted-cube/dice rule. Content-derived classification of ambiguous/multi-topic decks remains open.
 - [ ] Allow multiple topic tags and a reviewed primary topic for multi-topic decks.
 - [ ] Record confidence, unmatched files and conflicting evidence.
 - [ ] Persist review overrides using stable source IDs (#8), independent of filenames.
