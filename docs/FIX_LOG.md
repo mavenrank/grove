@@ -6,7 +6,7 @@ Entries preserve the state at each historical checkpoint, including then-uncommi
 
 The first implementation batch is ready for review and remains **uncommitted and unstaged**. It touches six issue groups: #18, #26, #27, #28, #7 and #30. Several groups have broader remaining scope; this is not a claim that six complete product initiatives are finished. The exact completed tasks are checked in `REMEDIATION_TODO.md`.
 
-Git is local on `main`, with source baseline `1bc58c8` and no remote. The baseline excludes the learner database, source-derived media, generated ingestion packs, dependencies, environment files and local tool metadata. It preserves application source, not a backup of the learner's content and progress.
+Git is local on `main`, with source baseline `925ef53` and no remote. The baseline excludes the learner database, source-derived media, generated ingestion packs, dependencies, environment files and local tool metadata. It preserves application source, not a backup of the learner's content and progress.
 
 ### #18 — known generator errors corrected; complete semantic audit remains open
 
@@ -111,7 +111,7 @@ The user reported slow Learn navigation, then clarified that it no longer occurs
 
 ## Wave 2 — ingestion evidence and responsive sidebar, 30 September 2026
 
-This checkpoint touches six issue groups: #1, #4, #6, #7, #8 and the requested sidebar portion of #33. These are partial fixes, not closure of the complete ingestion or UI architecture. All source changes, including wave 1 and the startup repair, remain unstaged and uncommitted on baseline `1bc58c8`. No remote is configured.
+This checkpoint touches six issue groups: #1, #4, #6, #7, #8 and the requested sidebar portion of #33. These are partial fixes, not closure of the complete ingestion or UI architecture. All source changes, including wave 1 and the startup repair, remain unstaged and uncommitted on baseline `925ef53`. No remote is configured.
 
 ### #1 — native structure survives extraction
 
@@ -193,7 +193,7 @@ The user also reported the empty Speed Distance Time lesson and requested a trac
 
 ## Committed work and stale-content investigation — 30 September 2026
 
-Approved local commits: `91467d8` (runtime/generators), `b580d9f` (ingestion), `54430ae` (startup/sidebar/docs). Staged whitespace checks passed after trimming two extra audit-document end lines. The source snapshot still has no remote. The approved code is unchanged from the 94-passing-test and successful frontend-build checkpoint; no redundant application test rerun was needed for these documentation-only additions.
+Approved local commits: `efa9dbd` (runtime/generators), `f4eb461` (ingestion), `a5bcb29` (startup/sidebar/docs). Staged whitespace checks passed after trimming two extra audit-document end lines. The source snapshot still has no remote. The approved code is unchanged from the 94-passing-test and successful frontend-build checkpoint; no redundant application test rerun was needed for these documentation-only additions.
 
 The reported Speed Distance Time topic is the stored `grove-ingested` 0.3.5 release, generated/imported on 20 September. Its live API matches its saved payload: placeholder summary, zero examples/media/segments, and authored flashcard fronts incorrectly reused as formula text. The cited 18-slide source exists and its hash matches the release. Code updates have not refreshed this immutable data.
 
@@ -339,7 +339,7 @@ TypeScript and Vite production build pass. Browser checks cover desktop, 390px p
 
 Final read-only evidence rehashes all 78 original source snapshots, compares all 43 fresh Cubes/SDT slides' blocks/notes/text/media/IDs to the previous native catalog, checks all 11 current review annotations/evidence hashes, compares both compiled lessons with their API payloads and original PNG bytes with API delivery, and confirms live release 0.3.5 remains equal to the frozen payload. Result: `.local/audit/wave5-integrity-check.json`. Screenshots: `wave5-cube-desktop.jpg`, `wave5-cube-mobile.jpg`, `wave5-sdt-desktop.jpg`, `wave5-sdt-mobile.jpg` beside it. Isolated servers on 8002/5175 use `wave5-preview-state`; they do not use the live database. No replacement learner release or history migration was performed.
 
-Backend/compiler/API work was committed in small issue-linked chunks: `36823a0`, `2f9e8fe`, `45043bb`. This documentation/startup guard chunk records the checkpoint; six frontend files and private curriculum candidates remain uncommitted for the user's review as requested. Review links and rerun commands are in `LESSON_PREVIEW.md`. Direct source inspection was used because the runner cannot select standard service for the authorized GPT-6-Luna/max reviewers; no priority reviewer was launched.
+Backend/compiler/API work was committed in small issue-linked chunks: `efec457`, `c081504`, `d423b86`. This documentation/startup guard chunk records the checkpoint; six frontend files and private curriculum candidates remain uncommitted for the user's review as requested. Review links and rerun commands are in `LESSON_PREVIEW.md`. Direct source inspection was used because the runner cannot select standard service for the authorized GPT-6-Luna/max reviewers; no priority reviewer was launched.
 
 Remaining scope is explicit: complete topic curriculum/semantic coverage, reviewed region rendering for separate-label/cropped/rotated/grouped figures, individual-step figure placement, historical asset discovery/version retention, normal organizer reconstruction and PNG release installation, followed by activation/rollback and candidate review. Private lesson bundles are not importable releases. #35/#37 remain deferred. These six issue groups remain partial despite passing the bounded pilots.
 
@@ -347,16 +347,16 @@ Remaining scope is explicit: complete topic curriculum/semantic coverage, review
 
 The user explicitly resumed local changes, verification and small local commits.
 Before documentation cleanup, the acknowledged six-file lesson preview passed
-TypeScript/Vite build and was committed as 125481e. The /.local/ ignore rule was
-committed separately as 68aa96c, and Git then reported a clean working tree.
+TypeScript/Vite build and was committed as 0f8de54. The /.local/ ignore rule was
+committed separately as f8798df, and Git then reported a clean working tree.
 
-The root GROVE_HANDOFF.md and GROVE_SCOPE.md already belonged to baseline 1bc58c8
+The root GROVE_HANDOFF.md and GROVE_SCOPE.md already belonged to baseline 925ef53
 (30 September); their bytes were preserved. Four untracked outdated document copies
 were excluded from commits and privately archived, with before/after hashes in
 .local/migration/historical-doc-archive-2026-10-01.json. No old scope is reintroduced
 as current requirements.
 
-Commit d21b98c repairs 33 maintained references to relocated Grove support records,
+Commit 20fcba9 repairs 33 maintained references to relocated Grove support records,
 current README paths/ports/module layout/test evidence, and pack/import arguments.
 WORK_INDEX.md links work waves to commits, documentation and private evidence.
 Five private one-off helpers now derive their Grove location and refuse replacing

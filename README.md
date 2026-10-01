@@ -7,7 +7,7 @@ Frontend and backend live here.
 
 Current work is indexed in [docs/WORK_INDEX.md](docs/WORK_INDEX.md); acceptance
 criteria and remaining work are in [docs/REMEDIATION_TODO.md](docs/REMEDIATION_TODO.md).
-GROVE_HANDOFF.md and GROVE_SCOPE.md were committed in baseline **1bc58c8** on
+GROVE_HANDOFF.md and GROVE_SCOPE.md were committed in baseline **925ef53** on
 30 September 2026. They are historical planning references, not current scope.
 
 ## Repository layout

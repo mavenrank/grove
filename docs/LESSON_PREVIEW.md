@@ -1,6 +1,6 @@
 # Ordered lesson and source-image previews
 
-This is a private draft/review path for #4/#6/#7/#8/#10/#38, supported by the #36 bench. It carries ordered teaching material and original figures through compilation, API delivery and a learner-facing preview. It does not approve/import a replacement release or record learner progress. The user acknowledged the bounded image/lesson presentation, which was committed as 125481e after a successful TypeScript/Vite build. Full semantic/curriculum review and release publication remain open.
+This is a private draft/review path for #4/#6/#7/#8/#10/#38, supported by the #36 bench. It carries ordered teaching material and original figures through compilation, API delivery and a learner-facing preview. It does not approve/import a replacement release or record learner progress. The user acknowledged the bounded image/lesson presentation, which was committed as 0f8de54 after a successful TypeScript/Vite build. Full semantic/curriculum review and release publication remain open.
 
 ## Contract and source checks
 
@@ -50,7 +50,7 @@ Open `/learn-preview/<lesson-id>`. The Vite proxy forwards requests to the isola
 
 ## Current review checkpoint
 
-Private evidence: `.local/audit/wave5-lesson-preview/`. Review server state: `wave5-preview-state/` beside it. The following bounded previews were acknowledged by the user; their frontend source is committed as 125481e:
+Private evidence: `.local/audit/wave5-lesson-preview/`. Review server state: `wave5-preview-state/` beside it. The following bounded previews were acknowledged by the user; their frontend source is committed as 0f8de54:
 
 - [Cubes source figure](http://127.0.0.1:5175/learn-preview/cubes-source-figure): original transparent 300×176 PNG, Face/Edge/Vertex visible on white, source caption, inline placement and keyboard-accessible enlarge/zoom. This is a figure pilot, not the complete painted-cubes curriculum.
 - [Speed–Distance–Time baseline](http://127.0.0.1:5175/learn-preview/speed-distance-time-baseline): basic relation, three unknown configurations, compatible-unit conditions, five method steps, given/target separation and worked 720 km/h reasoning. The source's erroneous multiplication line is not taught; correct reciprocal reasoning is independently checked. Pattern recognition, specialized shortcuts and the rest of the topic remain pending.

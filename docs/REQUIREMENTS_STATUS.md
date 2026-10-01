@@ -23,7 +23,7 @@ implemented states; that is not a new closure decision.
 | Coverage and unknowns | Bounded SDT examples demonstrate several targets | Topic-domain model, solvability and taught/assessed coverage #9/#15/#16 |
 | Generated variants | Deterministic authored families; known errors corrected, structural safeguards | Independent validation across all families, realistic constraints and repetition control #17/#18/#19 |
 | Assessment targeting | Existing mixed blueprint and generated selection | Focused topic/problem-type blueprints and reviewed source-question adapter #20/#21 |
-| Backend attempt lifecycle | Session ownership, stored deadlines, transactional answering/expiry/finalization; approved 91467d8 | UI saving/recovery is separate #25; telemetry/order reliability #27 |
+| Backend attempt lifecycle | Session ownership, stored deadlines, transactional answering/expiry/finalization; approved efa9dbd | UI saving/recovery is separate #25; telemetry/order reliability #27 |
 | Answer-save reliability | Backend idempotency receipts exist | Frontend receipt use, correct stale_ticket handling, request ordering and visible recovery #25/#27 |
 | Timing and evidence | Events/dwell stored; basic skill evidence/history | Dwell duplicates/loss, comparable skill/family/difficulty baselines and complete evidence signals #22/#23 |
 | Isolation and recovery | Safe question schema, terminal-result checks and chromeless runner | Learning API/cache isolation, failure recovery and invalidation #28/#29 |

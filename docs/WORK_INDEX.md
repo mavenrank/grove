@@ -6,7 +6,7 @@ Updated October 1, 2026 after the user's explicit resumption of local changes an
 
 Current user instructions and the maintained tracker govern current work.
 The root GROVE_HANDOFF.md and GROVE_SCOPE.md were already committed in baseline
-**1bc58c8** on September 30. They preserve earlier planning and are not current
+**925ef53** on September 30. They preserve earlier planning and are not current
 scope or proof of completion. This cleanup does not reintroduce their requirements.
 
 - App code, tooling, working documents and supporting audit evidence belong in Grove.
@@ -39,17 +39,17 @@ Paths are relative to Grove. Private evidence is ignored by Git.
 
 | Work | Commits | Documentation | Private evidence |
 |---|---|---|---|
-| Preserve existing application | 1bc58c8 | Baseline architecture audit | .local/audit/{backend,frontend,content}-observations.jsonl |
-| Generator/runtime and retry guards | 91467d8 | Fix log checkpoint 1; #18/#26/#27/#28/#30 | .local/audit/audit_probe.py |
-| Native ingestion and approval gate | b580d9f | Fix log checkpoint 2 | .local/audit/wave2-real-samples/ |
-| Startup and responsive sidebar | 54430ae | Fix log checkpoint 2; #33 | .local/audit/grove-sidebar-{desktop,mobile}.jpg |
-| Trace stale speed lesson | 237396e | Content refresh audit | .local/audit/speed-distance-time-review/ |
-| Bench, notes, choices and classification | 027db2a, 815c19f, 3097d85, 55dd252, 3aa28cb | Pipeline test bench; fix log | .local/audit/learn-bench-wave3-final/ |
-| Immutable reviewed pack/import | a2f05ed, 3e794cf | Content import; #7/#8/#31 | Disposable checks recorded in fix log |
-| Whole-slide, OCR and source decisions | 88368bb, 0127ae2, b066c4f | Visual source review | .local/audit/wave4-{whole-slides,ocr-pilots,source-review}/ |
-| Ordered lessons and original-image pilots | 36823a0, 2f9e8fe, 45043bb, 84ca381, 125481e | Lesson preview; #4/#7/#8/#10/#38 | .local/audit/wave5-lesson-preview/, wave5-integrity-check.json, wave5-*-{desktop,mobile}.jpg |
-| Current support paths and runbooks | d21b98c | README, work index and linked runbooks | .local/migration/cleanup-audit-2026-10-01.json |
-| Relocate supporting files | 68aa96c (ignore rule only) | This index and cleanup checkpoint | .local/migration/aptitude-relocation-2026-10-01.json |
+| Preserve existing application | 925ef53 | Baseline architecture audit | .local/audit/{backend,frontend,content}-observations.jsonl |
+| Generator/runtime and retry guards | efa9dbd | Fix log checkpoint 1; #18/#26/#27/#28/#30 | .local/audit/audit_probe.py |
+| Native ingestion and approval gate | f4eb461 | Fix log checkpoint 2 | .local/audit/wave2-real-samples/ |
+| Startup and responsive sidebar | a5bcb29 | Fix log checkpoint 2; #33 | .local/audit/grove-sidebar-{desktop,mobile}.jpg |
+| Trace stale speed lesson | 9e54efe | Content refresh audit | .local/audit/speed-distance-time-review/ |
+| Bench, notes, choices and classification | 3022bdb, c648b5a, 1850f5c, 1b17c31, 9280af9 | Pipeline test bench; fix log | .local/audit/learn-bench-wave3-final/ |
+| Immutable reviewed pack/import | f8240f4, d2069ff | Content import; #7/#8/#31 | Disposable checks recorded in fix log |
+| Whole-slide, OCR and source decisions | 01df9a5, 06c2391, 197fa5d | Visual source review | .local/audit/wave4-{whole-slides,ocr-pilots,source-review}/ |
+| Ordered lessons and original-image pilots | efec457, c081504, d423b86, ca99e24, 0f8de54 | Lesson preview; #4/#7/#8/#10/#38 | .local/audit/wave5-lesson-preview/, wave5-integrity-check.json, wave5-*-{desktop,mobile}.jpg |
+| Current support paths and runbooks | 20fcba9 | README, work index and linked runbooks | .local/migration/cleanup-audit-2026-10-01.json |
+| Relocate supporting files | f8798df (ignore rule only) | This index and cleanup checkpoint | .local/migration/aptitude-relocation-2026-10-01.json |
 
 ## Private support records
 
@@ -67,5 +67,5 @@ runbooks for new runs. Their originals are archived before path correction, and
 corrected helpers refuse overwriting their existing recorded outputs.
 
 The user acknowledged the bounded image/lesson presentation. It was committed as
-**125481e** after a successful TypeScript/Vite build. This does not establish
+**0f8de54** after a successful TypeScript/Vite build. This does not establish
 full-topic correctness or approve publication of a replacement release.

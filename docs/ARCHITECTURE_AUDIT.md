@@ -1,4 +1,4 @@
-> Historical audit snapshot before baseline 1bc58c8 and batch 1. Current task status and fixes are recorded in [REMEDIATION_TODO.md](REMEDIATION_TODO.md) and [FIX_LOG.md](FIX_LOG.md).
+> Historical audit snapshot before baseline 925ef53 and batch 1. Current task status and fixes are recorded in [REMEDIATION_TODO.md](REMEDIATION_TODO.md) and [FIX_LOG.md](FIX_LOG.md).
 
 # Grove architecture and scope audit
 
@@ -13,7 +13,7 @@ The move into one application directory is a reasonable simplification. The impo
 I read both pages of the referenced [Research aptitude app architecture chat](thread://01a0aab6-2190-7242-8a3a-9f789ddf5222?hostId=local), including the original request, the scope tightening, later UI corrections, and the handoff request. I compared those decisions with:
 
 - [The original consolidated handoff](../.local/history/aptitude-import-2026-10-01/GROVE_HANDOFF.md).
-- [The historical monorepo handoff addendum](../GROVE_HANDOFF.md#L1721).
+- [The historical monorepo handoff addendum](../GROVE_HANDOFF.md).
 - The original frontend/backend code, repository history, local roadmaps and ADRs.
 - The current backend routes, schemas, test engine, persistence, evidence model, scheduler, generator families, ingestion pipeline, frontend pages, cache and telemetry.
 - Aggregate metadata from the existing database through SQLite read-only connections, and the existing content catalog/packs.

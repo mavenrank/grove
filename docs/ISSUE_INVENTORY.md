@@ -1,4 +1,4 @@
-> Entries #1–34 preserve the historical audit before baseline 1bc58c8 and batch 1; #35–38 are subsequent user requirements. Current implementation status and fixes are recorded in [REMEDIATION_TODO.md](REMEDIATION_TODO.md) and [FIX_LOG.md](FIX_LOG.md).
+> Entries #1–34 preserve the historical audit before baseline 925ef53 and batch 1; #35–38 are subsequent user requirements. Current implementation status and fixes are recorded in [REMEDIATION_TODO.md](REMEDIATION_TODO.md) and [FIX_LOG.md](FIX_LOG.md).
 
 # Grove issue inventory
 
