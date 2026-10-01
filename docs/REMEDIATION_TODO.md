@@ -63,7 +63,7 @@ Six issue groups: #4, #5, #6, #7, #8, #31, informed by #36. Keep the remaining p
 Six issue groups: #2, #3, #4, #6, #7, #8, supported by #36. Preserve native extraction and current learner content while adding independently inspectable visual evidence.
 
 - [x] #2/#3/#4/#8: add an opt-in local whole-slide renderer, preserve original positions/source hashes and record adapter versions/failures. Render the four text/image/hybrid pilots into a separate directory.
-- [ ] #2/#4/#7: add offline OCR candidates with word boxes, runtime/language provenance and explicit unknown confidence; keep native text and OCR disagreements separately reviewable.
+- [x] #2/#4/#7: add offline OCR candidates with word boxes, runtime/language provenance and explicit unknown confidence; keep native text and OCR disagreements separately reviewable. Candidates do not override native evidence or clear approval blockers.
 - [ ] #6/#7/#8: record source-hash/slide/shape-scoped review decisions with reason and evidence. Reject stale/ambiguous decisions; do not let review annotations bypass publication gates.
 - [ ] #3/#7: directly compare selected rendered diagrams/math with their native/notes evidence and record source defects separately from extraction defects.
 - [ ] Extend the bench with visual evidence/review findings, verify source/candidate integrity and commit each bounded tested chunk. Whole-corpus OCR/diagram interpretation and public lesson delivery remain open.
@@ -87,7 +87,7 @@ Status: local whole-slide inspection renderer implemented; image knowledge/OCR i
 
 - [ ] Identify slides with useful images but insufficient native text; record image-only versus mixed content.
 - [x] Render the complete slide using an opt-in local PowerPoint adapter; keep original extraction crops/positions and source/slide/frame hashes. Four pilots (106 positions) pass; notes-page rendering, other platforms/active packages and full-corpus coverage remain open.
-- [ ] Choose an OCR/enrichment adapter with explicit runtime, cost and offline requirements; record adapter/model versions.
+- [x] Add an optional offline Windows OCR adapter, with installed-language/runtime requirements and OS/adapter versions; no API charge/network service. Cross-platform adapters and math/diagram semantic enrichment remain open.
 - [ ] Extract image text with confidence and bounding boxes, then recover formulas and worked steps with slide context.
 - [ ] Store uncertain output as a review draft; never silently promote OCR guesses to facts.
 - [ ] Add fixtures for tiny text, mathematical notation, scans, rotated text and screenshots.

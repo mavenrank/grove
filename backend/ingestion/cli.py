@@ -43,6 +43,11 @@ def build_parser() -> argparse.ArgumentParser:
     visuals.add_argument("--slide", type=int, action="append", help="original slide position; default all selected slides")
     visuals.add_argument("--width", type=int, default=1600)
 
+    ocr = sub.add_parser("ocr", help="offline OCR candidates from verified whole-slide inspection frames")
+    ocr.add_argument("--visual-report", type=Path, required=True)
+    ocr.add_argument("--output", type=Path, required=True)
+    ocr.add_argument("--language", default="en-US")
+
     pack = sub.add_parser("pack", parents=[src, work],
                           help="pack the validated catalog into a content pack")
     pack.add_argument("--version", required=True)
@@ -57,6 +62,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "ocr":
+        from .ocr import run_ocr
+        try:
+            visual = json.loads(args.visual_report.read_text(encoding="utf-8"))
+            report = run_ocr(visual, args.visual_report.parent, args.output, args.language)
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            print(f"OCR inspection failed: {exc}", file=sys.stderr)
+            return 2
+        candidates = sum(s["status"] == "candidate" for s in report["slides"])
+        print(f"OCR report -> {args.output / 'ocr-report.html'} ({candidates}/{len(report['slides'])} candidate frames)")
+        print("native text unchanged; confidence unavailable; answers and diagram meaning unverified")
+        return 0 if candidates == len(report["slides"]) and not report["blocked_decks"] else 1
     if args.command == "visuals":
         from .visuals import run_visuals
         try:

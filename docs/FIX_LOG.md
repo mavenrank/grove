@@ -280,3 +280,11 @@ The bundled importer had failed on these decks. A runtime probe found installed 
 Fifteen fixture cases pass. The real CLI rendered all 106 slide positions across Cubes/Syllogisms/Clocks/Speed Distance Time, preserving source hashes. Direct image inspection confirmed 5/3 hours in the SDT slide 3 prompt and literal “45th” in slide 17, narrowing the latter to a source ambiguity. A four-slide offline OCR probe read substantial content but missed choice labels, so integration will retain explicit uncertainty rather than replace native evidence.
 
 See `VISUAL_SOURCE_REVIEW.md` for runtime requirements, scope, commands, Microsoft API references and the private output location. Notes assets, unresolved visual/math meaning, image-led knowledge extraction, PDF support and reviewed learner delivery remain open. No original PPT, stored release or learner history changed; no priority-only reviewer was launched.
+
+## #2/#4/#7/#8 — offline OCR candidate enrichment — 1 October 2026
+
+Added a separate Windows OCR stage over verified native-render frames. It preserves native text and source/frame hashes, captures word rectangles/text angle, records runtime/OS/language versions and leaves unavailable confidence null. Result identity, bounds, source/frame changes, runtime failure and missing language remain explicit blocked cases. Escaped local HTML shows whole slides beside native/OCR candidates and heuristic disagreements; it cannot approve/import content.
+
+Twelve new fixture cases and the fifteen renderer cases pass. Real offline en-US OCR produced 106/106 pilot candidates with unchanged source/frame/native-report bytes. It recovered Face/Vertex/Edge inside the Cubes slide 3 diagram, which native text omits, but mishandled Clock slide 6's 65 5/11 and missed choice labels on 11 frames. The 103 token disagreements include furniture/layout differences and are not 103 independently wrong facts.
+
+Report: `<source-dir>`. This supplies usable image-text candidates and inspection context, not complete lesson extraction or diagram/mathematical verification. Source-scoped review annotations and representative source facts are the next bounded chunk; learner content remains unchanged.
