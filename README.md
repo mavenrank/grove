@@ -109,7 +109,7 @@ generator dependency pinning and backup/restore remain unfinished. See the track
 
 ## Version labels
 
-Application metadata reports 0.1.0; earlier changelog milestones use a separate
-sequence. Content release 0.3.5, pack schema 1, extraction revision 3 and organizer
-revision 1 identify different things. This cleanup does not bump or roll back
-them. Consolidating application version labels remains #34.
+Application metadata reports 0.1.0; the latest historical changelog entry is
+0.3.8. These application labels currently disagree. Content release 0.3.5,
+pack schema 1, extraction revision 3 and organizer revision 1 identify different
+things. This cleanup changes none of these version labels. Consolidating application version labels remains #34.

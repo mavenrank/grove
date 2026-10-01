@@ -1,5 +1,7 @@
 # Grove fix log and review checkpoints
 
+Entries preserve the state at each historical checkpoint, including then-uncommitted work. Current review/commit status is recorded in the latest cleanup entry and REMEDIATION_TODO.md; old scope documents are historical references.
+
 ## Checkpoint 1 — 30 September 2026
 
 The first implementation batch is ready for review and remains **uncommitted and unstaged**. It touches six issue groups: #18, #26, #27, #28, #7 and #30. Several groups have broader remaining scope; this is not a claim that six complete product initiatives are finished. The exact completed tasks are checked in `REMEDIATION_TODO.md`.
@@ -340,3 +342,35 @@ Final read-only evidence rehashes all 78 original source snapshots, compares all
 Backend/compiler/API work was committed in small issue-linked chunks: `36823a0`, `2f9e8fe`, `45043bb`. This documentation/startup guard chunk records the checkpoint; six frontend files and private curriculum candidates remain uncommitted for the user's review as requested. Review links and rerun commands are in `LESSON_PREVIEW.md`. Direct source inspection was used because the runner cannot select standard service for the authorized GPT-6-Luna/max reviewers; no priority reviewer was launched.
 
 Remaining scope is explicit: complete topic curriculum/semantic coverage, reviewed region rendering for separate-label/cropped/rotated/grouped figures, individual-step figure placement, historical asset discovery/version retention, normal organizer reconstruction and PNG release installation, followed by activation/rollback and candidate review. Private lesson bundles are not importable releases. #35/#37 remain deferred. These six issue groups remain partial despite passing the bounded pilots.
+
+## #34 — clean-tree and supporting-document cleanup — 1 October 2026
+
+The user explicitly resumed local changes, verification and small local commits.
+Before documentation cleanup, the acknowledged six-file lesson preview passed
+TypeScript/Vite build and was committed as 125481e. The /.local/ ignore rule was
+committed separately as 68aa96c, and Git then reported a clean working tree.
+
+The root GROVE_HANDOFF.md and GROVE_SCOPE.md already belonged to baseline 1bc58c8
+(30 September); their bytes were preserved. Four untracked outdated document copies
+were excluded from commits and privately archived, with before/after hashes in
+.local/migration/historical-doc-archive-2026-10-01.json. No old scope is reintroduced
+as current requirements.
+
+Commit d21b98c repairs 33 maintained references to relocated Grove support records,
+current README paths/ports/module layout/test evidence, and pack/import arguments.
+WORK_INDEX.md links work waves to commits, documentation and private evidence.
+Five private one-off helpers now derive their Grove location and refuse replacing
+existing output; original bytes are preserved in .local/history. Frozen reports,
+source/release snapshots and JSON metadata remain unchanged.
+
+Review-status cleanup distinguishes already approved commits from remaining scope.
+No whole issue is closed. Only #34's verified README correction subtask is newly
+checked; all other checkbox states and all 38 stable issue IDs remain unchanged.
+REQUIREMENTS_STATUS.md records current outcomes and gaps without reinstating old
+handoff/scope requirements. #35 and #37 retain their deferred positions.
+
+Verification: frontend build passed; corrected Python helper ASTs and Node syntax
+passed; maintained absolute links resolve and current runbooks contain no old
+Aptitude audit root. The private cleanup record preserves root-document and helper
+hashes and exact before/after checkbox states. Final checks rehash all 3,071 original relocated files (including preserved helper/document originals), all 78 source snapshots and the unchanged live 0.3.5 payload. All 63 checked maintained absolute links resolve; the private record stores the results.
+No backend behavior, original source, live learner data or content release was changed.

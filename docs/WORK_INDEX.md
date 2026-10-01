@@ -21,6 +21,7 @@ scope or proof of completion. This cleanup does not reintroduce their requiremen
 | Record | Purpose |
 |---|---|
 | [REMEDIATION_TODO.md](REMEDIATION_TODO.md) | Stable issue IDs, verified subtasks and remaining acceptance criteria |
+| [REQUIREMENTS_STATUS.md](REQUIREMENTS_STATUS.md) | Current implementation and acceptance gaps; not old scope reinstatement |
 | [FIX_LOG.md](FIX_LOG.md) | Chronological changes, verification and checkpoint decisions |
 | [ISSUE_INVENTORY.md](ISSUE_INVENTORY.md) | Findings; historical defects may have later fixes |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Implementation structure and operating commands |
@@ -47,6 +48,7 @@ Paths are relative to Grove. Private evidence is ignored by Git.
 | Immutable reviewed pack/import | a2f05ed, 3e794cf | Content import; #7/#8/#31 | Disposable checks recorded in fix log |
 | Whole-slide, OCR and source decisions | 88368bb, 0127ae2, b066c4f | Visual source review | .local/audit/wave4-{whole-slides,ocr-pilots,source-review}/ |
 | Ordered lessons and original-image pilots | 36823a0, 2f9e8fe, 45043bb, 84ca381, 125481e | Lesson preview; #4/#7/#8/#10/#38 | .local/audit/wave5-lesson-preview/, wave5-integrity-check.json, wave5-*-{desktop,mobile}.jpg |
+| Current support paths and runbooks | d21b98c | README, work index and linked runbooks | .local/migration/cleanup-audit-2026-10-01.json |
 | Relocate supporting files | 68aa96c (ignore rule only) | This index and cleanup checkpoint | .local/migration/aptitude-relocation-2026-10-01.json |
 
 ## Private support records

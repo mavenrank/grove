@@ -11,9 +11,9 @@ This is the implementation backlog for the original 34 issues, tentative observa
 - Stop after a batch touching five or six issue groups for review. A partial fix does not close a whole issue group.
 - UI, curriculum presentation and other substantial learner-facing changes stay uncommitted until the user reviews them. Stop with a runnable preview, specific review prompts and an explanation of what changed.
 - Use disposable databases and synthetic source files for verification. Never rewrite the learner's existing results or silently reimport the corpus.
-- Checkboxes mean implemented and verified; blank items remain open. Historical generated questions remain immutable; generator corrections apply to new tests.
+- Checkboxes mean implemented and verified; blank items remain open. Review acknowledgement is separate from issue closure; close a whole issue only after every acceptance criterion has supporting evidence. Historical generated questions remain immutable; generator corrections apply to new tests.
 
-## Batch plan
+## Original batch plan (execution and approvals recorded below)
 
 1. Trustworthiness: #18 generator errors, #26 atomic finalization, #27 answer retries, #28 history isolation, #7 validation approval gate, #30 connection integrity. Leave changes uncommitted at checkpoint 1.
 2. Ingestion: #1–8, with representative text-only, image-only and hybrid source fixtures; review extraction evidence before importing any replacement release.
@@ -43,7 +43,7 @@ Supporting #36 belongs to this pipeline wave: first audit all existing Learn top
 - [x] #10: prepare the private Speed Distance Time baseline-method pilot with actual relations, units, given/target identification and independently checked worked reasoning. Curriculum review and replacement of the live formula-question fronts remain open.
 - [ ] #7/#8: enforce import schema/review/media checks, immutable candidate versions and rollback/activation checks before refreshed publication.
 - [ ] Re-extract the complete corpus into a separate draft directory after the pilots pass, and account for every source/slide/loss.
-- [ ] Compare a runnable pilot against reviewed source evidence and stop uncommitted for the user's curriculum/UI review before release activation.
+- [ ] Compare a complete versioned publication candidate against reviewed source evidence and stop for the user's curriculum/UI review before release activation. The acknowledged private preview alone does not complete this publication check.
 
 Slide review may use the user-approved GPT-6-Luna/max/standard-only configuration when the runner can honor it. Priority is explicitly excluded. See `AGENTS.md` and `SOURCE_REVIEW_PROTOCOL.md`; direct inspection is the fallback when necessary. No replacement content release has been imported.
 
@@ -123,7 +123,7 @@ Acceptance: the extracted relationship graph reproduces the verified example's r
 
 ## 4. Combine text and images on hybrid slides
 
-Status: same-slide evidence and bounded adjacent Question-number joins implemented; semantic interpretation/general continuations remain open. Depends on #1–3.
+Status: same-slide evidence, bounded adjacent question joins and typed ordered lesson/figure previews implemented. The bounded preview presentation was acknowledged and committed as 125481e; semantic interpretation, complete continuations and normal publication remain open. Depends on #1-3.
 
 - [x] Model each slide as ordered, positioned text/table/image blocks with crop metadata and unresolved drawing references.
 - [x] Keep those blocks, image IDs, notes answers and revision provenance together in question/worked-example drafts. This is a same-slide association, not proof of each diagram's meaning.
@@ -213,7 +213,7 @@ Acceptance: a learner can identify exactly which problem type a lesson or questi
 
 ## 10. Teach a baseline solving method
 
-Status: open; curriculum/UI review required. Depends on #9.
+Status: partial; the private Speed Distance Time baseline pilot is implemented and its bounded presentation acknowledged (125481e). Full problem-type curriculum, method evidence and replacement of live content remain open. New substantial curriculum/UI changes still require review. Depends on #9.
 
 - [ ] Define baseline steps: identify givens, identify target, choose relation, substitute units, solve and verify.
 - [ ] Write one fully worked baseline example for each pilot problem type.
@@ -321,7 +321,7 @@ Acceptance: variants stay solvable and valid; February 30 and impossible numeric
 
 ## 18. Correct and validate generated questions
 
-Status: partially implemented in batch 1; awaiting review. Main files: `content_engine/families/*`.
+Status: partial; batch-1 generator corrections were approved and committed as 91467d8. Independent verification across all enabled families and the historical-content incident policy remain open. Main files: content_engine/families/*.
 
 - [x] Correct silent numeric rounding in percentage and simple-interest families.
 - [x] Replace the ambiguous ordering question with a uniquely determined target.
@@ -431,7 +431,7 @@ Acceptance: the learner can tell which answer the server saved and recover witho
 
 ## 26. Make expiry and finalization atomic
 
-Status: implemented and verified in batch 1; awaiting review. Main files: engine runtime/scoring and database connections.
+Status: implemented and verified in batch 1, approved and committed as 91467d8. This records the existing backend completion; no issue-closure transition is made by this cleanup. Frontend answer saving and telemetry remain separate #25/#27 work.
 
 - [x] Recheck ownership, active state and deadline inside the write transaction.
 - [x] Reject new question fetches, answers, marks, dwell and events after terminal state or expiry.
@@ -445,7 +445,7 @@ Acceptance: every stored score is a coherent snapshot of exactly the answers acc
 
 ## 27. Make retries and telemetry idempotent
 
-Status: partially implemented in batch 1; awaiting review. Depends on #26, #30.
+Status: partial; batch-1 answer receipts were approved and committed as 91467d8. Telemetry deduplication, frontend receipt adoption and different-request ordering remain open. Depends on #26, #30.
 
 - [x] Persist answer request receipts keyed by session and idempotency key in the answer transaction.
 - [x] Return the original response for an identical retry; reject key reuse with changed position, ticket or option.
@@ -460,7 +460,7 @@ Acceptance: retries are safe; batch 1 addresses answer receipts, while telemetry
 
 ## 28. Enforce assessment isolation on every surface
 
-Status: partially implemented in batch 1; awaiting review. Main files: history routes, learning routes and frontend runner.
+Status: partial; the active-history isolation fix was approved and committed as 91467d8. Learning API/cache isolation remains open. Main files: history routes, learning routes and frontend runner.
 
 - [x] Reject detailed history access for active/cancelled sessions and terminal sessions without a stored score.
 - [x] Verify history cannot bulk expose active questions, metadata, answers or explanations.
@@ -488,7 +488,7 @@ Acceptance: retry succeeds after transient failure and routes never show data fo
 
 ## 30. Protect database integrity and recovery
 
-Status: partially implemented in batch 1; awaiting review. Main files: `app/db/*`.
+Status: partial; connection enforcement and transactional locking were approved and committed as 91467d8. Migrations, verified backup/restore and session recovery remain open. Main files: app/db/*.
 
 - [x] Enable SQLite foreign-key enforcement on every connection, including ordinary reads and writes.
 - [x] Lock before reading mutable state in a write transaction; support multiple wrappers/processes with `BEGIN IMMEDIATE`.
@@ -528,7 +528,7 @@ Acceptance: visible numbers answer a learner question and agree with recorded ev
 
 ## 33. Review responsive UI and learner language
 
-Status: open; mandatory uncommitted review checkpoint. Main files: frontend pages, layout and runner.
+Status: partial; the responsive sidebar was acknowledged and committed as 54430ae, and the bounded lesson/figure presentation as 125481e. Other screen/language tasks remain open; new substantial UI changes still require an uncommitted review checkpoint.
 
 - [x] Add a Grove-styled shadcn/Radix sidebar composition with grouped navigation and a mobile drawer.
 - [x] Use breakpoint defaults: drawer below 768 px; 64 px collapsed rail at 768–1023 px (208 px expanded); 240 px at 1024–1439 px; 264 px from 1440 px.
@@ -548,12 +548,12 @@ Acceptance: the agreed screens work across target viewports and the user has rev
 
 ## 34. Align documentation and local version control
 
-Status: local Git and remediation documents complete; setup/recovery documentation remains open.
+Status: partial; local Git, supporting-file relocation, current runbook/path corrections and a work index are implemented. Application-version alignment, verified recovery/fresh-checkout workflow and remaining documentation criteria stay open.
 
 - [x] Initialize local Git on `main` and preserve a source baseline without a remote.
 - [x] Exclude learner databases, generated ingestion output, media, credentials, dependencies and tool metadata.
 - [x] Keep the architecture audit, issue inventory, detailed checklist and fix log inside Grove.
-- [ ] Correct stale README paths, ports, module layout and test counts against the implementation.
+- [x] Correct stale README paths, ports, module layout and test counts against the implementation (October 1 cleanup; checked against config/CLI/module paths and prior test evidence).
 - [ ] Document local backup/restore, content approval/import and review checkpoints.
 - [ ] Add issue-linked changelog entries after reviewed batches and keep historical scope decisions explicit.
 - [ ] Commit approved implementation batches only after their verification and required review.
@@ -599,13 +599,13 @@ Acceptance: reviewed explanations are readable without dropping conditions, unit
 
 ## 38. Reuse and manage source teaching images
 
-Status: typed assets/occurrences, verified private compiler/API and the original Cubes figure preview are implemented; UI/curriculum await user review. Whole issue remains partial: source-region rendering, individual-step placement, historical usage and live PNG/lesson publication are open. See `LESSON_PREVIEW.md`.
+Status: partial; typed assets/occurrences, verified private compiler/API and bounded figure/lesson presentation are implemented. The user acknowledged the presentation, committed as 125481e. Full semantic/curriculum review, source-region rendering, individual-step placement, historical usage and live PNG/lesson publication remain open. See LESSON_PREVIEW.md.
 
 - [x] Define schema-1 ordered figure blocks and prompt/solution-example attachments with required captions/alt text. Store each use's source/hash/surface/shape/block/role and placement independently of shared asset bytes.
 - [x] Preserve complete original JPEG/PNG teaching images unchanged and support an explicit normalized JPEG alternative. Verify full hash, actual format/dimensions and source occurrence. Cubes slide 3 retains Face/Edge/Vertex and transparency.
 - [x] Require current exact-shape review evidence for decoration exclusions in private drafts; keep OCR, inferred relationships and answer verification separate. Raw extraction and native publication blockers remain unchanged.
 - [x] Carry ordered lesson/media associations through private compilation → preview API → browser, with explicit missing/changed-image failures. Content-addressed shared assets retain distinct source contexts; synthetic reuse and source-change cases pass.
-- [x] Provide responsive/aspect-preserving display, lazy loading, captions/alt text and enlarge/zoom. Desktop/390px, keyboard dialog dismissal/focus return and missing-image display pass. The UI remains uncommitted for user review.
+- [x] Provide responsive/aspect-preserving display, lazy loading, captions/alt text and enlarge/zoom. Desktop/390px, keyboard dialog dismissal/focus return and missing-image display passed at the pilot checkpoint. The user acknowledged the bounded presentation, committed as 125481e; full lesson publication remains open.
 - [ ] Add reviewed region/figure rendering for separate labels/arrows and cropped/rotated/grouped images; preserve whole-frame evidence. Add the hybrid-source pilot before claiming these cases supported.
 - [ ] Attach figures within individual solution steps where needed; current example attachments render before/after the worked steps.
 - [ ] Integrate reviewed lesson authoring/reconstruction and PNG installation into normal immutable packs/import; verify release activation/rollback and old image references before replacing live content.

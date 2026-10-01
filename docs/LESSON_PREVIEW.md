@@ -1,6 +1,6 @@
 # Ordered lesson and source-image previews
 
-This is a private draft/review path for #4/#6/#7/#8/#10/#38, supported by the #36 bench. It carries ordered teaching material and original figures through compilation, API delivery and a learner-facing preview. It does not approve/import a replacement release or record learner progress. UI/curriculum approval is pending at this checkpoint.
+This is a private draft/review path for #4/#6/#7/#8/#10/#38, supported by the #36 bench. It carries ordered teaching material and original figures through compilation, API delivery and a learner-facing preview. It does not approve/import a replacement release or record learner progress. The user acknowledged the bounded image/lesson presentation, which was committed as 125481e after a successful TypeScript/Vite build. Full semantic/curriculum review and release publication remain open.
 
 ## Contract and source checks
 
@@ -50,12 +50,12 @@ Open `/learn-preview/<lesson-id>`. The Vite proxy forwards requests to the isola
 
 ## Current review checkpoint
 
-Private evidence: `.local/audit/wave5-lesson-preview/`. Review server state: `wave5-preview-state/` beside it. The frontend source is intentionally uncommitted until the user reviews:
+Private evidence: `.local/audit/wave5-lesson-preview/`. Review server state: `wave5-preview-state/` beside it. The following bounded previews were acknowledged by the user; their frontend source is committed as 125481e:
 
 - [Cubes source figure](http://127.0.0.1:5175/learn-preview/cubes-source-figure): original transparent 300×176 PNG, Face/Edge/Vertex visible on white, source caption, inline placement and keyboard-accessible enlarge/zoom. This is a figure pilot, not the complete painted-cubes curriculum.
 - [Speed–Distance–Time baseline](http://127.0.0.1:5175/learn-preview/speed-distance-time-baseline): basic relation, three unknown configurations, compatible-unit conditions, five method steps, given/target separation and worked 720 km/h reasoning. The source's erroneous multiplication line is not taught; correct reciprocal reasoning is independently checked. Pattern recognition, specialized shortcuts and the rest of the topic remain pending.
 
-Review clarity of the method, image readability/enlargement and phone layout. Desktop and 390px checks passed, including zoom/Escape/focus return and no horizontal overflow. A deliberately absent private image produced visible failure/retry with caption/source retained; the compiled bundle was restored byte-for-byte afterwards.
+The user acknowledged the image treatment and lesson flow. Keep optional enlargement available; inline scaling/readability is the main presentation requirement. This is presentation feedback, not full-topic semantic approval. Desktop and 390px checks passed, including zoom/Escape/focus return and no horizontal overflow. A deliberately absent private image produced visible failure/retry with caption/source retained; the compiled bundle was restored byte-for-byte afterwards.
 
 Verification: 274 backend tests, TypeScript/Vite build, all 78 source hashes, 43 fresh native slide comparisons, 11 current review annotations, unchanged source PNG through API, and the frozen live 0.3.5 payload checked using read-only SQLite. Evidence: `wave5-integrity-check.json` and `wave5-{cube,sdt}-{desktop,mobile}.jpg` in the private audit directory. The runner cannot honor standard service for GPT-6-Luna reviewers, so necessary source inspection was direct; no priority reviewer was substituted.
 
