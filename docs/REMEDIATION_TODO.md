@@ -25,7 +25,7 @@ Checkpoint 2 (30 September 2026): partial fixes for #1, #4, #6, #7, #8 plus the 
 
 Approved code checkpoints are now committed locally: runtime/generators `91467d8`, ingestion `b580d9f`, and sidebar/docs `54430ae`. The empty Speed Distance Time page was traced to stored release 0.3.5 from 20 September. A fresh targeted draft recovered 15 question candidates but exposed notes-format, source-answer, formula and public-contract gaps. See `CONTENT_REFRESH_AUDIT.md`.
 
-## Next wave: source-to-lesson reliability
+## Source-to-lesson reliability: ongoing publication prerequisites
 
 Six issue groups: #2, #4, #6, #7, #8, #10. Use Speed Distance Time as the first failing-topic pilot. The following checks are required before any replacement release:
 
@@ -46,6 +46,17 @@ Supporting #36 belongs to this pipeline wave: first audit all existing Learn top
 - [ ] Compare a runnable pilot against reviewed source evidence and stop uncommitted for the user's curriculum/UI review before release activation.
 
 Slide review may use the user-approved GPT-6-Luna/max/standard-only configuration when the runner can honor it. Priority is explicitly excluded. See `AGENTS.md` and `SOURCE_REVIEW_PROTOCOL.md`; direct inspection is the fallback when necessary. No replacement content release has been imported.
+
+## Current wave — 1 October 2026
+
+Six issue groups: #4, #5, #6, #7, #8, #31, informed by #36. Keep the remaining publication prerequisites above open.
+
+- [x] #4/#6/#7/#8: parse explicit A–E choices without renumbering them; match separate boxes only on unique unrotated rows. Incomplete, duplicate and unattached values remain review items.
+- [x] #4/#8: join adjacent question prompts and choices only with one matching explicit question number; retain both source snapshots, blocks, notes assets, solution citations and original slide decisions.
+- [ ] #5: separate explicitly named cube/root arithmetic from painted-cube/dice reasoning and verify the affected source drafts.
+- [ ] #7/#8: add a versioned pack/import contract with review provenance, typed records and verified media delivery; reject malformed approved JSON before database writes.
+- [ ] #31: reject changed content under an existing release/version, including the candidate pack on disk; keep identical retries idempotent.
+- [ ] Run the final all-Learn bench and backend suite, record counts/limitations, and commit each tested chunk locally. No learner release activation or substantial UI/curriculum changes in this wave.
 
 ## 1. Preserve native-text structure
 
@@ -96,7 +107,7 @@ Status: same-slide evidence linked in wave 2; semantic interpretation and contin
 - [ ] Link a question to its diagram, table, given values and notes answer.
 - [ ] Deduplicate native/OCR text while retaining source attribution and disagreements.
 - [ ] Group adjacent slides when a worked problem continues across them; retain original boundaries.
-- [ ] Pilot Syllogisms prompts on one slide with options/notes answers on the next. Match explicit question identifiers and block ambiguous continuations; do not infer absent options or conflate two questions.
+- [x] Pilot Syllogisms prompts on one slide with options/notes answers on the next. Match explicit question identifiers and block ambiguous continuations; do not infer absent options or conflate two questions. Original boundaries, role-specific citations and notes assets survive; more general continuations remain open.
 - [ ] Flag orphan diagrams and unattached numeric values for review.
 - [ ] Compare hybrid lesson output with whole-slide renders, including multi-column layouts.
 

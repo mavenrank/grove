@@ -7,7 +7,7 @@ from typing import Any
 from .flashcards import draft_flashcards
 from .gates import NOISE_TOKENS, concept_formula
 from .labels import short_deck_label
-from .questions import parse_question_slide
+from .questions import parse_question_slide, split_question_view
 from .text import FORMULA_LINE, clean_lines, looks_like_code
 
 
@@ -32,13 +32,27 @@ def organize_deck(deck: dict[str, Any], media_ids_by_slide: dict[Any, list[str]]
                 or slide.get("media_ids", []))
         return [m for m in mids if m not in template_media]
 
-    for slide in deck["slides"]:
+    def source_for(slide: dict) -> dict:
+        return {"deck_id": deck["deck_id"], "slide_number": slide["slide_number"],
+                "source_file": deck["source_file"], "deck_label": deck_label,
+                "source_path": deck.get("source_path", ""), "source_hash": deck["source_hash"],
+                "slide_id": slide.get("slide_id")}
+
+    joined = {}
+    linked = {}
+    slides = deck["slides"]
+    for index, slide in enumerate(slides[:-1]):
+        if index in linked or slide.get("kind") != "question" or slides[index + 1].get("kind") != "question":
+            continue
+        view = split_question_view(slide, slides[index + 1])
+        if view:
+            joined[index] = view
+            linked[index + 1] = index
+
+    for index, slide in enumerate(slides):
         kind = slide.get("kind", "other")
         slide_no = slide["slide_number"]
-        src = {"deck_id": deck["deck_id"], "slide_number": slide_no,
-               "source_file": deck["source_file"], "deck_label": deck_label,
-               "source_path": deck.get("source_path", ""), "source_hash": deck["source_hash"],
-               "slide_id": slide.get("slide_id")}
+        src = source_for(slide)
         slide_issues = [{**item, "source": src} for item in slide.get("issues", [])]
         review_issues.extend(slide_issues)
         mids = media_for(slide_no, slide)
@@ -52,14 +66,33 @@ def organize_deck(deck: dict[str, Any], media_ids_by_slide: dict[Any, list[str]]
         decision = {"source": src, "kind": kind, "content_mode": slide.get("content_mode"),
                     "media_ids": mids, "notes_media_ids": notes_mids, "reason": slide.get("kind_reason", "legacy_classification"),
                     "outcome": "excluded"}
-        if kind == "question":
-            q = parse_question_slide({**slide, "deck_id": deck["deck_id"],
+        if index in linked:
+            decision.update(outcome="question_continuation", reason="adjacent_matching_question_id",
+                            linked_source=source_for(slides[linked[index]]))
+        elif kind == "question":
+            q = parse_question_slide({**joined.get(index, slide), "deck_id": deck["deck_id"],
                                       "source_file": deck["source_file"]})
             if q:
                 q["source"] = src
                 q["media_ids"] = mids
                 q["blocks"] = slide.get("blocks", [])
                 q.update(notes_context)
+                if index in joined:
+                    continuation = slides[index + 1]
+                    choice_src = source_for(continuation)
+                    q["source_parts"] = [{**src, "role": "prompt"}, {**choice_src, "role": "choices_and_solution"}]
+                    q["blocks"] = slide.get("blocks", []) + continuation.get("blocks", [])
+                    q["notes_blocks"] = slide.get("notes_blocks", []) + continuation.get("notes_blocks", [])
+                    q["media_sources"] = {mid: {**src, "surface": "slide"} for mid in mids}
+                    q["media_sources"].update({mid: {**choice_src, "surface": "slide"}
+                                               for mid in media_for(continuation["slide_number"], continuation)})
+                    q["media_sources"].update({mid: {**choice_src, "surface": "notes"}
+                                               for mid in continuation.get("notes_media_ids", [])})
+                    q["media_ids"] = list(dict.fromkeys(mids + media_for(continuation["slide_number"], continuation)))
+                    q["notes_media_ids"] = list(dict.fromkeys(notes_mids + [m for m in continuation.get("notes_media_ids", [])
+                                                                          if m not in template_media]))
+                    q["answer_evidence"] = [{**item, "source": choice_src} for item in q["answer_evidence"]]
+                    decision.update(reason="adjacent_matching_question_id", linked_source=choice_src)
                 q["issues"] = slide_issues + [{**item, "source": src} for item in q.get("issues", [])]
                 review_issues.extend(item for item in q["issues"] if item not in slide_issues)
                 questions.append(q)
@@ -181,11 +214,11 @@ def assemble_concepts(skill_id: str, decks: list[dict[str, Any]],
             if mid not in seen_media:
                 seen_media.add(mid)
                 media.append({"image_id": mid,
-                              "source": {**seg["source"], "surface": "slide"}})
+                              "source": seg.get("media_sources", {}).get(mid, {**seg["source"], "surface": "slide"})})
         for mid in seg.get("notes_media_ids", []):
             if mid not in seen_media:
                 seen_media.add(mid)
-                media.append({"image_id": mid, "source": {**seg["source"], "surface": "notes"}})
+                media.append({"image_id": mid, "source": seg.get("media_sources", {}).get(mid, {**seg["source"], "surface": "notes"})})
 
     all_examples = [
         {
@@ -196,6 +229,7 @@ def assemble_concepts(skill_id: str, decks: list[dict[str, Any]],
                             or re.sub(r"^\s*answer\s*(?:is)?\s*[:\-]?\s*[A-Ea-e]\b[).:]?\s*",
                                       "", q.get("notes_raw", ""), count=1).strip()),
             "source": q["source"],
+            "source_parts": q.get("source_parts", [q["source"]]),
             "media_ids": q.get("media_ids", []),
             "blocks": q.get("blocks", []),
             "notes_media_ids": q.get("notes_media_ids", []),

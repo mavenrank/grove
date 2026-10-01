@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-QUESTION_PROMPT_SPLIT = re.compile(r"^\s*([A-Da-d])\s*[).:]\s*(.*)$")
+QUESTION_PROMPT_SPLIT = re.compile(r"^\s*([A-Ea-e])\s*[).:]\s*(.*)$")
 ANSWER_IN_NOTES = re.compile(r"Answer\s*(?:is)?\s*[:\-]?\s*([A-Ea-e])\b\.?(.*)", re.S)
 FORMULA_LINE = re.compile(r"[=×÷±√]|%\s*of\b|\bper cent\b|\bpercentage\b", re.I)
 DEFINITION_LINE = re.compile(r"\b(is|are|means|refers to|called|defined as)\b", re.I)
