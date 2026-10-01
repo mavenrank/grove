@@ -9,6 +9,7 @@ import { Loading } from "./ui";
 const Overview = lazy(() => import("./pages/Overview").then((m) => ({ default: m.Overview })));
 const Learn = lazy(() => import("./pages/Learn").then((m) => ({ default: m.Learn })));
 const ConceptPage = lazy(() => import("./pages/Concept").then((m) => ({ default: m.ConceptPage })));
+const LessonPreviewPage = lazy(() => import("./pages/LessonPreview").then((m) => ({ default: m.LessonPreviewPage })));
 const Flashcards = lazy(() => import("./pages/Flashcards").then((m) => ({ default: m.Flashcards })));
 const TestSetup = lazy(() => import("./pages/TestSetup").then((m) => ({ default: m.TestSetup })));
 const Results = lazy(() => import("./pages/Results").then((m) => ({ default: m.Results })));
@@ -28,6 +29,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Suspense fallback={<Loading />}><Overview /></Suspense>} />
           <Route path="/learn" element={<Suspense fallback={<Loading />}><Learn /></Suspense>} />
+          <Route path="/learn-preview/:previewId" element={<Suspense fallback={<Loading />}><LessonPreviewPage /></Suspense>} />
           <Route path="/learn/:conceptId" element={<Suspense fallback={<Loading />}><ConceptPage /></Suspense>} />
           <Route path="/flashcards" element={<Suspense fallback={<Loading />}><Flashcards /></Suspense>} />
           <Route path="/tests" element={<Suspense fallback={<Loading />}><TestSetup /></Suspense>} />

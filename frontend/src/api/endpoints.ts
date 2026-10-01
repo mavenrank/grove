@@ -14,6 +14,7 @@ import type {
   SessionCreated,
   Taxonomy,
   Concept,
+  LessonPreview,
   TestResult,
   TestDetail,
 } from "./types";
@@ -21,6 +22,10 @@ import type { TestEvent } from "./telemetry";
 
 export const api = {
   health: () => request<{ status: string }>("/api/health"),
+  lessonPreviews: () => request<{ draft_only: true; lessons: { id: string; title: string }[] }>("/api/content/lesson-previews"),
+  lessonPreview: (id: string) => request<LessonPreview>(`/api/content/lesson-previews/${encodeURIComponent(id)}`),
+  previewImageUrl: (lessonId: string, imageId: string) =>
+    `/api/content/lesson-previews/${encodeURIComponent(lessonId)}/media/${encodeURIComponent(imageId)}`,
 
   // reads: stale-while-revalidate cache — instant revisits, background refresh
   taxonomy: () => getCached<Taxonomy>("/api/content/taxonomy", 60_000),

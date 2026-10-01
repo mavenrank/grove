@@ -70,7 +70,31 @@ export interface Concept {
   common_mistakes: string[];
   related_families: string[];
   source_decks: ConceptSourceDeck[];
+  lesson?: Lesson | null;
 }
+
+export interface LessonCitation {
+  deck_id: string; source_file: string; source_path: string; source_hash: string;
+  slide_id: string; slide_number: number; surface: "slide" | "notes"; deck_label: string;
+}
+export interface LessonAsset { image_id: string; sha256: string; mime: "image/jpeg" | "image/png"; width: number; height: number; }
+export interface LessonFigure {
+  type: "figure"; id: string; image_id: string; source: LessonCitation; shape_id: number;
+  block_sha256: string; original_sha256: string; representation: "original_image" | "normalized_preview";
+  role: "teaching_diagram" | "example_prompt" | "solution_diagram"; caption: string; alt: string; review_status: "candidate" | "reviewed";
+}
+export interface LessonStep { title: string; text: string; equation: string; }
+export type LessonBlock = LessonFigure
+  | { type: "text"; id: string; paragraphs: string[]; sources: LessonCitation[] }
+  | { type: "formula"; id: string; expression: string; variables: string[]; conditions: string[]; sources: LessonCitation[] }
+  | { type: "steps"; id: string; steps: LessonStep[]; sources: LessonCitation[] }
+  | { type: "example"; id: string; prompt: string; givens: string[]; target: string; steps: LessonStep[]; result: string;
+      verification: "unverified" | "independent_check"; sources: LessonCitation[]; figures: LessonFigure[] };
+export interface Lesson {
+  schema_version: 1; id: string; title: string; introduction: string; review_status: "draft" | "reviewed"; assets: LessonAsset[];
+  sections: { id: string; title: string; stage: "overview" | "baseline" | "recognition" | "shortcut"; blocks: LessonBlock[] }[];
+}
+export interface LessonPreview { lesson: Lesson; catalog_sha256: string; draft_only: true; }
 
 export interface Flashcard {
   id: string;
