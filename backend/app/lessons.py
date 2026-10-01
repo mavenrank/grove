@@ -148,3 +148,24 @@ class LessonPreviewOut(LessonRecord):
     lesson: Lesson
     catalog_sha256: Hash
     draft_only: Literal[True] = True
+
+
+class LessonBundle(LessonRecord):
+    bundle_schema_version: Literal[1]
+    approved: Literal[False]
+    created_at: Text
+    catalog_sha256: Hash
+    lessons: Annotated[list[Lesson], Field(min_length=1)]
+    source_decisions: list[dict] = []
+
+    @model_validator(mode="after")
+    def draft_identity(self):
+        if len({l.id for l in self.lessons}) != len(self.lessons) or any(l.review_status != "draft" for l in self.lessons):
+            raise ValueError("preview bundles require distinct draft lessons")
+        assets = {}
+        for lesson in self.lessons:
+            for asset in lesson.assets:
+                if asset.image_id in assets and assets[asset.image_id] != asset:
+                    raise ValueError("conflicting shared asset metadata")
+                assets[asset.image_id] = asset
+        return self

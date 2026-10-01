@@ -75,7 +75,7 @@ Next bounded wave: start #38 source-image reuse with #4/#8 ordered lesson/media 
 Six groups: #4/#6/#7/#8/#10/#38, supported by #36. Backend/tooling can be committed in small chunks; substantial curriculum/UI remains uncommitted for the user's concrete review.
 
 - [x] #4/#7/#8/#38: define schema-1 ordered lesson sections, text/formula/steps/examples and source-scoped figures, shared typed assets, captions/alt text and legacy API compatibility. Reject invalid associations and draft lessons in approved packs.
-- [ ] #6/#7/#8/#38: compile a fresh draft-only lesson/media bundle from exact catalog/source/shape evidence, validate media bytes/dimensions/references and record occurrence-scoped decoration candidates without changing raw extraction or publication blockers.
+- [x] #6/#7/#8/#38: compile a fresh draft-only lesson/media bundle from exact catalog/source/shape evidence, validate media bytes/dimensions/references and record occurrence-scoped decoration candidates without changing raw extraction or publication blockers. Original JPEG/PNG and normalized JPEG are supported; cropped/rotated/grouped region rendering remains open.
 - [ ] #4/#8/#38: add a disabled-by-default read-only preview API that preserves lesson/figure associations and serves validated static source images; do not import or activate a learner release.
 - [ ] #10/#38: prepare source-compared Cubes and SDT baseline-method candidates with independent worked reasoning; keep curriculum drafts pending learner review.
 - [ ] #4/#38: provide the runnable ordered-lesson/inline-figure preview, readable image enlargement and explicit failed-image states. Leave substantial learner-facing changes uncommitted.

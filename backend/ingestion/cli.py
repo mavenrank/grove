@@ -55,6 +55,15 @@ def build_parser() -> argparse.ArgumentParser:
     review.add_argument("--evidence-root", type=Path, required=True)
     review.add_argument("--output", type=Path, required=True)
 
+    lessons = sub.add_parser("lesson-drafts", parents=[src], help="compile verified private lesson figures without release approval")
+    lessons.add_argument("--catalog", type=Path, required=True)
+    lessons.add_argument("--plan", type=Path, required=True)
+    lessons.add_argument("--media-root", type=Path, required=True)
+    lessons.add_argument("--output", type=Path, required=True)
+    lessons.add_argument("--review-manifest", type=Path)
+    lessons.add_argument("--visual-report", type=Path)
+    lessons.add_argument("--evidence-root", type=Path)
+
     pack = sub.add_parser("pack", parents=[src, work],
                           help="pack the validated catalog into a content pack")
     pack.add_argument("--version", required=True)
@@ -69,6 +78,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "lesson-drafts":
+        from .lesson_drafts import compile_lessons
+        try:
+            read = lambda p: json.loads(p.read_text(encoding="utf-8")) if p else None
+            bundle = compile_lessons(read(args.plan), read(args.catalog), args.source, args.media_root, args.output,
+                                     read(args.review_manifest), args.visual_report, args.evidence_root)
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            print(f"lesson compilation failed: {exc}", file=sys.stderr)
+            return 2
+        print(f"draft lesson bundle -> {args.output / 'lesson-bundle.json'} ({len(bundle['lessons'])} lessons)")
+        print("native evidence/review blockers unchanged; no learner release approved/imported")
+        return 0
     if args.command == "review-sources":
         from .source_review import run_source_reviews
         try:
