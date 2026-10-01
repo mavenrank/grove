@@ -17,6 +17,19 @@ from ingestion.pack_contract import content_digest, validate_pack
 from ingestion.pipeline import Pipeline
 
 
+def test_approved_pack_cannot_contain_a_draft_lesson(candidate):
+    payload = deepcopy(candidate[2])
+    source = payload["concepts"][0]["learning_segments"][0]["source"]
+    citation = {k: source[k] for k in ("deck_id", "source_file", "source_path", "source_hash", "slide_id", "slide_number")}
+    payload["concepts"][0]["lesson"] = {"schema_version": 1, "id": "pilot", "title": "Pilot",
+        "introduction": "Review this lesson before publication.", "review_status": "draft", "assets": [],
+        "sections": [{"id": "baseline", "title": "Baseline", "stage": "baseline", "blocks": [
+            {"type": "text", "id": "intro", "paragraphs": ["Candidate teaching text"], "sources": [citation]}]}]}
+    payload["content_sha256"] = content_digest(payload)
+    with pytest.raises(ValueError, match="draft lessons"):
+        validate_pack(payload)
+
+
 @pytest.fixture
 def candidate(tmp_path):
     source = tmp_path / "source"

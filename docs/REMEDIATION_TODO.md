@@ -70,6 +70,17 @@ Six issue groups: #2, #3, #4, #6, #7, #8, supported by #36. Preserve native extr
 
 Next bounded wave: start #38 source-image reuse with #4/#8 ordered lesson/media delivery, including the Cubes slide 3 figure pilot. Apply reviewed decoration/correction decisions through an explicit draft-only organizer contract; carry ordered teaching/formulas/example media into a versioned lesson contract; build one reviewed Speed Distance Time baseline-method pilot. Direct teaching-image delivery does not depend on complete automatic diagram interpretation, but relevance/legibility and the surrounding lesson still require review. Substantial curriculum/API/UI delivery must stop for learner review before commitment/activation. Resolve remaining semantic blockers rather than globally clearing visual flags. No replacement release is approved by this plan.
 
+## Current wave: ordered lessons and source figures — 1 October 2026
+
+Six groups: #4/#6/#7/#8/#10/#38, supported by #36. Backend/tooling can be committed in small chunks; substantial curriculum/UI remains uncommitted for the user's concrete review.
+
+- [x] #4/#7/#8/#38: define schema-1 ordered lesson sections, text/formula/steps/examples and source-scoped figures, shared typed assets, captions/alt text and legacy API compatibility. Reject invalid associations and draft lessons in approved packs.
+- [ ] #6/#7/#8/#38: compile a fresh draft-only lesson/media bundle from exact catalog/source/shape evidence, validate media bytes/dimensions/references and record occurrence-scoped decoration candidates without changing raw extraction or publication blockers.
+- [ ] #4/#8/#38: add a disabled-by-default read-only preview API that preserves lesson/figure associations and serves validated static source images; do not import or activate a learner release.
+- [ ] #10/#38: prepare source-compared Cubes and SDT baseline-method candidates with independent worked reasoning; keep curriculum drafts pending learner review.
+- [ ] #4/#38: provide the runnable ordered-lesson/inline-figure preview, readable image enlargement and explicit failed-image states. Leave substantial learner-facing changes uncommitted.
+- [ ] Run source → fresh extraction → draft bundle → API → browser checks, full backend tests/frontend build, update evidence and stop at the review checkpoint.
+
 ## 1. Preserve native-text structure
 
 Status: native structure/evidence implemented in wave 2; logical reading order and source review remain open. Main files: `backend/ingestion/extract.py`, `extractors.py`, `organize/concepts.py`. Depends on #8 provenance.

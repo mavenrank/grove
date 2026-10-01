@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from pydantic import BaseModel, Field
+from .lessons import Lesson
 
 
 class PublicOption(BaseModel):
@@ -135,6 +136,7 @@ class ConceptOut(BaseModel):
     common_mistakes: list[str] = []
     related_families: list[str] = []
     source_decks: list[dict[str, Any]] = []
+    lesson: "Lesson | None" = None
 
 
 class MediaOut(BaseModel):

@@ -8,6 +8,7 @@ from pathlib import PurePosixPath
 from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
+from app.lessons import Lesson
 
 PACK_SCHEMA_VERSION = 1
 ORGANIZATION_VERSION = 1
@@ -116,6 +117,7 @@ class Concept(Record):
     related_families: list[str]
     source_decks: Annotated[list[Deck], Field(min_length=1)]
     question_review_count: Literal[0]
+    lesson: Lesson | None = None
 
 
 class Authored(Record):
@@ -200,6 +202,9 @@ def validate_pack(payload: dict) -> None:
         raise ValueError(f"invalid pack schema: {exc}") from exc
     if payload["content_sha256"] != content_digest(payload):
         raise ValueError("pack content digest mismatch")
+    for concept in payload["concepts"]:
+        if concept.get("lesson") and concept["lesson"]["review_status"] != "reviewed":
+            raise ValueError("draft lessons cannot be included in an approved pack")
     for stamp in (payload["generated_at"], payload["approval"]["reviewed_at"]):
         if datetime.fromisoformat(stamp).tzinfo is None:
             raise ValueError("pack timestamps must include a timezone")
